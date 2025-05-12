@@ -14,6 +14,12 @@ interface InputSectionProps {
   setWritingStyle: (style: HumanizeRequest["style"]) => void;
   emotionTone: HumanizeRequest["emotion"];
   setEmotionTone: (emotion: HumanizeRequest["emotion"]) => void;
+  paraphrasingLevel: HumanizeRequest["paraphrasingLevel"];
+  setParaphrasingLevel: (level: HumanizeRequest["paraphrasingLevel"]) => void;
+  sentenceStructure: HumanizeRequest["sentenceStructure"];
+  setSentenceStructure: (structure: HumanizeRequest["sentenceStructure"]) => void;
+  vocabularyLevel: HumanizeRequest["vocabularyLevel"];
+  setVocabularyLevel: (level: HumanizeRequest["vocabularyLevel"]) => void;
   aiModel: HumanizeRequest["model"];
   setAiModel: (model: HumanizeRequest["model"]) => void;
   bypassAiDetection: boolean;
@@ -34,6 +40,12 @@ export default function InputSection({
   setWritingStyle,
   emotionTone,
   setEmotionTone,
+  paraphrasingLevel,
+  setParaphrasingLevel,
+  sentenceStructure,
+  setSentenceStructure,
+  vocabularyLevel,
+  setVocabularyLevel,
   aiModel,
   setAiModel,
   bypassAiDetection,
