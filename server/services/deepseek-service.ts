@@ -113,11 +113,25 @@ Follow these specific guidelines to make the text more human-like:
 Analyze the content and rewrite it while maintaining the core message and intent.`;
     
     try {
+      // Map our model names to DeepSeek's actual model identifiers
+      let modelId = "deepseek-chat-v2";
+      switch(request.model) {
+        case "deepseek-chat":
+          modelId = "deepseek-chat-v2";
+          break;
+        case "deepseek-coder":
+          modelId = "deepseek-coder-v2";
+          break;
+        case "deepseek-instruct":
+          modelId = "deepseek-instruct-v2";
+          break;
+      }
+      
       // Call DeepSeek API with the selected model
       const response = await axios.post(
         DEEPSEEK_API_URL,
         {
-          model: request.model || "deepseek-chat",
+          model: modelId,
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: text }
