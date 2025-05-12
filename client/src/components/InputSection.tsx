@@ -51,48 +51,68 @@ export default function InputSection({
   const charCount = inputText.length;
 
   return (
-    <section className="space-y-6">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">Input</h2>
-          <div className="text-sm text-gray-500">{charCount} characters</div>
+    <section className="space-y-8">
+      <div className="glass-card p-7 hover-card">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-xl font-bold gradient-text flex items-center">
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full mr-3"></div>
+            Input Text
+          </h2>
+          <div className="text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 py-1 px-3 rounded-full font-medium">
+            {charCount} characters
+          </div>
         </div>
 
         {/* Text input area */}
         <div className="mb-6">
-          <Label htmlFor="ai-text" className="block text-sm font-medium text-gray-700 mb-2">
+          <Label htmlFor="ai-text" className="flex items-center gap-2 text-sm font-medium mb-3">
+            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
             Paste your AI-generated text here
           </Label>
-          <Textarea
-            id="ai-text"
-            rows={12}
-            className="resize-none"
-            placeholder="Enter or paste your AI-generated text here..."
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-          />
+          <div className="relative">
+            <Textarea
+              id="ai-text"
+              rows={12}
+              className="w-full resize-none rounded-xl focus:ring-purple-500 focus:border-purple-500 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm shadow-inner"
+              placeholder="Enter or paste your AI-generated text here for humanization..."
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              disabled={isProcessing}
+            />
+            <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-500/10 to-indigo-500/10 backdrop-blur-sm text-purple-800 dark:text-purple-300 shadow-sm">
+              {charCount < 10 ? (
+                <span className="text-red-500 font-medium">At least 10 characters needed</span>
+              ) : (
+                <span>Characters: {charCount}</span>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Style controls section */}
-        <div className="space-y-5 mb-6">
-          <h3 className="text-base font-medium text-gray-800">Style & Tone Settings</h3>
+        <div className="space-y-6 mb-7 bg-purple-50/50 dark:bg-purple-900/10 p-5 rounded-xl border border-purple-100 dark:border-purple-900/30">
+          <h3 className="text-base font-bold text-purple-900 dark:text-purple-300 flex items-center">
+            <div className="w-1.5 h-6 bg-gradient-to-b from-purple-500 to-indigo-600 rounded-full mr-2.5"></div>
+            Style & Tone Settings
+          </h3>
           
           {/* Writing style selection */}
-          <div>
-            <Label htmlFor="writing-style" className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="bg-white/60 dark:bg-gray-800/40 p-4 rounded-lg backdrop-blur-sm">
+            <Label htmlFor="writing-style" className="flex items-center gap-2 text-sm font-medium mb-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
               Writing Style
             </Label>
             <Select value={writingStyle} onValueChange={(value) => setWritingStyle(value as HumanizeRequest["style"])}>
-              <SelectTrigger id="writing-style">
+              <SelectTrigger id="writing-style" className="border-purple-200 dark:border-purple-800 focus:ring-purple-500 bg-white/80 dark:bg-gray-900/60">
                 <SelectValue placeholder="Select a writing style" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="casual">Casual</SelectItem>
-                <SelectItem value="formal">Formal</SelectItem>
-                <SelectItem value="academic">Academic</SelectItem>
-                <SelectItem value="creative">Creative</SelectItem>
-                <SelectItem value="technical">Technical</SelectItem>
-                <SelectItem value="conversational">Conversational</SelectItem>
+              <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
+                <SelectItem value="casual" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">Casual</SelectItem>
+                <SelectItem value="formal" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">Formal</SelectItem>
+                <SelectItem value="academic" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">Academic</SelectItem>
+                <SelectItem value="creative" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">Creative</SelectItem>
+                <SelectItem value="technical" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">Technical</SelectItem>
+                <SelectItem value="conversational" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">Conversational</SelectItem>
               </SelectContent>
             </Select>
           </div>
