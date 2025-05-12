@@ -12,6 +12,18 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     // In a real implementation, this would call the OpenAI API
     // For now, we'll do some basic transformations to show the concept
     
+    // Check if input text is too short or empty
+    if (!text || text.trim().length < 10) {
+      return {
+        text: "Please provide a longer text input (at least 10 characters) for proper humanization.",
+        stats: {
+          wordCount: 0,
+          readingTime: 0,
+          aiDetectionRisk: "Medium"
+        }
+      };
+    }
+    
     // Simple text transformation based on selected options
     let humanizedText = text;
     
@@ -305,6 +317,11 @@ function addHumanElements(text: string): string {
     if (rand < 0.15) return ". Maybe ";
     return match;
   });
+  
+  // Add fallback content for short inputs
+  if (result.split(" ").length < 10) {
+    result += " I've thought about this quite a bit and would add that there are several other perspectives to consider here as well. While every situation is unique, I find that approaching this with an open mind helps tremendously.";
+  }
   
   return result;
 }
