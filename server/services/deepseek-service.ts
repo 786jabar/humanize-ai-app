@@ -52,11 +52,47 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     }
     
     // Build the prompt based on user preferences
+    
+    // Model-specific instructions
+    let modelSpecificInstructions = '';
+    
+    switch(request.model) {
+      case 'deepseek-chat':
+        modelSpecificInstructions = `You excel at general-purpose humanization that balances readability with natural flow.
+- Use conversational tone and approachable language
+- Include occasional contractions and informal expressions
+- Adjust the formality level to match the content's purpose
+- Balance precision with readability`;
+        break;
+        
+      case 'deepseek-coder':
+        modelSpecificInstructions = `You excel at humanizing technical and specialized content.
+- Maintain technical accuracy while making explanations more approachable
+- Use industry-specific terminology appropriately but naturally
+- Include occasional technical analogies or examples
+- For code explanations, use more conversational explanations around technical terms`;
+        break;
+        
+      case 'deepseek-instruct':
+        modelSpecificInstructions = `You excel at creative writing and narrative humanization.
+- Use more vivid and descriptive language
+- Include rhetorical devices like metaphors and analogies
+- Vary sentence structure and rhythm more dramatically
+- Focus on engaging storytelling elements
+- Incorporate more personal perspective and voice`;
+        break;
+        
+      default:
+        modelSpecificInstructions = `Focus on general-purpose humanization with balanced readability and natural flow.`;
+    }
+    
     let systemPrompt = `You are an expert at making AI-generated text sound more human-like and natural. 
 Your goal is to transform the following text to sound like it was written by a human.
 
 For writing style, use a ${style} tone.
 For emotional tone, make the text sound ${emotion}.
+
+${modelSpecificInstructions}
 
 ${bypassAiDetection ? 'Importantly, modify the text to bypass AI detection tools by introducing natural human-like patterns, subtle imperfections, and varying sentence structures.' : ''}
 ${improveGrammar ? 'Improve grammar and readability while maintaining a natural human voice.' : ''}
@@ -104,12 +140,22 @@ Analyze the content and rewrite it while maintaining the core message and intent
       const wordCount = countWords(humanizedText);
       const readingTime = calculateReadingTime(humanizedText);
       
-      // Estimate AI detection risk based on complexity of transformation
+      // Estimate AI detection risk based on complexity of transformation and model
       let aiDetectionRisk: HumanizeResponse["stats"]["aiDetectionRisk"] = "Medium";
       
+      // Base risk on writing style and AI detection bypass
       if (bypassAiDetection && style !== "academic" && style !== "technical") {
         aiDetectionRisk = "Low";
       } else if (!bypassAiDetection || style === "technical") {
+        aiDetectionRisk = "High";
+      }
+      
+      // Adjust risk based on the model used
+      if (request.model === "deepseek-instruct" && bypassAiDetection) {
+        // Creative model with bypass tends to be less detectable
+        aiDetectionRisk = aiDetectionRisk === "High" ? "Medium" : "Low";
+      } else if (request.model === "deepseek-coder" && style === "technical") {
+        // Technical model with technical style will sound more AI-like
         aiDetectionRisk = "High";
       }
       
@@ -159,6 +205,20 @@ Analyze the content and rewrite it while maintaining the core message and intent
       // Add AI detection bypass elements if requested
       if (bypassAiDetection) {
         humanizedText += " I'm not entirely sure about all of this, but it's what makes sense to me based on what I've learned and experienced.";
+      }
+      
+      // Add model-specific elements to the fallback
+      switch(request.model) {
+        case 'deepseek-coder':
+          humanizedText += " From a technical perspective, we should analyze this in more depth to understand the practical implications.";
+          break;
+        case 'deepseek-instruct':
+          humanizedText += " As I reflect on this idea, I can't help but imagine how it connects to broader themes in our lives.";
+          break;
+        case 'deepseek-chat':
+        default:
+          // Already conversational enough, no additional text needed
+          break;
       }
     
       // Calculate stats for fallback response

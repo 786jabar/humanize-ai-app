@@ -146,7 +146,7 @@ export default function InputSection({
               </SelectContent>
             </Select>
             <p className="mt-1 text-xs text-gray-500">
-              Different models excel at different types of content humanization
+              Choose Chat for general content, Coder for technical text, or Instruct for creative writing
             </p>
           </div>
 
