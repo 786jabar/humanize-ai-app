@@ -25,7 +25,11 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     }
     
     // Simple text transformation based on selected options
-    let humanizedText = text;
+    // Start with a prefix to make the transformation more obvious
+    let humanizedText = "In my own words: ";
+    
+    // Apply significant transformation first
+    humanizedText += applyBasicTransformation(text);
     
     // Add style-specific modifications
     if (style === "casual") {
@@ -211,6 +215,49 @@ function addTechnicalElements(text: string): string {
     const randomPhrase = technicalPhrases[Math.floor(Math.random() * technicalPhrases.length)];
     sentences[randomIndex] = `${randomPhrase}, ${sentences[randomIndex]}`;
     result = sentences.join(". ");
+  }
+  
+  return result;
+}
+
+// This function applies basic transformation to the text to make it obviously different
+function applyBasicTransformation(text: string): string {
+  // Split into sentences
+  const sentences = text.split(". ");
+  
+  // Process and rearrange sentences
+  let result = "";
+  
+  // If only one short sentence, expand it
+  if (sentences.length <= 1 && text.length < 100) {
+    return `${text} To expand on this point, I would say there are multiple ways to think about it. From one perspective, it makes complete sense. From another, one might need more context to fully assess the implications.`;
+  }
+  
+  // For longer text, reword and rearrange
+  if (sentences.length > 2) {
+    // Add an introduction
+    result += `Here's what I understand from this: `;
+    
+    // Add main content with slight rewording
+    for (let i = 0; i < sentences.length; i++) {
+      if (sentences[i].trim().length === 0) continue;
+      
+      // Skip some sentences
+      if (i % 3 === 0 && i > 0) continue;
+      
+      // Reword others
+      if (i % 2 === 0) {
+        result += sentences[i] + ". ";
+      } else {
+        result += `I believe that ${sentences[i].toLowerCase()}. `;
+      }
+    }
+    
+    // Add a conclusion
+    result += `That's my understanding of it, anyway.`;
+  } else {
+    // For shorter text
+    result = `I would say that ${text.toLowerCase()} This, I think, captures the essence of what's being conveyed.`;
   }
   
   return result;
