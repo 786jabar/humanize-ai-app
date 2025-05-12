@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { humanizeRequestSchema } from "@shared/schema";
-import { humanizeText } from "./services/openai-service";
+import { humanizeText } from "./services/deepseek-service";
 import { ZodError } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
