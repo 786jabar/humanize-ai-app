@@ -6,6 +6,9 @@ import axios from "axios";
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || "";
 const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
 
+// Log API key presence for debugging (not the actual key)
+console.log("DeepSeek API Key available:", !!DEEPSEEK_API_KEY);
+
 // Helper function for fallback text transformation
 function getSimpleTransformation(inputText: string): string {
   // For very short input
@@ -82,6 +85,16 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
 - Incorporate more personal perspective and voice`;
         break;
         
+      case 'deepseek-v3':
+        modelSpecificInstructions = `You excel at advanced humanization with superior natural language patterns.
+- Create exceptionally natural-sounding text with human-like reasoning
+- Include subtle contradictions and tangential thoughts common in human writing
+- Add personal anecdotes and experience-based insights where appropriate
+- Incorporate casual conversational markers like "um", "well", and "you know"
+- Use common human writing flaws like redundancy, vague references, and occasional rambling
+- Blend formal and informal elements adaptively based on context`;
+        break;
+        
       default:
         modelSpecificInstructions = `Focus on general-purpose humanization with balanced readability and natural flow.`;
     }
@@ -125,6 +138,9 @@ Analyze the content and rewrite it while maintaining the core message and intent
         case "deepseek-instruct":
           modelId = "deepseek-instruct-v2";
           break;
+        case "deepseek-v3":
+          modelId = "deepseek-v3";
+          break;
       }
       
       // Call DeepSeek API with the selected model
@@ -165,7 +181,10 @@ Analyze the content and rewrite it while maintaining the core message and intent
       }
       
       // Adjust risk based on the model used
-      if (request.model === "deepseek-instruct" && bypassAiDetection) {
+      if (request.model === "deepseek-v3" && bypassAiDetection) {
+        // V3 model is extremely good at bypassing detection
+        aiDetectionRisk = "Very Low";
+      } else if (request.model === "deepseek-instruct" && bypassAiDetection) {
         // Creative model with bypass tends to be less detectable
         aiDetectionRisk = aiDetectionRisk === "High" ? "Medium" : "Low";
       } else if (request.model === "deepseek-coder" && style === "technical") {
@@ -228,6 +247,9 @@ Analyze the content and rewrite it while maintaining the core message and intent
           break;
         case 'deepseek-instruct':
           humanizedText += " As I reflect on this idea, I can't help but imagine how it connects to broader themes in our lives.";
+          break;
+        case 'deepseek-v3':
+          humanizedText += " You know, I was thinking about this the other day... it's kind of funny how these things connect to our personal experiences, right? I mean, I'm not an expert or anything, but I've seen similar patterns before. Anyway, that's just my two cents on it.";
           break;
         case 'deepseek-chat':
         default:

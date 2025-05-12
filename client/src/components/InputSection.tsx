@@ -143,10 +143,11 @@ export default function InputSection({
                 <SelectItem value="deepseek-chat">DeepSeek Chat (General Purpose)</SelectItem>
                 <SelectItem value="deepseek-coder">DeepSeek Coder (Technical Content)</SelectItem>
                 <SelectItem value="deepseek-instruct">DeepSeek Instruct (Creative Writing)</SelectItem>
+                <SelectItem value="deepseek-v3">DeepSeek V3 (Advanced Humanization)</SelectItem>
               </SelectContent>
             </Select>
             <p className="mt-1 text-xs text-gray-500">
-              Choose Chat for general content, Coder for technical text, or Instruct for creative writing
+              Choose Chat for general content, Coder for technical text, Instruct for creative writing, or V3 for advanced humanization
             </p>
           </div>
 

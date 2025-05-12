@@ -24,7 +24,7 @@ export const humanizeRequestSchema = z.object({
   bypassAiDetection: z.boolean().default(true),
   improveGrammar: z.boolean().default(true),
   preserveKeyPoints: z.boolean().default(true),
-  model: z.enum(['deepseek-chat', 'deepseek-coder', 'deepseek-instruct']).default('deepseek-chat'),
+  model: z.enum(['deepseek-chat', 'deepseek-coder', 'deepseek-instruct', 'deepseek-v3']).default('deepseek-chat'),
 });
 
 export type HumanizeRequest = z.infer<typeof humanizeRequestSchema>;
@@ -34,7 +34,7 @@ export const humanizeResponseSchema = z.object({
   stats: z.object({
     wordCount: z.number(),
     readingTime: z.number(),
-    aiDetectionRisk: z.enum(['Low', 'Medium', 'High']),
+    aiDetectionRisk: z.enum(['Very Low', 'Low', 'Medium', 'High']),
   }),
 });
 
