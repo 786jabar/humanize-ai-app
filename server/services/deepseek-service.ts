@@ -143,6 +143,9 @@ Analyze the content and rewrite it while maintaining the core message and intent
           break;
       }
       
+      // Log what model we're using for debugging
+      console.log(`Using DeepSeek model: ${modelId} (requested: ${request.model})`);
+      
       // Call DeepSeek API with the selected model
       const response = await axios.post(
         DEEPSEEK_API_URL,
@@ -202,6 +205,16 @@ Analyze the content and rewrite it while maintaining the core message and intent
       };
     } catch (apiError) {
       console.error("DeepSeek API error:", apiError);
+      
+      // Print more details about the error for debugging
+      if (apiError.response) {
+        console.error("API error response data:", apiError.response.data);
+        console.error("API error status:", apiError.response.status);
+      } else if (apiError.request) {
+        console.error("No response received from API");
+      } else {
+        console.error("Error setting up request:", apiError.message);
+      }
       
       // Fallback to our simplified transformation in case of API errors
       console.log("Using fallback transformation due to API error");
