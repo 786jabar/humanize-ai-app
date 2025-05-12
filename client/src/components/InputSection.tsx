@@ -14,6 +14,8 @@ interface InputSectionProps {
   setWritingStyle: (style: HumanizeRequest["style"]) => void;
   emotionTone: HumanizeRequest["emotion"];
   setEmotionTone: (emotion: HumanizeRequest["emotion"]) => void;
+  aiModel: HumanizeRequest["model"];
+  setAiModel: (model: HumanizeRequest["model"]) => void;
   bypassAiDetection: boolean;
   setBypassAiDetection: (value: boolean) => void;
   improveGrammar: boolean;
@@ -32,6 +34,8 @@ export default function InputSection({
   setWritingStyle,
   emotionTone,
   setEmotionTone,
+  aiModel,
+  setAiModel,
   bypassAiDetection,
   setBypassAiDetection,
   improveGrammar,
@@ -124,6 +128,26 @@ export default function InputSection({
                 Critical
               </Button>
             </div>
+          </div>
+          
+          {/* AI Model Selection */}
+          <div>
+            <Label htmlFor="ai-model" className="block text-sm font-medium text-gray-700 mb-2">
+              AI Model
+            </Label>
+            <Select value={aiModel} onValueChange={(value) => setAiModel(value as HumanizeRequest["model"])}>
+              <SelectTrigger id="ai-model">
+                <SelectValue placeholder="Select an AI model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="deepseek-chat">DeepSeek Chat (General Purpose)</SelectItem>
+                <SelectItem value="deepseek-coder">DeepSeek Coder (Technical Content)</SelectItem>
+                <SelectItem value="deepseek-instruct">DeepSeek Instruct (Creative Writing)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="mt-1 text-xs text-gray-500">
+              Different models excel at different types of content humanization
+            </p>
           </div>
 
           {/* Advanced options */}

@@ -15,6 +15,7 @@ export default function Home() {
   const [outputText, setOutputText] = useState("");
   const [writingStyle, setWritingStyle] = useState<HumanizeRequest["style"]>("casual");
   const [emotionTone, setEmotionTone] = useState<HumanizeRequest["emotion"]>("neutral");
+  const [aiModel, setAiModel] = useState<HumanizeRequest["model"]>("deepseek-chat");
   const [bypassAiDetection, setBypassAiDetection] = useState(true);
   const [improveGrammar, setImproveGrammar] = useState(true);
   const [preserveKeyPoints, setPreserveKeyPoints] = useState(true);
@@ -30,6 +31,7 @@ export default function Home() {
         text: inputText,
         style: writingStyle,
         emotion: emotionTone,
+        model: aiModel,
         bypassAiDetection,
         improveGrammar,
         preserveKeyPoints
@@ -106,6 +108,8 @@ export default function Home() {
             setWritingStyle={setWritingStyle}
             emotionTone={emotionTone}
             setEmotionTone={setEmotionTone}
+            aiModel={aiModel}
+            setAiModel={setAiModel}
             bypassAiDetection={bypassAiDetection}
             setBypassAiDetection={setBypassAiDetection}
             improveGrammar={improveGrammar}

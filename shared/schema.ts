@@ -24,6 +24,7 @@ export const humanizeRequestSchema = z.object({
   bypassAiDetection: z.boolean().default(true),
   improveGrammar: z.boolean().default(true),
   preserveKeyPoints: z.boolean().default(true),
+  model: z.enum(['deepseek-chat', 'deepseek-coder', 'deepseek-instruct']).default('deepseek-chat'),
 });
 
 export type HumanizeRequest = z.infer<typeof humanizeRequestSchema>;
