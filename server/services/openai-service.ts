@@ -1,7 +1,35 @@
 import { HumanizeRequest, HumanizeResponse } from "@shared/schema";
 import { calculateReadingTime, countWords } from "../../client/src/lib/utils";
 
-// Demo version for testing UI - simulates the humanizing process
+// Simple function to transform text in a clearly visible way
+function getSimpleTransformation(inputText: string): string {
+  // For very short input
+  if (inputText.length < 50) {
+    return `The key point seems to be about ${inputText.toLowerCase()} — which I find to be a fascinating topic worth exploring further. There are several angles to consider when thinking about this.`;
+  }
+  
+  // For regular text, create something obviously different
+  const sentences = inputText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  if (sentences.length > 1) {
+    // Take just some sentences and modify them
+    let result = "";
+    const selectedSentences = sentences.slice(0, Math.min(5, sentences.length));
+    
+    for (const sentence of selectedSentences) {
+      // Add some filler text
+      result += `I believe that ${sentence.trim().toLowerCase()}. `;
+    }
+    
+    // Add some commentary
+    result += `This is a complex topic with various perspectives to consider. `;
+    return result;
+  }
+  
+  // Fallback for other cases
+  return `After analyzing this information, I'd summarize it as follows: ${inputText} This presents several interesting implications for further consideration.`;
+}
+
+// Very simple demo version for testing UI
 export async function humanizeText(request: HumanizeRequest): Promise<HumanizeResponse> {
   try {
     const { text, style, emotion, bypassAiDetection, improveGrammar, preserveKeyPoints } = request;
@@ -9,10 +37,7 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     // Introduce a slight delay to simulate processing
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // In a real implementation, this would call the OpenAI API
-    // For now, we'll do some basic transformations to show the concept
-    
-    // Check if input text is too short or empty
+    // Simple validation
     if (!text || text.trim().length < 10) {
       return {
         text: "Please provide a longer text input (at least 10 characters) for proper humanization.",
@@ -24,38 +49,38 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
       };
     }
     
-    // Simple text transformation based on selected options
-    // Start with a prefix to make the transformation more obvious
-    let humanizedText = "In my own words: ";
+    // SIMPLIFIED APPROACH: Create an entirely different output based on writing style
+    let humanizedText = "";
     
-    // Apply significant transformation first
-    humanizedText += applyBasicTransformation(text);
+    // Common intro based on writing style
+    const styleIntros = {
+      casual: "So here's what I think... ",
+      formal: "Upon consideration, the following can be stated: ",
+      academic: "Research and analysis suggest the following interpretation: ",
+      creative: "Imagine, if you will, a perspective where: ",
+      technical: "Technical assessment yields the following observations: ",
+      conversational: "Let's chat about this for a sec. "
+    };
     
-    // Add style-specific modifications
-    if (style === "casual") {
-      humanizedText = addCasualElements(humanizedText);
-    } else if (style === "formal") {
-      humanizedText = addFormalElements(humanizedText);
-    } else if (style === "academic") {
-      humanizedText = addAcademicElements(humanizedText);
-    } else if (style === "creative") {
-      humanizedText = addCreativeElements(humanizedText);
-    } else if (style === "technical") {
-      humanizedText = addTechnicalElements(humanizedText);
-    } else if (style === "conversational") {
-      humanizedText = addConversationalElements(humanizedText);
-    }
+    // Common conclusion based on emotion
+    const emotionConclusions = {
+      neutral: "That's my objective assessment of the matter.",
+      positive: "Overall, I'm quite optimistic about these points!",
+      critical: "We should, however, carefully examine these claims before proceeding."
+    };
     
-    // Add emotion-specific modifications
-    if (emotion === "positive") {
-      humanizedText = addPositiveElements(humanizedText);
-    } else if (emotion === "critical") {
-      humanizedText = addCriticalElements(humanizedText);
-    }
+    // Add intro based on style
+    humanizedText += styleIntros[style] || "Here's my take: ";
     
-    // If bypassing AI detection is enabled, add more human-like elements
+    // Add a transformed version of the text (completely different from input)
+    humanizedText += getSimpleTransformation(text);
+    
+    // Add conclusion based on emotion
+    humanizedText += " " + (emotionConclusions[emotion] || "That's my take on it.");
+    
+    // Add AI detection bypass elements if requested
     if (bypassAiDetection) {
-      humanizedText = addHumanElements(humanizedText);
+      humanizedText += " I'm not entirely sure about all of this, but it's what makes sense to me based on what I've learned and experienced.";
     }
     
     // Calculate stats
