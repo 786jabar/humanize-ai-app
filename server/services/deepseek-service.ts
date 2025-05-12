@@ -65,7 +65,8 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
 - Use conversational tone and approachable language
 - Include occasional contractions and informal expressions
 - Adjust the formality level to match the content's purpose
-- Balance precision with readability`;
+- Balance precision with readability
+- IMPORTANT: Completely change the wording and sentence structure from the original`;
         break;
         
       case 'deepseek-coder':
@@ -73,7 +74,8 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
 - Maintain technical accuracy while making explanations more approachable
 - Use industry-specific terminology appropriately but naturally
 - Include occasional technical analogies or examples
-- For code explanations, use more conversational explanations around technical terms`;
+- For code explanations, use more conversational explanations around technical terms
+- IMPORTANT: Completely change the wording and sentence structure from the original, use a more analytical style`;
         break;
         
       case 'deepseek-instruct':
@@ -82,7 +84,8 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
 - Include rhetorical devices like metaphors and analogies
 - Vary sentence structure and rhythm more dramatically
 - Focus on engaging storytelling elements
-- Incorporate more personal perspective and voice`;
+- Incorporate more personal perspective and voice
+- IMPORTANT: Completely change the wording and sentence structure from the original, use a more creative style`;
         break;
         
       case 'deepseek-v3':
@@ -92,7 +95,8 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
 - Add personal anecdotes and experience-based insights where appropriate
 - Incorporate casual conversational markers like "um", "well", and "you know"
 - Use common human writing flaws like redundancy, vague references, and occasional rambling
-- Blend formal and informal elements adaptively based on context`;
+- Blend formal and informal elements adaptively based on context
+- IMPORTANT: This must be COMPLETELY different from the original in every way while preserving the core message. This is CRITICAL.`;
         break;
         
       default:
@@ -100,7 +104,11 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     }
     
     let systemPrompt = `You are an expert at making AI-generated text sound more human-like and natural. 
-Your goal is to transform the following text to sound like it was written by a human.
+Your goal is to completely rewrite and transform the following text to sound like it was written by a human.
+
+IMPORTANT: You MUST significantly rephrase the input text while preserving its core meaning.
+Don't just make small edits - thoroughly rewrite sentences and reorganize paragraphs. 
+Use different words, expressions, and sentence structures than the original.
 
 For writing style, use a ${style} tone.
 For emotional tone, make the text sound ${emotion}.
@@ -109,39 +117,28 @@ ${modelSpecificInstructions}
 
 ${bypassAiDetection ? 'Importantly, modify the text to bypass AI detection tools by introducing natural human-like patterns, subtle imperfections, and varying sentence structures.' : ''}
 ${improveGrammar ? 'Improve grammar and readability while maintaining a natural human voice.' : ''}
-${preserveKeyPoints ? 'Preserve all key points and arguments from the original text.' : ''}
+${preserveKeyPoints ? 'Preserve all key points and arguments from the original text, but express them in entirely new words.' : ''}
 
 Follow these specific guidelines to make the text more human-like:
-1. Vary sentence lengths and structures
+1. Vary sentence lengths and structures dramatically from the original
 2. Use more transitional phrases and personal pronouns
 3. Include occasional informal language elements where appropriate
 4. Add natural thought progression markers like "however," "actually," or "I think"
 5. Incorporate rhetorical questions occasionally
 6. Introduce minor grammatical nuances that humans typically make
-7. Replace complex words with simpler alternatives when possible
+7. Replace words with different alternatives that convey the same meaning
 8. Add occasional hedging language like "probably," "seems like," "I believe"
 9. Restructure ideas in a more human-like flow of thought
 10. Insert occasional parenthetical asides or brief digressions
 
-Analyze the content and rewrite it while maintaining the core message and intent.`;
+Analyze the content and thoroughly rewrite it while maintaining the core message and intent.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
       let modelId = "deepseek-chat-v2";
-      switch(request.model) {
-        case "deepseek-chat":
-          modelId = "deepseek-chat-v2";
-          break;
-        case "deepseek-coder":
-          modelId = "deepseek-coder-v2";
-          break;
-        case "deepseek-instruct":
-          modelId = "deepseek-instruct-v2";
-          break;
-        case "deepseek-v3":
-          modelId = "deepseek-v3";
-          break;
-      }
+      // Use a single model name that we know exists with DeepSeek API
+      // but still apply different instructions based on the selected model type
+      modelId = "deepseek-chat"; // This is the most commonly available model
       
       // Log what model we're using for debugging
       console.log(`Using DeepSeek model: ${modelId} (requested: ${request.model})`);
@@ -203,17 +200,17 @@ Analyze the content and rewrite it while maintaining the core message and intent
           aiDetectionRisk
         }
       };
-    } catch (apiError) {
-      console.error("DeepSeek API error:", apiError);
+    } catch (error: any) {
+      console.error("DeepSeek API error:", error);
       
       // Print more details about the error for debugging
-      if (apiError.response) {
-        console.error("API error response data:", apiError.response.data);
-        console.error("API error status:", apiError.response.status);
-      } else if (apiError.request) {
+      if (error.response) {
+        console.error("API error response data:", error.response.data);
+        console.error("API error status:", error.response.status);
+      } else if (error.request) {
         console.error("No response received from API");
       } else {
-        console.error("Error setting up request:", apiError.message);
+        console.error("Error setting up request:", error.message);
       }
       
       // Fallback to our simplified transformation in case of API errors
