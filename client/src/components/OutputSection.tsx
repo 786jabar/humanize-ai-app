@@ -1,6 +1,13 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { ClipboardIcon, DownloadIcon, Underline } from "lucide-react";
+import { 
+  ClipboardIcon, 
+  DownloadIcon, 
+  Underline, 
+  Clock as ClockIcon, 
+  FileText as TextIcon, 
+  ShieldCheck as ShieldIcon 
+} from "lucide-react";
 import { HumanizeResponse } from "@shared/schema";
 import FeatureHighlights from "./FeatureHighlights";
 
@@ -71,38 +78,73 @@ export default function OutputSection({
             />
 
             {/* Output stats */}
-            <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
-              <div><span className="font-medium">Reading time:</span> <span>{stats.readingTime} min</span></div>
-              <div><span className="font-medium">Word count:</span> <span>{stats.wordCount}</span></div>
-              <div>
-                <span className="font-medium">AI detection risk:</span>{" "}
-                <span className={
-                  stats.aiDetectionRisk === "Low" 
-                    ? "text-green-600 font-medium" 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 text-sm">
+              <div className="bg-purple-50/70 dark:bg-purple-900/20 rounded-lg p-3 flex items-center">
+                <div className="h-8 w-8 bg-purple-100 dark:bg-purple-800/40 rounded-full flex items-center justify-center mr-3">
+                  <ClockIcon className="h-4 w-4 text-purple-700 dark:text-purple-300" />
+                </div>
+                <div>
+                  <div className="text-xs text-purple-600 dark:text-purple-400">Reading time</div>
+                  <div className="font-semibold text-purple-900 dark:text-purple-200">{stats.readingTime} min</div>
+                </div>
+              </div>
+              
+              <div className="bg-purple-50/70 dark:bg-purple-900/20 rounded-lg p-3 flex items-center">
+                <div className="h-8 w-8 bg-purple-100 dark:bg-purple-800/40 rounded-full flex items-center justify-center mr-3">
+                  <TextIcon className="h-4 w-4 text-purple-700 dark:text-purple-300" />
+                </div>
+                <div>
+                  <div className="text-xs text-purple-600 dark:text-purple-400">Word count</div>
+                  <div className="font-semibold text-purple-900 dark:text-purple-200">{stats.wordCount}</div>
+                </div>
+              </div>
+              
+              <div className="bg-purple-50/70 dark:bg-purple-900/20 rounded-lg p-3 flex items-center">
+                <div className={`h-8 w-8 rounded-full flex items-center justify-center mr-3 ${
+                  stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                    ? "bg-green-100 dark:bg-green-900/30" 
                     : stats.aiDetectionRisk === "Medium"
-                      ? "text-yellow-600 font-medium"
-                      : "text-red-600 font-medium"
-                }>
-                  {stats.aiDetectionRisk}
-                </span>
+                      ? "bg-yellow-100 dark:bg-yellow-900/30"
+                      : "bg-red-100 dark:bg-red-900/30"
+                }`}>
+                  <ShieldIcon className={`h-4 w-4 ${
+                    stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                      ? "text-green-600 dark:text-green-400" 
+                      : stats.aiDetectionRisk === "Medium"
+                        ? "text-yellow-600 dark:text-yellow-400"
+                        : "text-red-600 dark:text-red-400"
+                  }`} />
+                </div>
+                <div>
+                  <div className="text-xs text-purple-600 dark:text-purple-400">AI detection risk</div>
+                  <div className={`font-semibold ${
+                    stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                      ? "text-green-600 dark:text-green-400" 
+                      : stats.aiDetectionRisk === "Medium"
+                        ? "text-yellow-600 dark:text-yellow-400"
+                        : "text-red-600 dark:text-red-400"
+                  }`}>
+                    {stats.aiDetectionRisk}
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Action buttons for output */}
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <Button 
-                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-medium py-2.5 px-6"
+                className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 px-7 rounded-full shadow-md hover:shadow-lg hover:shadow-purple-500/30 animated-button"
                 onClick={onCopy}
               >
-                <ClipboardIcon className="h-4 w-4 mr-1.5" />
+                <ClipboardIcon className="h-5 w-5 mr-2" />
                 Copy to Clipboard
               </Button>
               <Button 
                 variant="outline"
-                className="flex-1 sm:flex-initial bg-white hover:bg-gray-50 text-gray-700 font-medium py-2.5 px-6"
+                className="flex-1 sm:flex-initial border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 py-3 px-7 rounded-full animated-button"
                 onClick={onDownload}
               >
-                <DownloadIcon className="h-4 w-4 mr-1.5" />
+                <DownloadIcon className="h-5 w-5 mr-2" />
                 Download
               </Button>
             </div>

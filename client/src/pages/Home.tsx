@@ -100,7 +100,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Header />
         
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <main className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-4">
           <InputSection 
             inputText={inputText}
             setInputText={setInputText}
