@@ -118,32 +118,45 @@ export default function InputSection({
           </div>
 
           {/* Emotion tuning */}
-          <div>
-            <Label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="bg-white/60 dark:bg-gray-800/40 p-4 rounded-lg backdrop-blur-sm">
+            <Label className="flex items-center gap-2 text-sm font-medium mb-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
               Emotion Tuning
             </Label>
             <div className="grid grid-cols-3 gap-3">
               <Button
                 type="button"
-                variant={emotionTone === "neutral" ? "secondary" : "outline"}
+                variant="ghost"
                 onClick={() => setEmotionTone("neutral")}
-                className="py-2 px-3 text-sm font-medium"
+                className={`py-2 px-3 text-sm font-medium rounded-lg ${
+                  emotionTone === "neutral" 
+                    ? "bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800" 
+                    : "hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                }`}
               >
                 Neutral
               </Button>
               <Button
                 type="button"
-                variant={emotionTone === "positive" ? "secondary" : "outline"}
+                variant="ghost"
                 onClick={() => setEmotionTone("positive")}
-                className="py-2 px-3 text-sm font-medium"
+                className={`py-2 px-3 text-sm font-medium rounded-lg ${
+                  emotionTone === "positive" 
+                    ? "bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800" 
+                    : "hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                }`}
               >
                 Positive
               </Button>
               <Button
                 type="button"
-                variant={emotionTone === "critical" ? "secondary" : "outline"}
+                variant="ghost"
                 onClick={() => setEmotionTone("critical")}
-                className="py-2 px-3 text-sm font-medium"
+                className={`py-2 px-3 text-sm font-medium rounded-lg ${
+                  emotionTone === "critical" 
+                    ? "bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800" 
+                    : "hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                }`}
               >
                 Critical
               </Button>
@@ -151,22 +164,31 @@ export default function InputSection({
           </div>
           
           {/* AI Model Selection */}
-          <div>
-            <Label htmlFor="ai-model" className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="bg-white/60 dark:bg-gray-800/40 p-4 rounded-lg backdrop-blur-sm">
+            <Label htmlFor="ai-model" className="flex items-center gap-2 text-sm font-medium mb-2.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
               AI Model
             </Label>
             <Select value={aiModel} onValueChange={(value) => setAiModel(value as HumanizeRequest["model"])}>
-              <SelectTrigger id="ai-model">
+              <SelectTrigger id="ai-model" className="border-purple-200 dark:border-purple-800 focus:ring-purple-500 bg-white/80 dark:bg-gray-900/60">
                 <SelectValue placeholder="Select an AI model" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="deepseek-chat">DeepSeek Chat (General Purpose)</SelectItem>
-                <SelectItem value="deepseek-coder">DeepSeek Coder (Technical Content)</SelectItem>
-                <SelectItem value="deepseek-instruct">DeepSeek Instruct (Creative Writing)</SelectItem>
-                <SelectItem value="deepseek-v3">DeepSeek V3 (Advanced Humanization)</SelectItem>
+              <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
+                <SelectItem value="deepseek-chat" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  DeepSeek Chat (General Purpose)
+                </SelectItem>
+                <SelectItem value="deepseek-coder" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  DeepSeek Coder (Technical Content)
+                </SelectItem>
+                <SelectItem value="deepseek-instruct" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  DeepSeek Instruct (Creative Writing)
+                </SelectItem>
+                <SelectItem value="deepseek-v3" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  DeepSeek V3 (Advanced Humanization)
+                </SelectItem>
               </SelectContent>
             </Select>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-purple-700 dark:text-purple-400 bg-purple-50/70 dark:bg-purple-900/30 p-2 rounded-md">
               Choose Chat for general content, Coder for technical text, Instruct for creative writing, or V3 for advanced humanization
             </p>
           </div>
