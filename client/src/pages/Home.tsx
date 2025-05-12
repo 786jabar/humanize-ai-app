@@ -91,11 +91,13 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Human-Sounding AI Summarizer</title>
-        <meta name="description" content="Transform AI-generated content into natural, human-like text that bypasses AI detection tools." />
-        <meta property="og:title" content="Human-Sounding AI Summarizer" />
-        <meta property="og:description" content="Make your AI-generated text sound more human and undetectable." />
+        <title>Humanize.AI | Transform AI Content into Natural Human-like Text</title>
+        <meta name="description" content="Humanize.AI transforms AI-generated content into natural, human-like text that bypasses AI detection tools. Choose from multiple writing styles and customize output to suit your needs." />
+        <meta property="og:title" content="Humanize.AI | Transform AI Content into Natural Human-like Text" />
+        <meta property="og:description" content="Bypass AI detection tools and make your AI-generated text sound naturally human with customizable styles, tones and advanced options." />
         <meta property="og:type" content="website" />
+        <meta name="keywords" content="AI text humanizer, bypass AI detection, human writing style, paraphrasing tool, content rewriting" />
+        <meta name="theme-color" content="#8b5cf6" />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Header />
