@@ -205,6 +205,86 @@ export default function InputSection({
             </p>
           </div>
 
+          {/* Paraphrasing Controls */}
+          <div className="bg-white/60 dark:bg-gray-800/40 p-4 rounded-lg backdrop-blur-sm">
+            <h3 className="flex items-center gap-2 text-sm font-medium mb-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+              Paraphrasing Options
+            </h3>
+            
+            {/* Paraphrasing Level */}
+            <div className="mb-4">
+              <Label htmlFor="paraphrasing-level" className="text-xs text-muted-foreground mb-1 block">
+                Paraphrasing Level
+              </Label>
+              <Select value={paraphrasingLevel} onValueChange={(value) => setParaphrasingLevel(value as HumanizeRequest["paraphrasingLevel"])}>
+                <SelectTrigger id="paraphrasing-level" className="border-purple-200 dark:border-purple-800 focus:ring-purple-500 bg-white/80 dark:bg-gray-900/60">
+                  <SelectValue placeholder="Select paraphrasing level" />
+                </SelectTrigger>
+                <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
+                  <SelectItem value="minimal" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Minimal - Light rewording
+                  </SelectItem>
+                  <SelectItem value="moderate" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Moderate - Standard rewording
+                  </SelectItem>
+                  <SelectItem value="extensive" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Extensive - Complete rephrasing
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Sentence Structure */}
+            <div className="mb-4">
+              <Label htmlFor="sentence-structure" className="text-xs text-muted-foreground mb-1 block">
+                Sentence Structure
+              </Label>
+              <Select value={sentenceStructure} onValueChange={(value) => setSentenceStructure(value as HumanizeRequest["sentenceStructure"])}>
+                <SelectTrigger id="sentence-structure" className="border-purple-200 dark:border-purple-800 focus:ring-purple-500 bg-white/80 dark:bg-gray-900/60">
+                  <SelectValue placeholder="Select sentence structure" />
+                </SelectTrigger>
+                <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
+                  <SelectItem value="simple" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Simple - Short, direct sentences
+                  </SelectItem>
+                  <SelectItem value="varied" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Varied - Mix of sentence types
+                  </SelectItem>
+                  <SelectItem value="complex" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Complex - Sophisticated sentence patterns
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* Vocabulary Level */}
+            <div>
+              <Label htmlFor="vocabulary-level" className="text-xs text-muted-foreground mb-1 block">
+                Vocabulary Level
+              </Label>
+              <Select value={vocabularyLevel} onValueChange={(value) => setVocabularyLevel(value as HumanizeRequest["vocabularyLevel"])}>
+                <SelectTrigger id="vocabulary-level" className="border-purple-200 dark:border-purple-800 focus:ring-purple-500 bg-white/80 dark:bg-gray-900/60">
+                  <SelectValue placeholder="Select vocabulary level" />
+                </SelectTrigger>
+                <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
+                  <SelectItem value="basic" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Basic - Common, everyday words
+                  </SelectItem>
+                  <SelectItem value="intermediate" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Intermediate - Standard vocabulary
+                  </SelectItem>
+                  <SelectItem value="advanced" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                    Advanced - Sophisticated, varied vocabulary
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="mt-2 text-xs text-purple-700 dark:text-purple-400 bg-purple-50/70 dark:bg-purple-900/30 p-2 rounded-md">
+                These options control how your text is restructured and rephrased, helping to avoid AI detection.
+              </p>
+            </div>
+          </div>
+
           {/* Advanced options */}
           <AdvancedOptions 
             showAdvanced={showAdvanced}

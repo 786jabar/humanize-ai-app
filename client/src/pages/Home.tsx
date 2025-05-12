@@ -116,6 +116,12 @@ export default function Home() {
             setWritingStyle={setWritingStyle}
             emotionTone={emotionTone}
             setEmotionTone={setEmotionTone}
+            paraphrasingLevel={paraphrasingLevel}
+            setParaphrasingLevel={setParaphrasingLevel}
+            sentenceStructure={sentenceStructure}
+            setSentenceStructure={setSentenceStructure}
+            vocabularyLevel={vocabularyLevel}
+            setVocabularyLevel={setVocabularyLevel}
             aiModel={aiModel}
             setAiModel={setAiModel}
             bypassAiDetection={bypassAiDetection}

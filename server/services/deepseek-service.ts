@@ -40,7 +40,17 @@ function getSimpleTransformation(inputText: string): string {
 // Main function to humanize text using DeepSeek API
 export async function humanizeText(request: HumanizeRequest): Promise<HumanizeResponse> {
   try {
-    const { text, style, emotion, bypassAiDetection, improveGrammar, preserveKeyPoints } = request;
+    const { 
+      text, 
+      style, 
+      emotion, 
+      paraphrasingLevel, 
+      sentenceStructure, 
+      vocabularyLevel, 
+      bypassAiDetection, 
+      improveGrammar, 
+      preserveKeyPoints 
+    } = request;
     
     // Simple validation
     if (!text || text.trim().length < 10) {
@@ -103,6 +113,54 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
         modelSpecificInstructions = `Focus on general-purpose humanization with balanced readability and natural flow.`;
     }
     
+    // Configure paraphrasing level instructions
+    let paraphrasingInstructions = '';
+    switch(paraphrasingLevel) {
+      case 'minimal':
+        paraphrasingInstructions = `Apply minimal rewording while maintaining most of the original structure. Focus on replacing key phrases with synonyms and light restructuring.`;
+        break;
+      case 'moderate':
+        paraphrasingInstructions = `Apply moderate rewording by changing about half of the original phrasing while preserving the overall structure. Reword paragraphs but keep the flow similar.`;
+        break;
+      case 'extensive':
+        paraphrasingInstructions = `Apply extensive rewording by completely transforming the text. Use entirely different phrasing, structure, and organization while preserving the core meaning and ideas.`;
+        break;
+      default:
+        paraphrasingInstructions = `Apply moderate rewording to the text to make it sound more natural.`;
+    }
+    
+    // Configure sentence structure instructions
+    let sentenceStructureInstructions = '';
+    switch(sentenceStructure) {
+      case 'simple':
+        sentenceStructureInstructions = `Use predominantly simple, direct sentences with clear subjects and verbs. Minimize complex clauses and keep sentence length relatively short.`;
+        break;
+      case 'varied':
+        sentenceStructureInstructions = `Use a natural mix of simple, compound, and complex sentences. Vary sentence length and structure throughout the text for a natural rhythm.`;
+        break;
+      case 'complex':
+        sentenceStructureInstructions = `Use sophisticated sentence patterns with multiple clauses, dependent phrases, and varied punctuation. Create a more formal, elaborate writing style.`;
+        break;
+      default:
+        sentenceStructureInstructions = `Use a natural mix of simple and complex sentences.`;
+    }
+    
+    // Configure vocabulary level instructions
+    let vocabularyInstructions = '';
+    switch(vocabularyLevel) {
+      case 'basic':
+        vocabularyInstructions = `Use common, everyday vocabulary that would be accessible to most readers. Avoid specialized terminology or unusual words.`;
+        break;
+      case 'intermediate':
+        vocabularyInstructions = `Use a moderate vocabulary level with some specialized terms where appropriate. Balance accessibility with precision.`;
+        break;
+      case 'advanced':
+        vocabularyInstructions = `Use sophisticated vocabulary with precise, nuanced word choices. Include domain-specific terminology where appropriate and employ a diverse lexicon.`;
+        break;
+      default:
+        vocabularyInstructions = `Use vocabulary appropriate for the topic and context.`;
+    }
+
     let systemPrompt = `You are an expert at making AI-generated text sound more human-like and natural. 
 Your goal is to completely rewrite and transform the following text to sound like it was written by a human.
 
@@ -113,6 +171,15 @@ Use different words, expressions, and sentence structures than the original.
 For writing style, use a ${style} tone.
 For emotional tone, make the text sound ${emotion}.
 
+PARAPHRASING INSTRUCTIONS:
+${paraphrasingInstructions}
+
+SENTENCE STRUCTURE:
+${sentenceStructureInstructions}
+
+VOCABULARY LEVEL:
+${vocabularyInstructions}
+
 ${modelSpecificInstructions}
 
 ${bypassAiDetection ? 'Importantly, modify the text to bypass AI detection tools by introducing natural human-like patterns, subtle imperfections, and varying sentence structures.' : ''}
@@ -120,13 +187,13 @@ ${improveGrammar ? 'Improve grammar and readability while maintaining a natural 
 ${preserveKeyPoints ? 'Preserve all key points and arguments from the original text, but express them in entirely new words.' : ''}
 
 Follow these specific guidelines to make the text more human-like:
-1. Vary sentence lengths and structures dramatically from the original
+1. Vary sentence lengths and structures according to the sentence structure preference
 2. Use more transitional phrases and personal pronouns
 3. Include occasional informal language elements where appropriate
 4. Add natural thought progression markers like "however," "actually," or "I think"
 5. Incorporate rhetorical questions occasionally
 6. Introduce minor grammatical nuances that humans typically make
-7. Replace words with different alternatives that convey the same meaning
+7. Replace words with different alternatives that convey the same meaning, using vocabulary appropriate to the selected level
 8. Add occasional hedging language like "probably," "seems like," "I believe"
 9. Restructure ideas in a more human-like flow of thought
 10. Insert occasional parenthetical asides or brief digressions
@@ -180,7 +247,34 @@ Analyze the content and thoroughly rewrite it while maintaining the core message
         aiDetectionRisk = "High";
       }
       
-      // Adjust risk based on the model used
+      // Adjust risk based on paraphrasing level
+      if (paraphrasingLevel === "extensive") {
+        // Extensive paraphrasing reduces detection risk
+        aiDetectionRisk = aiDetectionRisk === "High" ? "Medium" : "Low";
+      } else if (paraphrasingLevel === "minimal") {
+        // Minimal paraphrasing increases detection risk
+        aiDetectionRisk = aiDetectionRisk === "Low" ? "Medium" : "High";
+      }
+      
+      // Adjust risk based on sentence structure
+      if (sentenceStructure === "varied") {
+        // Varied sentence structure reduces detection risk
+        if (aiDetectionRisk === "High") aiDetectionRisk = "Medium";
+      } else if (sentenceStructure === "complex" && style === "academic") {
+        // Complex academic writing may appear more AI-like
+        aiDetectionRisk = "High";
+      }
+      
+      // Adjust risk based on vocabulary level
+      if (vocabularyLevel === "basic" && sentenceStructure === "simple") {
+        // Basic vocabulary with simple sentences often appears more human
+        if (aiDetectionRisk !== "High") aiDetectionRisk = "Low";
+      } else if (vocabularyLevel === "advanced" && style === "technical") {
+        // Advanced vocabulary in technical writing may appear more AI-like
+        aiDetectionRisk = "High";
+      }
+      
+      // Final adjustment based on the model used
       if (request.model === "deepseek-v3" && bypassAiDetection) {
         // V3 model is extremely good at bypassing detection
         aiDetectionRisk = "Very Low";
@@ -248,6 +342,61 @@ Analyze the content and thoroughly rewrite it while maintaining the core message
       // Add AI detection bypass elements if requested
       if (bypassAiDetection) {
         humanizedText += " I'm not entirely sure about all of this, but it's what makes sense to me based on what I've learned and experienced.";
+      }
+      
+      // Add paraphrasing level elements to the fallback
+      switch(paraphrasingLevel) {
+        case 'extensive':
+          // For extensive paraphrasing, add more dramatically different text
+          humanizedText = "Let me approach this from a different angle. " + humanizedText;
+          // Add more varied text depending on style
+          if (style === "casual") {
+            humanizedText += " I've been mulling this over for a while, and I keep coming back to the same conclusion, you know?";
+          } else if (style === "formal") {
+            humanizedText += " Upon further consideration, several additional factors merit examination in this context.";
+          }
+          break;
+        case 'minimal':
+          // For minimal paraphrasing, keep closer to original structure but modify slightly
+          humanizedText = humanizedText.replace("Here's my take: ", "In my opinion: ");
+          break;
+        case 'moderate':
+        default:
+          // For moderate paraphrasing, add moderate changes but not dramatic ones
+          humanizedText += " There are several ways to interpret this, but this explanation makes the most sense to me.";
+          break;
+      }
+          
+      // Add sentence structure elements to the fallback
+      switch(sentenceStructure) {
+        case 'complex':
+          // Add complex sentence structures
+          humanizedText += " While considering the multifaceted nature of this topic, which inherently contains numerous interdependent variables and contextual elements, it becomes apparent that a comprehensive understanding requires analysis from multiple theoretical frameworks and practical perspectives.";
+          break;
+        case 'simple':
+          // Add simple sentence structures
+          humanizedText += " This is important. We should think about it more. The ideas here matter a lot. They can help us understand things better.";
+          break;
+        case 'varied':
+        default:
+          // Already has varied sentence structure from other modifications
+          break;
+      }
+      
+      // Add vocabulary level elements to the fallback
+      switch(vocabularyLevel) {
+        case 'advanced':
+          // Add advanced vocabulary
+          humanizedText += " The quintessential aspects of this discourse illuminate the profound dichotomy inherent in its epistemological underpinnings.";
+          break;
+        case 'basic':
+          // Add basic vocabulary
+          humanizedText += " The main points are clear. The ideas make sense. I agree with most of what was said.";
+          break;
+        case 'intermediate':
+        default:
+          // Intermediate vocabulary is the default
+          break;
       }
       
       // Add model-specific elements to the fallback
