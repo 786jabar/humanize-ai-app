@@ -165,18 +165,22 @@ export default function InputSection({
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-3 mt-4">
           <Button 
-            className="flex-1 bg-primary hover:bg-primary-700 text-white py-2.5 px-6"
+            className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-3 px-7 rounded-full shadow-md hover:shadow-lg hover:shadow-purple-500/30 animated-button"
             onClick={onHumanize}
             disabled={!inputText.trim() || isProcessing}
           >
-            <SparklesIcon className="h-4 w-4 mr-1.5" />
-            Humanize Text
+            {isProcessing ? (
+              <span className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+            ) : (
+              <SparklesIcon className="h-5 w-5 mr-2" />
+            )}
+            {isProcessing ? "Processing..." : "Humanize Text"}
           </Button>
           <Button 
             variant="outline" 
-            className="flex-1 sm:flex-initial bg-white hover:bg-gray-50 text-gray-700 py-2.5 px-6"
+            className="flex-1 sm:flex-initial border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 py-3 px-7 rounded-full animated-button"
             onClick={onClear}
             disabled={!inputText.trim() || isProcessing}
           >
