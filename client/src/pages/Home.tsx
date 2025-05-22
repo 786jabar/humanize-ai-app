@@ -153,6 +153,7 @@ export default function Home() {
           
           <OutputSection 
             outputText={outputText}
+            setOutputText={setOutputText}
             stats={stats}
             detectionTests={detectionTests}
             isProcessing={humanizeMutation.isPending}

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SparklesIcon, ZapIcon, RotateCcw } from "lucide-react";
 import { HumanizeRequest } from "@shared/schema";
 import AdvancedOptions from "./AdvancedOptions";
+import InteractiveTextArea from "./InteractiveTextArea";
 
 interface InputSectionProps {
   inputText: string;

@@ -11,9 +11,11 @@ import {
 import DetectionTestResults from "./DetectionTestResults";
 import { HumanizeResponse } from "@shared/schema";
 import FeatureHighlights from "./FeatureHighlights";
+import InteractiveTextArea from "./InteractiveTextArea";
 
 interface OutputSectionProps {
   outputText: string;
+  setOutputText: (text: string) => void;
   stats: {
     wordCount: number;
     readingTime: number;
@@ -28,6 +30,7 @@ interface OutputSectionProps {
 
 export default function OutputSection({
   outputText,
+  setOutputText,
   stats,
   detectionTests,
   isProcessing,
