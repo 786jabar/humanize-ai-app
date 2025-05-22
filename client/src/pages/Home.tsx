@@ -50,9 +50,10 @@ export default function Home() {
     onSuccess: (data) => {
       setOutputText(data.text);
       setStats(data.stats);
+      setDetectionTests(data.detectionTests);
       toast({
         title: "Success!",
-        description: "Your text has been humanized successfully.",
+        description: "Your text has been humanized and tested for AI detection.",
       });
     },
     onError: (error) => {
@@ -139,6 +140,7 @@ export default function Home() {
           <OutputSection 
             outputText={outputText}
             stats={stats}
+            detectionTests={detectionTests}
             isProcessing={humanizeMutation.isPending}
             onCopy={copyToClipboard}
             onDownload={downloadOutput}
