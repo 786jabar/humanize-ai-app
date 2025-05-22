@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { 
   ClipboardIcon, 
   DownloadIcon, 
-  Underline, 
+  RotateCcw, 
   Clock as ClockIcon, 
   FileText as TextIcon, 
   ShieldCheck as ShieldIcon 
@@ -65,7 +65,7 @@ export default function OutputSection({
         {!isProcessing && !hasOutput && (
           <div className="border-2 border-dashed border-purple-200 dark:border-purple-800 rounded-xl p-12 text-center bg-purple-50/50 dark:bg-purple-900/10">
             <div className="mx-auto h-16 w-16 text-purple-400 dark:text-purple-500 bg-white/80 dark:bg-gray-800/80 rounded-full p-3 shadow-md">
-              <Underline className="h-10 w-10" />
+              <TextIcon className="h-10 w-10" />
             </div>
             <h3 className="mt-3 text-base font-medium text-purple-800 dark:text-purple-200">No output yet</h3>
             <p className="mt-2 text-sm text-purple-600/70 dark:text-purple-400/70">Your humanized text will appear here after processing</p>
@@ -157,8 +157,8 @@ export default function OutputSection({
                 className="flex-1 sm:flex-initial border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 py-3 px-7 rounded-full animated-button"
                 onClick={onClear}
               >
-                <Underline className="h-5 w-5 mr-2" />
-                Clear Output
+                <RotateCcw className="h-5 w-5 mr-2" />
+                Delete Output
               </Button>
             </div>
           </div>

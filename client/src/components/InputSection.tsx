@@ -3,7 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { SparklesIcon, ZapIcon } from "lucide-react";
+import { SparklesIcon, ZapIcon, RotateCcw } from "lucide-react";
 import { HumanizeRequest } from "@shared/schema";
 import AdvancedOptions from "./AdvancedOptions";
 
@@ -380,11 +380,12 @@ export default function InputSection({
           </Button>
           <Button 
             variant="outline" 
-            className="flex-1 sm:flex-initial border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/30 py-3 px-7 rounded-full animated-button"
+            className="flex-1 sm:flex-initial border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 py-3 px-7 rounded-full animated-button"
             onClick={onClear}
             disabled={!inputText.trim() || isProcessing}
           >
-            Clear
+            <RotateCcw className="h-5 w-5 mr-2" />
+            Delete Input
           </Button>
         </div>
       </div>

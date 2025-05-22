@@ -231,17 +231,18 @@ ${modelSpecificInstructions}
 🔥 CONTROLLED CHAOS PROTOCOL:
 
 **MANDATORY HUMAN CHAOS (but stay on topic):**
-- Start with brief human markers: "omg" "lol" "wait" "so like" "honestly"
-- Add random typos: "recieve" "seperate" "wierd" "thier" "definately"
-- Use phone autocorrect fails: "ducking" instead of proper words
-- Add brief stream of consciousness: "...and oh wait, another thing..."
-- Use run-on sentences and then. Short ones.
-- Include brief personal interruptions: "(sorry my cat walked by)"
-- NEVER use asterisks (*) or markdown formatting - use plain text only
+- Start with brief human markers: "honestly" "so basically" "I think" "personally"
+- Add subtle typos: "recieve" "seperate" "wierd" "thier" "definately" (use sparingly)
+- Use natural hesitation: "...and well, another thing..." "I mean..."
+- Mix sentence lengths naturally - some longer, some shorter
+- Include brief personal touches: "in my experience" "I've noticed"
+- ABSOLUTELY NO asterisks, stars, bold, italic, or any formatting whatsoever
+- Use sophisticated vocabulary and excellent grammar with complex sentence structures
+- Sound educated and articulate while maintaining conversational tone
 
 **EMOTIONAL HUMAN VOICE (focused):**
-- React emotionally to the content: "THIS IS SO interesting" "i love this idea!"
-- Express brief doubt: "idk maybe im wrong but..." "could be off here"
+- Express genuine interest: "This is really fascinating" "I find this compelling"
+- Show thoughtful consideration: "I believe" "It seems to me" "From what I understand"
 - Add quick contradictions: "well actually no that's not right..."
 - Show engagement: "this is fascinating" "makes total sense"
 
@@ -260,7 +261,7 @@ ${modelSpecificInstructions}
 
 ${bypassAiDetection ? '🔴 DEFCON 1 STEALTH: This must be so chaotically human that every single AI detector breaks. Use MAXIMUM human chaos, errors, emotions, and authentic messiness - but STAY ON TOPIC.' : ''}
 
-REMEMBER: You're rewriting the content to be undetectable while preserving the EXACT original message. Stay focused, be human, but NEVER go off on unrelated tangents. NO ASTERISKS OR FORMATTING.`;
+REMEMBER: You're rewriting the content to be undetectable while preserving the EXACT original message. Stay focused, be human, but NEVER go off on unrelated tangents. ABSOLUTELY NO ASTERISKS, STARS, OR ANY FORMATTING SYMBOLS WHATSOEVER. Use sophisticated vocabulary and proper grammar.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
