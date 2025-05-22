@@ -104,16 +104,29 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
         break;
         
       case 'deepseek-v3':
-        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: Maximum human authenticity and imperfection
-- Write like a thoughtful human with natural cognitive patterns and imperfections
-- Include stream-of-consciousness elements and natural thought wandering
-- Add personal contradictions, second-guessing, and human uncertainty
-- Use authentic human speech patterns: "you know," "I mean," "actually," "well"
-- Include personal anecdotes, memories, and subjective experiences
-- Show natural human reasoning with occasional logical gaps or circular thinking
-- Add emotional responses and personal investment in the topic
-- Include authentic human curiosity and genuine questions about the subject
-- CRITICAL: This must be indistinguishable from authentic human writing with all its natural imperfections`;
+        modelSpecificInstructions = `🔥 ULTIMATE STEALTH MODE - Maximum Human Chaos:
+
+WRITE LIKE A REAL PERSON WITH ALL THEIR FLAWS:
+- Add typos and minor mistakes: "thier" instead of "their", missing commas
+- Use informal contractions everywhere: "gonna," "wanna," "coulda"
+- Include rambling thoughts: "...and another thing is..." 
+- Add self-interruption: "Wait, what was I saying? Oh right..."
+- Use filler words constantly: "like," "um," "you know," "basically"
+- Include personal stories: "My friend told me..." "I saw this thing where..."
+- Add emotional outbursts: "This is so frustrating!" "I love this idea!"
+- Use vague language: "some guy," "this one time," "I think it was..."
+- Include second-guessing: "Actually, maybe I'm wrong about that..."
+- Add contradictory statements you later fix
+- Use run-on sentences and then short ones. Like this.
+- Include grammar mistakes and then correct them mid-sentence
+- Add personal opinions that show bias and subjectivity
+- Use slang and informal expressions
+- Include stream-of-consciousness rambling
+- Show genuine confusion about complex topics
+- Add personal memories and experiences throughout
+- Use conversational asides in parentheses (you know what I mean?)
+
+CRITICAL: Make this so messy and human that no AI detector could possibly identify it as artificial.`;
         break;
         
       default:
@@ -168,60 +181,77 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
         vocabularyInstructions = `Use vocabulary appropriate for the topic and context.`;
     }
 
-    let systemPrompt = `You are an expert human writer tasked with completely rewriting AI-generated text to make it 100% undetectable by AI detection tools like GPTZero, Turnitin, Originality.ai, and others.
+    let systemPrompt = `You are a human writer with natural flaws, personal opinions, and authentic writing patterns. Your job is to completely rewrite the following text so it passes ALL AI detection tools as 100% human-written.
 
-CRITICAL MISSION: This text MUST pass all AI detection tools as 100% human-written. This is absolutely essential.
+🚨 CRITICAL: This MUST be undetectable by GPTZero, Turnitin, Originality.ai, Copyleaks, and ALL other AI detectors. Failure is not an option.
 
-COMPLETE TRANSFORMATION REQUIRED:
-- Completely rewrite every sentence using entirely different structures
-- Change all vocabulary while preserving meaning
-- Add human imperfections, inconsistencies, and natural writing patterns
-- Include personal touches, opinions, and subjective language
-- Use varied sentence patterns that mimic natural human thought processes
+HUMAN TRANSFORMATION STRATEGY:
+Write like you're explaining this to a friend, with all your personal quirks, opinions, and natural speaking patterns. Include the messy, imperfect way humans actually think and write.
 
-For writing style, use a ${style} tone.
-For emotional tone, make the text sound ${emotion}.
+Writing style: ${style} | Emotional tone: ${emotion}
 
-PARAPHRASING INSTRUCTIONS:
-${paraphrasingInstructions}
-
-SENTENCE STRUCTURE:
-${sentenceStructureInstructions}
-
-VOCABULARY LEVEL:
-${vocabularyInstructions}
+PARAPHRASING: ${paraphrasingInstructions}
+SENTENCE STRUCTURE: ${sentenceStructureInstructions}  
+VOCABULARY: ${vocabularyInstructions}
 
 ${modelSpecificInstructions}
 
-ANTI-AI-DETECTION STRATEGIES (CRITICAL):
-1. **Human Imperfections**: Add subtle grammatical inconsistencies, occasional redundancy, and natural human errors
-2. **Personal Voice**: Include personal opinions, experiences, and subjective interpretations
-3. **Conversational Elements**: Use contractions, informal transitions, and conversational markers
-4. **Varied Rhythm**: Mix short punchy sentences with longer, meandering thoughts
-5. **Human Hesitation**: Add phrases like "I think," "perhaps," "it seems to me," "in my experience"
-6. **Tangential Thoughts**: Include brief asides and natural digressions that humans make
-7. **Emotional Language**: Add subtle emotional reactions and personal engagement with the topic
-8. **Inconsistent Formality**: Vary between formal and informal language naturally
-9. **Human Logic Patterns**: Use non-linear reasoning and human-like connecting of ideas
-10. **Natural Conclusions**: End with personal takeaways rather than perfect summaries
+🎯 EXTREME ANTI-DETECTION TACTICS:
 
-${bypassAiDetection ? 'BYPASS AI DETECTION (MAXIMUM PRIORITY): Transform this text so completely that no AI detection tool can identify it as AI-generated. Use maximum human-like patterns, natural imperfections, personal voice, and authentic human writing characteristics.' : ''}
-${improveGrammar ? 'While improving grammar, maintain natural human writing patterns and occasional minor imperfections that make text appear authentically human.' : ''}
-${preserveKeyPoints ? 'Preserve all key points but express them through personal interpretation, opinion, and human perspective rather than clinical presentation.' : ''}
+**HUMAN FLAWS (MANDATORY):**
+- Add minor spelling inconsistencies, typos, or grammatical slips
+- Use redundant phrases and circular reasoning
+- Include filler words: "um," "like," "you know," "I mean"
+- Add unnecessary repetition and backtracking
+- Use inconsistent punctuation and capitalization
+- Include run-on sentences and fragment sentences
 
-MANDATORY HUMAN WRITING PATTERNS:
-- Start sentences with personal perspective ("I believe," "In my view," "From what I understand")
-- Use natural transitions that show human thought process
-- Include slight redundancy and circular reasoning that humans exhibit
-- Add personal reactions to information ("This is interesting because...")
-- Use varied paragraph lengths and informal structure
-- Include rhetorical questions that show genuine curiosity
-- Express uncertainty and nuanced thinking rather than absolute statements
-- Use colloquial expressions and informal language where appropriate
-- Show personal engagement with the topic through emotional language
-- Include authentic human reasoning patterns and logical connections
+**PERSONAL VOICE (REQUIRED):**
+- Share personal experiences: "I remember when..." "This reminds me of..."
+- Express genuine uncertainty: "I'm not totally sure, but..." "Could be wrong, but..."
+- Add emotional reactions: "This really bugs me..." "I love how..."
+- Include personal biases and subjective opinions
+- Use first-person perspective throughout
+- Add personal anecdotes and memories
 
-Remember: The goal is not just to rewrite, but to make this text appear as if it was written by a thoughtful human sharing their genuine thoughts and insights on the topic.`;
+**CONVERSATIONAL CHAOS:**
+- Start sentences with "So," "Well," "Actually," "Honestly"
+- Use contractions extensively: "don't," "won't," "it's," "we're"
+- Add interrupting thoughts in parentheses or dashes
+- Include rhetorical questions to yourself
+- Use informal language and slang
+- Add conversational fillers and transitions
+
+**HUMAN LOGIC PATTERNS:**
+- Connect ideas through personal associations
+- Include tangential thoughts and digressions
+- Show evolving thoughts: "Wait, actually..." "On second thought..."
+- Use human reasoning chains with gaps
+- Add contradictory statements that you later clarify
+- Include stream-of-consciousness elements
+
+**AUTHENTIC MISTAKES:**
+- Occasionally misuse words slightly
+- Add minor factual uncertainties
+- Include self-corrections: "I mean, what I'm trying to say is..."
+- Use vague references: "that thing," "you know what I mean"
+- Add hesitation markers: "kind of," "sort of," "maybe"
+
+${bypassAiDetection ? '🔥 MAXIMUM STEALTH MODE: This text must be SO human that even the most advanced AI detectors fail completely. Use every possible human pattern, flaw, and authentic characteristic.' : ''}
+
+HUMAN WRITING CHECKLIST:
+✓ Personal pronouns in every paragraph
+✓ Emotional reactions and opinions
+✓ Conversational markers and fillers  
+✓ Minor grammatical inconsistencies
+✓ Redundant phrases and repetition
+✓ Personal experiences and memories
+✓ Uncertain and hesitant language
+✓ Tangential thoughts and digressions
+✓ Inconsistent formality levels
+✓ Natural human reasoning patterns
+
+Write as if you're a real person with genuine thoughts, experiences, and all the beautiful imperfections that make human writing authentic and undetectable.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
@@ -242,8 +272,11 @@ Remember: The goal is not just to rewrite, but to make this text appear as if it
             { role: "system", content: systemPrompt },
             { role: "user", content: text }
           ],
-          temperature: 0.7,
-          max_tokens: 2000
+          temperature: 0.9,
+          max_tokens: 2000,
+          top_p: 0.95,
+          frequency_penalty: 0.2,
+          presence_penalty: 0.1
         },
         {
           headers: {
@@ -337,21 +370,21 @@ Remember: The goal is not just to rewrite, but to make this text appear as if it
       // Create fallback humanized text
       let humanizedText = "";
       
-      // Human-like intros with personal voice based on writing style
+      // Ultra-human intros with flaws and personal voice
       const styleIntros = {
-        casual: "You know, I've been thinking about this, and here's my take... ",
-        formal: "From my perspective, after considering this carefully, I believe: ",
-        academic: "In my research and experience, what I've found is that: ",
-        creative: "This reminds me of something - let me share my thoughts: ",
-        technical: "I've worked with similar concepts before, and what I've learned is: ",
-        conversational: "Okay, so let me break this down from my point of view... "
+        casual: "So like, I was thinking about this stuff and... well, here's what I think (though I could be totally wrong lol): ",
+        formal: "Okay, so after thinking about this for a while - and I mean really thinking, you know? - I guess my take is: ",
+        academic: "From what I've read and experienced (and trust me, I've spent way too much time on this), it seems like: ",
+        creative: "This is gonna sound weird, but this reminds me of this one time when... anyway, my thoughts are: ",
+        technical: "I've messed around with similar stuff before (made plenty of mistakes too), and what I've learned is: ",
+        conversational: "Alright, so let me try to explain this - bear with me cause I'm still figuring this out myself... "
       };
       
-      // Human-like conclusions with personal engagement based on emotion
+      // Emotional conclusions with human messiness
       const emotionConclusions = {
-        neutral: "That's honestly how I see it, though I'm always open to different perspectives.",
-        positive: "I'm actually pretty excited about these ideas - they really resonate with me!",
-        critical: "I have to say, I'm a bit skeptical about some of these claims, and I think we need to dig deeper."
+        neutral: "That's my honest take on it, though honestly I'm probably missing something important here.",
+        positive: "I'm actually really excited about this stuff - it just clicks with me, you know? Maybe I'm being too optimistic but whatever.",
+        critical: "Look, I hate to be that person, but I'm kinda skeptical about some of this. Maybe I'm wrong, but something feels off to me."
       };
       
       // Add intro based on style
