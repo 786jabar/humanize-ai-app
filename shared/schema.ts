@@ -32,6 +32,16 @@ export const humanizeRequestSchema = z.object({
 
 export type HumanizeRequest = z.infer<typeof humanizeRequestSchema>;
 
+export const aiDetectionTestSchema = z.object({
+  detectorName: z.string(),
+  humanScore: z.number(), // 0-100, higher = more human-like
+  aiScore: z.number(), // 0-100, higher = more AI-like
+  status: z.enum(["passed", "failed", "error"]),
+  confidence: z.string()
+});
+
+export type AiDetectionTest = z.infer<typeof aiDetectionTestSchema>;
+
 export const humanizeResponseSchema = z.object({
   text: z.string(),
   stats: z.object({
@@ -39,6 +49,7 @@ export const humanizeResponseSchema = z.object({
     readingTime: z.number(),
     aiDetectionRisk: z.enum(['Very Low', 'Low', 'Medium', 'High']),
   }),
+  detectionTests: z.array(aiDetectionTestSchema).optional()
 });
 
 export type HumanizeResponse = z.infer<typeof humanizeResponseSchema>;

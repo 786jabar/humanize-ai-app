@@ -1,5 +1,6 @@
 import { HumanizeRequest, HumanizeResponse } from "@shared/schema";
 import { calculateReadingTime, countWords } from "../../client/src/lib/utils";
+import { testAIDetection } from "./ai-detection-service";
 import axios from "axios";
 
 // DeepSeek API Configuration
@@ -293,54 +294,51 @@ Write as if you're a real person with genuine thoughts, experiences, and all the
       const wordCount = countWords(humanizedText);
       const readingTime = calculateReadingTime(humanizedText);
       
-      // Estimate AI detection risk based on anti-detection features
+      // Run AI detection tests
+      console.log("Running AI detection tests...");
+      const detectionTests = await testAIDetection(humanizedText);
+      
+      // Estimate AI detection risk based on actual test results
       let aiDetectionRisk: HumanizeResponse["stats"]["aiDetectionRisk"] = "High";
       
-      // Calculate score based on anti-detection features (0-10 scale)
-      let antiDetectionScore = 0;
-      
-      // Bypass AI Detection feature (+3 points if enabled)
-      if (bypassAiDetection) antiDetectionScore += 3;
-      
-      // Paraphrasing level contribution
-      if (paraphrasingLevel === "extensive") antiDetectionScore += 3;
-      else if (paraphrasingLevel === "moderate") antiDetectionScore += 2;
-      else antiDetectionScore += 1;
-      
-      // Sentence structure contribution
-      if (sentenceStructure === "varied") antiDetectionScore += 2;
-      else if (sentenceStructure === "simple") antiDetectionScore += 1;
-      // Complex sentences get 0 (may appear more AI-like)
-      
-      // Vocabulary level contribution (human-like vocabulary patterns)
-      if (vocabularyLevel === "basic" || vocabularyLevel === "intermediate") antiDetectionScore += 1;
-      // Advanced vocabulary gets 0 (may appear more AI-like)
-      
-      // Model-specific bonuses for anti-detection capability
-      if (request.model === "deepseek-v3") antiDetectionScore += 2; // Best anti-detection
-      else if (request.model === "deepseek-instruct") antiDetectionScore += 1; // Good for creative human-like writing
-      else if (request.model === "deepseek-chat") antiDetectionScore += 1; // Good for conversational human patterns
-      // deepseek-coder gets 0 bonus (more technical, potentially detectable)
-      
-      // Style adjustments
-      if (style === "casual" || style === "conversational") antiDetectionScore += 1;
-      else if (style === "academic" || style === "technical") antiDetectionScore -= 1;
-      
-      // Convert score to risk level
-      if (antiDetectionScore >= 9) {
-        aiDetectionRisk = "Very Low";
-      } else if (antiDetectionScore >= 7) {
-        aiDetectionRisk = "Low";
-      } else if (antiDetectionScore >= 5) {
-        aiDetectionRisk = "Medium";
+      if (detectionTests.length > 0) {
+        const validTests = detectionTests.filter(test => test.status !== "error");
+        const passedTests = validTests.filter(test => test.status === "passed");
+        const passRate = validTests.length > 0 ? passedTests.length / validTests.length : 0;
+        
+        if (passRate >= 0.8) {
+          aiDetectionRisk = "Very Low";
+        } else if (passRate >= 0.6) {
+          aiDetectionRisk = "Low";
+        } else if (passRate >= 0.4) {
+          aiDetectionRisk = "Medium";
+        } else {
+          aiDetectionRisk = "High";
+        }
       } else {
-        aiDetectionRisk = "High";
-      }
-      
-      // Special case: Maximum anti-detection settings
-      if (bypassAiDetection && paraphrasingLevel === "extensive" && 
-          sentenceStructure === "varied" && request.model === "deepseek-v3") {
-        aiDetectionRisk = "Very Low";
+        // Fallback to estimation when no tests are available
+        let antiDetectionScore = 0;
+        
+        if (bypassAiDetection) antiDetectionScore += 3;
+        if (paraphrasingLevel === "extensive") antiDetectionScore += 3;
+        else if (paraphrasingLevel === "moderate") antiDetectionScore += 2;
+        else antiDetectionScore += 1;
+        
+        if (sentenceStructure === "varied") antiDetectionScore += 2;
+        else if (sentenceStructure === "simple") antiDetectionScore += 1;
+        
+        if (vocabularyLevel === "basic" || vocabularyLevel === "intermediate") antiDetectionScore += 1;
+        if (request.model === "deepseek-v3") antiDetectionScore += 2;
+        else if (request.model === "deepseek-instruct") antiDetectionScore += 1;
+        else if (request.model === "deepseek-chat") antiDetectionScore += 1;
+        
+        if (style === "casual" || style === "conversational") antiDetectionScore += 1;
+        else if (style === "academic" || style === "technical") antiDetectionScore -= 1;
+        
+        if (antiDetectionScore >= 9) aiDetectionRisk = "Very Low";
+        else if (antiDetectionScore >= 7) aiDetectionRisk = "Low";
+        else if (antiDetectionScore >= 5) aiDetectionRisk = "Medium";
+        else aiDetectionRisk = "High";
       }
       
       return {
@@ -349,7 +347,8 @@ Write as if you're a real person with genuine thoughts, experiences, and all the
           wordCount,
           readingTime,
           aiDetectionRisk
-        }
+        },
+        detectionTests
       };
     } catch (error: any) {
       console.error("DeepSeek API error:", error);
@@ -477,6 +476,10 @@ Write as if you're a real person with genuine thoughts, experiences, and all the
       const wordCount = countWords(humanizedText);
       const readingTime = calculateReadingTime(humanizedText);
       
+      // Run AI detection tests on fallback text too
+      console.log("Running AI detection tests on fallback text...");
+      const detectionTests = await testAIDetection(humanizedText);
+      
       // Return the fallback response
       return {
         text: humanizedText,
@@ -484,7 +487,8 @@ Write as if you're a real person with genuine thoughts, experiences, and all the
           wordCount,
           readingTime,
           aiDetectionRisk: "Medium" // Default for fallback
-        }
+        },
+        detectionTests
       };
     }
   } catch (error) {
