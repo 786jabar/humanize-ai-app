@@ -18,6 +18,7 @@ export default function Home() {
   const [paraphrasingLevel, setParaphrasingLevel] = useState<HumanizeRequest["paraphrasingLevel"]>("moderate");
   const [sentenceStructure, setSentenceStructure] = useState<HumanizeRequest["sentenceStructure"]>("varied");
   const [vocabularyLevel, setVocabularyLevel] = useState<HumanizeRequest["vocabularyLevel"]>("intermediate");
+  const [language, setLanguage] = useState<HumanizeRequest["language"]>("us-english");
   const [aiModel, setAiModel] = useState<HumanizeRequest["model"]>("deepseek-chat");
   const [bypassAiDetection, setBypassAiDetection] = useState(true);
   const [improveGrammar, setImproveGrammar] = useState(true);
@@ -38,6 +39,7 @@ export default function Home() {
         paraphrasingLevel,
         sentenceStructure,
         vocabularyLevel,
+        language,
         model: aiModel,
         bypassAiDetection,
         improveGrammar,

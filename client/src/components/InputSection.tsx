@@ -20,6 +20,8 @@ interface InputSectionProps {
   setSentenceStructure: (structure: HumanizeRequest["sentenceStructure"]) => void;
   vocabularyLevel: HumanizeRequest["vocabularyLevel"];
   setVocabularyLevel: (level: HumanizeRequest["vocabularyLevel"]) => void;
+  language: HumanizeRequest["language"];
+  setLanguage: (language: HumanizeRequest["language"]) => void;
   aiModel: HumanizeRequest["model"];
   setAiModel: (model: HumanizeRequest["model"]) => void;
   bypassAiDetection: boolean;
@@ -46,6 +48,8 @@ export default function InputSection({
   setSentenceStructure,
   vocabularyLevel,
   setVocabularyLevel,
+  language,
+  setLanguage,
   aiModel,
   setAiModel,
   bypassAiDetection,
@@ -173,6 +177,34 @@ export default function InputSection({
                 Critical
               </Button>
             </div>
+          </div>
+
+          {/* Language Selection */}
+          <div className="bg-white/60 dark:bg-gray-800/40 p-4 rounded-lg backdrop-blur-sm">
+            <h3 className="flex items-center gap-2 text-sm font-medium mb-3">
+              <div className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600"></div>
+              Language Variant
+            </h3>
+            
+            <Label htmlFor="language" className="text-xs text-muted-foreground mb-1 block">
+              English Variant
+            </Label>
+            <Select value={language} onValueChange={(value) => setLanguage(value as HumanizeRequest["language"])}>
+              <SelectTrigger id="language" className="border-purple-200 dark:border-purple-800 focus:ring-purple-500 bg-white/80 dark:bg-gray-900/60">
+                <SelectValue placeholder="Select language variant" />
+              </SelectTrigger>
+              <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
+                <SelectItem value="us-english" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  🇺🇸 US English (American)
+                </SelectItem>
+                <SelectItem value="uk-english" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
+                  🇬🇧 UK English (British)
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="mt-2 text-xs text-purple-700 dark:text-purple-400 bg-purple-50/70 dark:bg-purple-900/30 p-2 rounded-md">
+              Adjusts spelling, vocabulary, and cultural references for the selected English variant
+            </p>
           </div>
           
           {/* AI Model Selection */}

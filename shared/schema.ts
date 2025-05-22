@@ -24,6 +24,7 @@ export const humanizeRequestSchema = z.object({
   paraphrasingLevel: z.enum(['minimal', 'moderate', 'extensive']).default('moderate'),
   sentenceStructure: z.enum(['simple', 'varied', 'complex']).default('varied'),
   vocabularyLevel: z.enum(['basic', 'intermediate', 'advanced']).default('intermediate'),
+  language: z.enum(['us-english', 'uk-english']).default('us-english'),
   bypassAiDetection: z.boolean().default(true),
   improveGrammar: z.boolean().default(true),
   preserveKeyPoints: z.boolean().default(true),
