@@ -71,46 +71,53 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     
     switch(request.model) {
       case 'deepseek-chat':
-        modelSpecificInstructions = `You excel at general-purpose humanization that balances readability with natural flow.
-- Use conversational tone and approachable language
-- Include occasional contractions and informal expressions
-- Adjust the formality level to match the content's purpose
-- Balance precision with readability
-- IMPORTANT: Completely change the wording and sentence structure from the original`;
+        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: General-purpose human writing patterns
+- Write like a knowledgeable person sharing thoughts in a natural conversation
+- Use personal pronouns extensively ("I think," "In my experience," "From what I've seen")
+- Include conversational fillers and natural hesitations
+- Add personal opinions and subjective interpretations throughout
+- Use slightly inconsistent formality levels as humans naturally do
+- Include tangential thoughts and natural human digressions
+- CRITICAL: Make this sound like authentic human thoughts, not AI analysis`;
         break;
         
       case 'deepseek-coder':
-        modelSpecificInstructions = `You excel at humanizing technical and specialized content.
-- Maintain technical accuracy while making explanations more approachable
-- Use industry-specific terminology appropriately but naturally
-- Include occasional technical analogies or examples
-- For code explanations, use more conversational explanations around technical terms
-- IMPORTANT: Completely change the wording and sentence structure from the original, use a more analytical style`;
+        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: Technical content with human expertise patterns
+- Write like an experienced professional sharing insights from personal experience
+- Include phrases like "I've worked with this before," "In my projects," "What I've found is..."
+- Add occasional technical uncertainties and human problem-solving approaches
+- Use informal technical explanations mixed with personal anecdotes
+- Include human frustrations and discoveries about technical topics
+- Show personal learning journey and evolving understanding
+- CRITICAL: Sound like a human expert sharing real experience, not AI documentation`;
         break;
         
       case 'deepseek-instruct':
-        modelSpecificInstructions = `You excel at creative writing and narrative humanization.
-- Use more vivid and descriptive language
-- Include rhetorical devices like metaphors and analogies
-- Vary sentence structure and rhythm more dramatically
-- Focus on engaging storytelling elements
-- Incorporate more personal perspective and voice
-- IMPORTANT: Completely change the wording and sentence structure from the original, use a more creative style`;
+        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: Creative and narrative human expression
+- Write like a creative individual expressing personal thoughts and interpretations
+- Include emotional reactions and personal connections to the content
+- Use storytelling elements and metaphors from human experience
+- Add personal memories, associations, and creative insights
+- Include subjective artistic or creative interpretations
+- Use varied emotional tone and personal engagement throughout
+- CRITICAL: Sound like a creative human mind exploring ideas, not AI creativity`;
         break;
         
       case 'deepseek-v3':
-        modelSpecificInstructions = `You excel at advanced humanization with superior natural language patterns.
-- Create exceptionally natural-sounding text with human-like reasoning
-- Include subtle contradictions and tangential thoughts common in human writing
-- Add personal anecdotes and experience-based insights where appropriate
-- Incorporate casual conversational markers like "um", "well", and "you know"
-- Use common human writing flaws like redundancy, vague references, and occasional rambling
-- Blend formal and informal elements adaptively based on context
-- IMPORTANT: This must be COMPLETELY different from the original in every way while preserving the core message. This is CRITICAL.`;
+        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: Maximum human authenticity and imperfection
+- Write like a thoughtful human with natural cognitive patterns and imperfections
+- Include stream-of-consciousness elements and natural thought wandering
+- Add personal contradictions, second-guessing, and human uncertainty
+- Use authentic human speech patterns: "you know," "I mean," "actually," "well"
+- Include personal anecdotes, memories, and subjective experiences
+- Show natural human reasoning with occasional logical gaps or circular thinking
+- Add emotional responses and personal investment in the topic
+- Include authentic human curiosity and genuine questions about the subject
+- CRITICAL: This must be indistinguishable from authentic human writing with all its natural imperfections`;
         break;
         
       default:
-        modelSpecificInstructions = `Focus on general-purpose humanization with balanced readability and natural flow.`;
+        modelSpecificInstructions = `Focus on natural human writing patterns with personal voice and authentic imperfections.`;
     }
     
     // Configure paraphrasing level instructions
@@ -161,12 +168,16 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
         vocabularyInstructions = `Use vocabulary appropriate for the topic and context.`;
     }
 
-    let systemPrompt = `You are an expert at making AI-generated text sound more human-like and natural. 
-Your goal is to completely rewrite and transform the following text to sound like it was written by a human.
+    let systemPrompt = `You are an expert human writer tasked with completely rewriting AI-generated text to make it 100% undetectable by AI detection tools like GPTZero, Turnitin, Originality.ai, and others.
 
-IMPORTANT: You MUST significantly rephrase the input text while preserving its core meaning.
-Don't just make small edits - thoroughly rewrite sentences and reorganize paragraphs. 
-Use different words, expressions, and sentence structures than the original.
+CRITICAL MISSION: This text MUST pass all AI detection tools as 100% human-written. This is absolutely essential.
+
+COMPLETE TRANSFORMATION REQUIRED:
+- Completely rewrite every sentence using entirely different structures
+- Change all vocabulary while preserving meaning
+- Add human imperfections, inconsistencies, and natural writing patterns
+- Include personal touches, opinions, and subjective language
+- Use varied sentence patterns that mimic natural human thought processes
 
 For writing style, use a ${style} tone.
 For emotional tone, make the text sound ${emotion}.
@@ -182,23 +193,35 @@ ${vocabularyInstructions}
 
 ${modelSpecificInstructions}
 
-${bypassAiDetection ? 'Importantly, modify the text to bypass AI detection tools by introducing natural human-like patterns, subtle imperfections, and varying sentence structures.' : ''}
-${improveGrammar ? 'Improve grammar and readability while maintaining a natural human voice.' : ''}
-${preserveKeyPoints ? 'Preserve all key points and arguments from the original text, but express them in entirely new words.' : ''}
+ANTI-AI-DETECTION STRATEGIES (CRITICAL):
+1. **Human Imperfections**: Add subtle grammatical inconsistencies, occasional redundancy, and natural human errors
+2. **Personal Voice**: Include personal opinions, experiences, and subjective interpretations
+3. **Conversational Elements**: Use contractions, informal transitions, and conversational markers
+4. **Varied Rhythm**: Mix short punchy sentences with longer, meandering thoughts
+5. **Human Hesitation**: Add phrases like "I think," "perhaps," "it seems to me," "in my experience"
+6. **Tangential Thoughts**: Include brief asides and natural digressions that humans make
+7. **Emotional Language**: Add subtle emotional reactions and personal engagement with the topic
+8. **Inconsistent Formality**: Vary between formal and informal language naturally
+9. **Human Logic Patterns**: Use non-linear reasoning and human-like connecting of ideas
+10. **Natural Conclusions**: End with personal takeaways rather than perfect summaries
 
-Follow these specific guidelines to make the text more human-like:
-1. Vary sentence lengths and structures according to the sentence structure preference
-2. Use more transitional phrases and personal pronouns
-3. Include occasional informal language elements where appropriate
-4. Add natural thought progression markers like "however," "actually," or "I think"
-5. Incorporate rhetorical questions occasionally
-6. Introduce minor grammatical nuances that humans typically make
-7. Replace words with different alternatives that convey the same meaning, using vocabulary appropriate to the selected level
-8. Add occasional hedging language like "probably," "seems like," "I believe"
-9. Restructure ideas in a more human-like flow of thought
-10. Insert occasional parenthetical asides or brief digressions
+${bypassAiDetection ? 'BYPASS AI DETECTION (MAXIMUM PRIORITY): Transform this text so completely that no AI detection tool can identify it as AI-generated. Use maximum human-like patterns, natural imperfections, personal voice, and authentic human writing characteristics.' : ''}
+${improveGrammar ? 'While improving grammar, maintain natural human writing patterns and occasional minor imperfections that make text appear authentically human.' : ''}
+${preserveKeyPoints ? 'Preserve all key points but express them through personal interpretation, opinion, and human perspective rather than clinical presentation.' : ''}
 
-Analyze the content and thoroughly rewrite it while maintaining the core message and intent.`;
+MANDATORY HUMAN WRITING PATTERNS:
+- Start sentences with personal perspective ("I believe," "In my view," "From what I understand")
+- Use natural transitions that show human thought process
+- Include slight redundancy and circular reasoning that humans exhibit
+- Add personal reactions to information ("This is interesting because...")
+- Use varied paragraph lengths and informal structure
+- Include rhetorical questions that show genuine curiosity
+- Express uncertainty and nuanced thinking rather than absolute statements
+- Use colloquial expressions and informal language where appropriate
+- Show personal engagement with the topic through emotional language
+- Include authentic human reasoning patterns and logical connections
+
+Remember: The goal is not just to rewrite, but to make this text appear as if it was written by a thoughtful human sharing their genuine thoughts and insights on the topic.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
@@ -237,53 +260,54 @@ Analyze the content and thoroughly rewrite it while maintaining the core message
       const wordCount = countWords(humanizedText);
       const readingTime = calculateReadingTime(humanizedText);
       
-      // Estimate AI detection risk based on complexity of transformation and model
-      let aiDetectionRisk: HumanizeResponse["stats"]["aiDetectionRisk"] = "Medium";
+      // Estimate AI detection risk based on anti-detection features
+      let aiDetectionRisk: HumanizeResponse["stats"]["aiDetectionRisk"] = "High";
       
-      // Base risk on writing style and AI detection bypass
-      if (bypassAiDetection && style !== "academic" && style !== "technical") {
-        aiDetectionRisk = "Low";
-      } else if (!bypassAiDetection || style === "technical") {
-        aiDetectionRisk = "High";
-      }
+      // Calculate score based on anti-detection features (0-10 scale)
+      let antiDetectionScore = 0;
       
-      // Adjust risk based on paraphrasing level
-      if (paraphrasingLevel === "extensive") {
-        // Extensive paraphrasing reduces detection risk
-        aiDetectionRisk = aiDetectionRisk === "High" ? "Medium" : "Low";
-      } else if (paraphrasingLevel === "minimal") {
-        // Minimal paraphrasing increases detection risk
-        aiDetectionRisk = aiDetectionRisk === "Low" ? "Medium" : "High";
-      }
+      // Bypass AI Detection feature (+3 points if enabled)
+      if (bypassAiDetection) antiDetectionScore += 3;
       
-      // Adjust risk based on sentence structure
-      if (sentenceStructure === "varied") {
-        // Varied sentence structure reduces detection risk
-        if (aiDetectionRisk === "High") aiDetectionRisk = "Medium";
-      } else if (sentenceStructure === "complex" && style === "academic") {
-        // Complex academic writing may appear more AI-like
-        aiDetectionRisk = "High";
-      }
+      // Paraphrasing level contribution
+      if (paraphrasingLevel === "extensive") antiDetectionScore += 3;
+      else if (paraphrasingLevel === "moderate") antiDetectionScore += 2;
+      else antiDetectionScore += 1;
       
-      // Adjust risk based on vocabulary level
-      if (vocabularyLevel === "basic" && sentenceStructure === "simple") {
-        // Basic vocabulary with simple sentences often appears more human
-        if (aiDetectionRisk !== "High") aiDetectionRisk = "Low";
-      } else if (vocabularyLevel === "advanced" && style === "technical") {
-        // Advanced vocabulary in technical writing may appear more AI-like
-        aiDetectionRisk = "High";
-      }
+      // Sentence structure contribution
+      if (sentenceStructure === "varied") antiDetectionScore += 2;
+      else if (sentenceStructure === "simple") antiDetectionScore += 1;
+      // Complex sentences get 0 (may appear more AI-like)
       
-      // Final adjustment based on the model used
-      if (request.model === "deepseek-v3" && bypassAiDetection) {
-        // V3 model is extremely good at bypassing detection
+      // Vocabulary level contribution (human-like vocabulary patterns)
+      if (vocabularyLevel === "basic" || vocabularyLevel === "intermediate") antiDetectionScore += 1;
+      // Advanced vocabulary gets 0 (may appear more AI-like)
+      
+      // Model-specific bonuses for anti-detection capability
+      if (request.model === "deepseek-v3") antiDetectionScore += 2; // Best anti-detection
+      else if (request.model === "deepseek-instruct") antiDetectionScore += 1; // Good for creative human-like writing
+      else if (request.model === "deepseek-chat") antiDetectionScore += 1; // Good for conversational human patterns
+      // deepseek-coder gets 0 bonus (more technical, potentially detectable)
+      
+      // Style adjustments
+      if (style === "casual" || style === "conversational") antiDetectionScore += 1;
+      else if (style === "academic" || style === "technical") antiDetectionScore -= 1;
+      
+      // Convert score to risk level
+      if (antiDetectionScore >= 9) {
         aiDetectionRisk = "Very Low";
-      } else if (request.model === "deepseek-instruct" && bypassAiDetection) {
-        // Creative model with bypass tends to be less detectable
-        aiDetectionRisk = aiDetectionRisk === "High" ? "Medium" : "Low";
-      } else if (request.model === "deepseek-coder" && style === "technical") {
-        // Technical model with technical style will sound more AI-like
+      } else if (antiDetectionScore >= 7) {
+        aiDetectionRisk = "Low";
+      } else if (antiDetectionScore >= 5) {
+        aiDetectionRisk = "Medium";
+      } else {
         aiDetectionRisk = "High";
+      }
+      
+      // Special case: Maximum anti-detection settings
+      if (bypassAiDetection && paraphrasingLevel === "extensive" && 
+          sentenceStructure === "varied" && request.model === "deepseek-v3") {
+        aiDetectionRisk = "Very Low";
       }
       
       return {
@@ -313,21 +337,21 @@ Analyze the content and thoroughly rewrite it while maintaining the core message
       // Create fallback humanized text
       let humanizedText = "";
       
-      // Common intro based on writing style
+      // Human-like intros with personal voice based on writing style
       const styleIntros = {
-        casual: "So here's what I think... ",
-        formal: "Upon consideration, the following can be stated: ",
-        academic: "Research and analysis suggest the following interpretation: ",
-        creative: "Imagine, if you will, a perspective where: ",
-        technical: "Technical assessment yields the following observations: ",
-        conversational: "Let's chat about this for a sec. "
+        casual: "You know, I've been thinking about this, and here's my take... ",
+        formal: "From my perspective, after considering this carefully, I believe: ",
+        academic: "In my research and experience, what I've found is that: ",
+        creative: "This reminds me of something - let me share my thoughts: ",
+        technical: "I've worked with similar concepts before, and what I've learned is: ",
+        conversational: "Okay, so let me break this down from my point of view... "
       };
       
-      // Common conclusion based on emotion
+      // Human-like conclusions with personal engagement based on emotion
       const emotionConclusions = {
-        neutral: "That's my objective assessment of the matter.",
-        positive: "Overall, I'm quite optimistic about these points!",
-        critical: "We should, however, carefully examine these claims before proceeding."
+        neutral: "That's honestly how I see it, though I'm always open to different perspectives.",
+        positive: "I'm actually pretty excited about these ideas - they really resonate with me!",
+        critical: "I have to say, I'm a bit skeptical about some of these claims, and I think we need to dig deeper."
       };
       
       // Add intro based on style

@@ -3,7 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { SparklesIcon } from "lucide-react";
+import { SparklesIcon, ZapIcon } from "lucide-react";
 import { HumanizeRequest } from "@shared/schema";
 import AdvancedOptions from "./AdvancedOptions";
 
@@ -187,21 +187,33 @@ export default function InputSection({
               </SelectTrigger>
               <SelectContent className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md">
                 <SelectItem value="deepseek-chat" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
-                  DeepSeek Chat (General Purpose)
+                  <div className="flex flex-col">
+                    <span>DeepSeek Chat (Conversational)</span>
+                    <span className="text-xs text-muted-foreground">Good stealth • Natural voice</span>
+                  </div>
                 </SelectItem>
                 <SelectItem value="deepseek-coder" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
-                  DeepSeek Coder (Technical Content)
+                  <div className="flex flex-col">
+                    <span>DeepSeek Coder (Technical)</span>
+                    <span className="text-xs text-muted-foreground">Medium stealth • Expert tone</span>
+                  </div>
                 </SelectItem>
                 <SelectItem value="deepseek-instruct" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
-                  DeepSeek Instruct (Creative Writing)
+                  <div className="flex flex-col">
+                    <span>DeepSeek Instruct (Creative)</span>
+                    <span className="text-xs text-muted-foreground">High stealth • Expressive style</span>
+                  </div>
                 </SelectItem>
                 <SelectItem value="deepseek-v3" className="hover:bg-purple-50 dark:hover:bg-purple-900/20">
-                  DeepSeek V3 (Advanced Humanization)
+                  <div className="flex flex-col">
+                    <span>DeepSeek V3 (Maximum Stealth) ⭐</span>
+                    <span className="text-xs text-green-600 font-medium">BEST • Undetectable • Human flaws</span>
+                  </div>
                 </SelectItem>
               </SelectContent>
             </Select>
             <p className="mt-2 text-xs text-purple-700 dark:text-purple-400 bg-purple-50/70 dark:bg-purple-900/30 p-2 rounded-md">
-              Choose Chat for general content, Coder for technical text, Instruct for creative writing, or V3 for advanced humanization
+              <strong>V3 Model</strong> adds human imperfections and natural writing patterns for maximum stealth against AI detectors
             </p>
           </div>
 
@@ -279,9 +291,31 @@ export default function InputSection({
                   </SelectItem>
                 </SelectContent>
               </Select>
-              <p className="mt-2 text-xs text-purple-700 dark:text-purple-400 bg-purple-50/70 dark:bg-purple-900/30 p-2 rounded-md">
-                These options control how your text is restructured and rephrased, helping to avoid AI detection.
-              </p>
+              <div className="mt-2 text-xs bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-3 rounded-md border border-green-200 dark:border-green-800">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                  <span className="font-medium text-green-800 dark:text-green-300">Anti-Detection Power</span>
+                </div>
+                <p className="text-green-700 dark:text-green-400 mb-2">
+                  For maximum undetectability: Use <strong>Extensive paraphrasing</strong> + <strong>Varied sentences</strong> + <strong>DeepSeek V3</strong> model
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setParaphrasingLevel("extensive");
+                    setSentenceStructure("varied");
+                    setVocabularyLevel("intermediate");
+                    setAiModel("deepseek-v3");
+                    setBypassAiDetection(true);
+                  }}
+                  className="h-7 text-xs bg-green-50 hover:bg-green-100 border-green-300 text-green-700 dark:bg-green-900/30 dark:hover:bg-green-900/50 dark:border-green-700 dark:text-green-300"
+                >
+                  <ZapIcon className="w-3 h-3 mr-1" />
+                  Optimize for Stealth
+                </Button>
+              </div>
             </div>
           </div>
 
