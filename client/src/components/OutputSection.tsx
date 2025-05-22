@@ -23,6 +23,7 @@ interface OutputSectionProps {
   isProcessing: boolean;
   onCopy: () => void;
   onDownload: () => void;
+  onClear: () => void;
 }
 
 export default function OutputSection({
@@ -31,7 +32,8 @@ export default function OutputSection({
   detectionTests,
   isProcessing,
   onCopy,
-  onDownload
+  onDownload,
+  onClear
 }: OutputSectionProps) {
   const hasOutput = outputText.trim().length > 0;
   
@@ -149,6 +151,14 @@ export default function OutputSection({
               >
                 <DownloadIcon className="h-5 w-5 mr-2" />
                 Download
+              </Button>
+              <Button 
+                variant="outline"
+                className="flex-1 sm:flex-initial border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 py-3 px-7 rounded-full animated-button"
+                onClick={onClear}
+              >
+                <Underline className="h-5 w-5 mr-2" />
+                Clear Output
               </Button>
             </div>
           </div>

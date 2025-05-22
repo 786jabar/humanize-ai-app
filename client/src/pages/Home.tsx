@@ -71,6 +71,16 @@ export default function Home() {
     setInputText("");
   };
 
+  const clearOutput = () => {
+    setOutputText("");
+    setDetectionTests(undefined);
+    setStats({
+      wordCount: 0,
+      readingTime: 0,
+      aiDetectionRisk: "Low"
+    });
+  };
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(outputText);
     toast({
@@ -148,6 +158,7 @@ export default function Home() {
             isProcessing={humanizeMutation.isPending}
             onCopy={copyToClipboard}
             onDownload={downloadOutput}
+            onClear={clearOutput}
           />
         </main>
         

@@ -208,11 +208,13 @@ CRITICAL: Make this so messy and human that no AI detector could possibly identi
 🚨 EMERGENCY STEALTH MODE: Every AI detector MUST fail. This is life or death - the text MUST pass as human or everything fails.
 
 CRITICAL CONTENT CONTROL:
-- STAY FOCUSED on the original topic - don't add unrelated information
-- PRESERVE the core message and main points exactly
-- Only add human elements that enhance the existing content
-- Don't expand beyond the scope of the original text
-- Keep the same general length as the input
+- STAY STRICTLY ON TOPIC - only rewrite the exact same content
+- PRESERVE the core message and main points exactly - no additions
+- Only add minimal human elements like "I think" or "in my opinion"
+- NEVER expand beyond the scope of the original text
+- Keep the same length as the input - do not make it longer
+- NEVER use asterisks (*), bold text, or any markdown formatting
+- Write in plain text only with normal punctuation
 
 LANGUAGE REQUIREMENTS:
 ${languageInstructions}
@@ -235,6 +237,7 @@ ${modelSpecificInstructions}
 - Add brief stream of consciousness: "...and oh wait, another thing..."
 - Use run-on sentences and then. Short ones.
 - Include brief personal interruptions: "(sorry my cat walked by)"
+- NEVER use asterisks (*) or markdown formatting - use plain text only
 
 **EMOTIONAL HUMAN VOICE (focused):**
 - React emotionally to the content: "THIS IS SO interesting" "i love this idea!"
@@ -257,7 +260,7 @@ ${modelSpecificInstructions}
 
 ${bypassAiDetection ? '🔴 DEFCON 1 STEALTH: This must be so chaotically human that every single AI detector breaks. Use MAXIMUM human chaos, errors, emotions, and authentic messiness - but STAY ON TOPIC.' : ''}
 
-REMEMBER: You're rewriting the content to be undetectable while preserving the original message. Stay focused, be human, but don't go off on unrelated tangents.`;
+REMEMBER: You're rewriting the content to be undetectable while preserving the EXACT original message. Stay focused, be human, but NEVER go off on unrelated tangents. NO ASTERISKS OR FORMATTING.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
