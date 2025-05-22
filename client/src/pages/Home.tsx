@@ -126,6 +126,8 @@ export default function Home() {
             setSentenceStructure={setSentenceStructure}
             vocabularyLevel={vocabularyLevel}
             setVocabularyLevel={setVocabularyLevel}
+            language={language}
+            setLanguage={setLanguage}
             aiModel={aiModel}
             setAiModel={setAiModel}
             bypassAiDetection={bypassAiDetection}
