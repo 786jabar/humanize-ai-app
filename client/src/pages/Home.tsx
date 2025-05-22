@@ -27,6 +27,7 @@ export default function Home() {
     readingTime: 0,
     aiDetectionRisk: "Low" as HumanizeResponse["stats"]["aiDetectionRisk"]
   });
+  const [detectionTests, setDetectionTests] = useState<HumanizeResponse["detectionTests"]>();
 
   const humanizeMutation = useMutation({
     mutationFn: async () => {

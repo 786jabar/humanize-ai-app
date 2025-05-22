@@ -8,6 +8,7 @@ import {
   FileText as TextIcon, 
   ShieldCheck as ShieldIcon 
 } from "lucide-react";
+import DetectionTestResults from "./DetectionTestResults";
 import { HumanizeResponse } from "@shared/schema";
 import FeatureHighlights from "./FeatureHighlights";
 
@@ -18,6 +19,7 @@ interface OutputSectionProps {
     readingTime: number;
     aiDetectionRisk: HumanizeResponse["stats"]["aiDetectionRisk"];
   };
+  detectionTests?: HumanizeResponse["detectionTests"];
   isProcessing: boolean;
   onCopy: () => void;
   onDownload: () => void;
@@ -26,6 +28,7 @@ interface OutputSectionProps {
 export default function OutputSection({
   outputText,
   stats,
+  detectionTests,
   isProcessing,
   onCopy,
   onDownload
@@ -149,6 +152,11 @@ export default function OutputSection({
               </Button>
             </div>
           </div>
+        )}
+        
+        {/* AI Detection Test Results */}
+        {hasOutput && detectionTests && detectionTests.length > 0 && (
+          <DetectionTestResults tests={detectionTests} />
         )}
       </div>
 
