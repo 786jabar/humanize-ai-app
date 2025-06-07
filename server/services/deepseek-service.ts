@@ -204,14 +204,14 @@ CRITICAL: Make this so messy and human that no AI detector could possibly identi
     }
 
     // Check if this is an academic prompt
-    const isAcademicPrompt = request.inputText.includes("Original text:") && 
-      (request.inputText.includes("academic") || 
-       request.inputText.includes("scholarly") || 
-       request.inputText.includes("formal") ||
-       request.inputText.includes("university") ||
-       request.inputText.includes("theory") ||
-       request.inputText.includes("PEEL structure") ||
-       request.inputText.includes("critical argument"));
+    const isAcademicPrompt = request.text.includes("Original text:") && 
+      (request.text.includes("academic") || 
+       request.text.includes("scholarly") || 
+       request.text.includes("formal") ||
+       request.text.includes("university") ||
+       request.text.includes("theory") ||
+       request.text.includes("PEEL structure") ||
+       request.text.includes("critical argument"));
 
     let systemPrompt = isAcademicPrompt 
       ? `You are an expert academic writing assistant. Process the academic writing prompt and the original text to produce high-quality academic writing that meets university standards while remaining undetectable by AI detection tools.
