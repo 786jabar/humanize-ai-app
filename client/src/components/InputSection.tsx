@@ -7,7 +7,7 @@ import { SparklesIcon, ZapIcon, RotateCcw, GraduationCap } from "lucide-react";
 import { HumanizeRequest } from "@shared/schema";
 import AdvancedOptions from "./AdvancedOptions";
 import InteractiveTextArea from "./InteractiveTextArea";
-import AcademicAssistant from "./AcademicAssistant";
+import EnhancedAcademicAssistant from "./EnhancedAcademicAssistant";
 
 interface InputSectionProps {
   inputText: string;
