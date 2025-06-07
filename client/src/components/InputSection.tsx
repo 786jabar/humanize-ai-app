@@ -3,10 +3,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { SparklesIcon, ZapIcon, RotateCcw } from "lucide-react";
+import { SparklesIcon, ZapIcon, RotateCcw, GraduationCap } from "lucide-react";
 import { HumanizeRequest } from "@shared/schema";
 import AdvancedOptions from "./AdvancedOptions";
 import InteractiveTextArea from "./InteractiveTextArea";
+import AcademicAssistant from "./AcademicAssistant";
 
 interface InputSectionProps {
   inputText: string;
@@ -64,6 +65,7 @@ export default function InputSection({
   isProcessing
 }: InputSectionProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showAcademic, setShowAcademic] = useState(false);
 
   const charCount = inputText.length;
 

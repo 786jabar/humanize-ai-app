@@ -203,7 +203,29 @@ CRITICAL: Make this so messy and human that no AI detector could possibly identi
 - Reference American culture: "TV", "college", "bucks", "calling BS"`;
     }
 
-    let systemPrompt = `You are a chaotic human writer having a conversation with a friend. Your writing is messy, emotional, and full of mistakes - exactly like real human writing. Make this text 100% undetectable by ANY AI detection tool.
+    // Check if this is an academic prompt
+    const isAcademicPrompt = request.inputText.includes("Original text:") && 
+      (request.inputText.includes("academic") || 
+       request.inputText.includes("scholarly") || 
+       request.inputText.includes("formal") ||
+       request.inputText.includes("university") ||
+       request.inputText.includes("theory") ||
+       request.inputText.includes("PEEL structure") ||
+       request.inputText.includes("critical argument"));
+
+    let systemPrompt = isAcademicPrompt 
+      ? `You are an expert academic writing assistant. Process the academic writing prompt and the original text to produce high-quality academic writing that meets university standards while remaining undetectable by AI detection tools.
+
+🎓 ACADEMIC WRITING PROTOCOL:
+- Follow the specific academic prompt instructions exactly
+- Maintain formal academic tone and sophisticated vocabulary  
+- Use proper academic structure and argumentation
+- Include appropriate transitions and logical flow
+- Cite theoretical frameworks when requested
+- Balance formality with subtle human elements for undetectability
+
+CRITICAL: Extract the academic prompt and the original text, then apply the prompt's instructions to transform the original text accordingly.`
+      : `You are a chaotic human writer having a conversation with a friend. Your writing is messy, emotional, and full of mistakes - exactly like real human writing. Make this text 100% undetectable by ANY AI detection tool.
 
 🚨 EMERGENCY STEALTH MODE: Every AI detector MUST fail. This is life or death - the text MUST pass as human or everything fails.
 
@@ -261,7 +283,9 @@ ${modelSpecificInstructions}
 
 ${bypassAiDetection ? '🔴 DEFCON 1 STEALTH: This must be so chaotically human that every single AI detector breaks. Use MAXIMUM human chaos, errors, emotions, and authentic messiness - but STAY ON TOPIC.' : ''}
 
-REMEMBER: You're rewriting the content to be undetectable while preserving the EXACT original message. Stay focused, be human, but NEVER go off on unrelated tangents. ABSOLUTELY NO ASTERISKS, STARS, OR ANY FORMATTING SYMBOLS WHATSOEVER. Use sophisticated vocabulary and proper grammar.`;
+REMEMBER: ${isAcademicPrompt 
+      ? 'You are processing an academic writing prompt. Extract the prompt and original text, then apply the academic instructions while maintaining undetectability. Use formal academic language with subtle human touches.'
+      : 'You are rewriting the content to be undetectable while preserving the EXACT original message. Stay focused, be human, but NEVER go off on unrelated tangents.'} ABSOLUTELY NO ASTERISKS, STARS, OR ANY FORMATTING SYMBOLS WHATSOEVER. Use sophisticated vocabulary and proper grammar.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers

@@ -1,0 +1,51 @@
+🎓 Academic Tone Conversion Prompts
+	1.	“Rewrite this paragraph in a formal academic tone suitable for university-level writing.”
+	2.	“Convert this casual explanation into scholarly language.”
+	3.	“Edit this text to sound more analytical and objective.”
+	4.	“Improve this writing by using complex sentence structures and academic vocabulary.”
+	5.	“Upgrade this sentence for use in an academic essay.”
+
+⸻
+
+🧠 Critical Thinking & Argument Prompts
+	6.	“Expand this idea into a critical argument with reasoning and evidence.”
+	7.	“Add a counterargument and response to this paragraph.”
+	8.	“Explain this concept using academic theories or terminology.”
+	9.	“Rephrase this paragraph to include critical evaluation, not just description.”
+	10.	“Strengthen this analysis by connecting it to a relevant academic debate.”
+
+⸻
+
+📝 Structure & Clarity Prompts
+	11.	“Organize this content into an introduction, body, and conclusion.”
+	12.	“Rewrite this paragraph using the PEEL structure: Point, Evidence, Explanation, Link.”
+	13.	“Suggest a topic sentence for this paragraph.”
+	14.	“Summarize this paragraph in one concise academic sentence.”
+	15.	“Improve the flow and cohesion between these two paragraphs.”
+
+⸻
+
+📚 Theory Integration Prompts
+	16.	“Explain this topic using Stuart Hall’s encoding/decoding theory.”
+	17.	“Include Roland Barthes’ concept of ‘Death of the Author’ in this analysis.”
+	18.	“Compare this idea to a media theory from Barthes, Hall, or McLuhan.”
+	19.	“Mention a key academic author relevant to this argument.”
+	20.	“Add an example from film, video games, or fandom to support this point.”
+
+⸻
+
+🔍 Grammar & Vocabulary Prompts
+	21.	“Correct grammar errors in this paragraph while keeping a formal tone.”
+	22.	“Replace simple words with more academic synonyms.”
+	23.	“Check this writing for passive voice and revise where needed.”
+	24.	“Turn bullet points into full academic sentences.”
+	25.	“Simplify this academic text into clear, readable English for general understanding.”
+
+⸻
+
+✅ Ethical & Supportive Prompts
+	26.	“Highlight any parts of this text that may require citation.”
+	27.	“Check this essay for potential bias or uncritical assumptions.”
+	28.	“Provide feedback on how inclusive and respectful the language is.”
+	29.	“Suggest ways to improve clarity for non-native English readers.”
+	30.	“Ensure this paragraph aligns with academic integrity standards.”
