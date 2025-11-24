@@ -1,12 +1,24 @@
 import { useState } from "react";
 import InstructionsCard from "./InstructionsCard";
-import { CircleHelp, Sparkles, Wand2, BrainCircuit, Settings, Moon, Sun } from "lucide-react";
+import { CircleHelp, Sparkles, Wand2, BrainCircuit, Settings, Moon, Sun, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/ui/theme-provider";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [showInstructions, setShowInstructions] = useState(true);
   const { theme, setTheme } = useTheme();
+  const { user } = useAuth();
+
+  const handleLogout = () => {
+    // Clear user cache before logout
+    import("@/lib/queryClient").then(({ queryClient }) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+    });
+    setTimeout(() => {
+      window.location.href = "/api/logout";
+    }, 100);
+  };
 
   return (
     <header className="mb-12">
@@ -27,6 +39,21 @@ export default function Header() {
         
         {/* Actions section */}
         <div className="mt-6 md:mt-0 inline-flex items-center gap-3">
+          {user && (
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-full">
+              {user.profileImageUrl && (
+                <img 
+                  src={user.profileImageUrl} 
+                  alt="Profile" 
+                  className="w-6 h-6 rounded-full object-cover"
+                />
+              )}
+              <span className="text-sm text-purple-700 dark:text-purple-300 font-medium">
+                {user.email || user.firstName || 'User'}
+              </span>
+            </div>
+          )}
+          
           <Button 
             variant="outline" 
             size="sm" 
@@ -47,12 +74,14 @@ export default function Header() {
           </Button>
           
           <Button 
-            variant="default" 
+            variant="outline" 
             size="sm"
+            onClick={handleLogout}
             className="rounded-full animated-button"
+            data-testid="button-logout"
           >
-            <Sparkles className="h-4 w-4 mr-1.5" />
-            Pro Features
+            <LogOut className="h-4 w-4 mr-1.5" />
+            Logout
           </Button>
         </div>
       </div>

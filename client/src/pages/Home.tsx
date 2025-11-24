@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { isUnauthorizedError } from "@/lib/authUtils";
 import { HumanizeRequest, HumanizeResponse } from "@shared/schema";
 
 export default function Home() {
@@ -60,6 +61,17 @@ export default function Home() {
       });
     },
     onError: (error) => {
+      if (error instanceof Error && isUnauthorizedError(error)) {
+        toast({
+          title: "Unauthorized",
+          description: "You are logged out. Logging in again...",
+          variant: "destructive",
+        });
+        setTimeout(() => {
+          window.location.href = "/api/login";
+        }, 500);
+        return;
+      }
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to humanize text",
