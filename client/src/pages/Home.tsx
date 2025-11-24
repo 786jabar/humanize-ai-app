@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet";
 import Header from "@/components/Header";
 import InputSection from "@/components/InputSection";
 import OutputSection from "@/components/OutputSection";
+import EnhancedAcademicAssistant from "@/components/EnhancedAcademicAssistant";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -122,44 +123,53 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <Header />
         
-        <main className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-4">
-          <InputSection 
+        <main className="space-y-10 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <InputSection 
+              inputText={inputText}
+              setInputText={setInputText}
+              writingStyle={writingStyle}
+              setWritingStyle={setWritingStyle}
+              emotionTone={emotionTone}
+              setEmotionTone={setEmotionTone}
+              paraphrasingLevel={paraphrasingLevel}
+              setParaphrasingLevel={setParaphrasingLevel}
+              sentenceStructure={sentenceStructure}
+              setSentenceStructure={setSentenceStructure}
+              vocabularyLevel={vocabularyLevel}
+              setVocabularyLevel={setVocabularyLevel}
+              language={language}
+              setLanguage={setLanguage}
+              aiModel={aiModel}
+              setAiModel={setAiModel}
+              bypassAiDetection={bypassAiDetection}
+              setBypassAiDetection={setBypassAiDetection}
+              improveGrammar={improveGrammar}
+              setImproveGrammar={setImproveGrammar}
+              preserveKeyPoints={preserveKeyPoints}
+              setPreserveKeyPoints={setPreserveKeyPoints}
+              onHumanize={() => humanizeMutation.mutate()}
+              onClear={clearInput}
+              isProcessing={humanizeMutation.isPending}
+            />
+            
+            <OutputSection 
+              outputText={outputText}
+              setOutputText={setOutputText}
+              stats={stats}
+              detectionTests={detectionTests}
+              isProcessing={humanizeMutation.isPending}
+              onCopy={copyToClipboard}
+              onDownload={downloadOutput}
+              onClear={clearOutput}
+            />
+          </div>
+
+          <EnhancedAcademicAssistant
             inputText={inputText}
-            setInputText={setInputText}
-            writingStyle={writingStyle}
-            setWritingStyle={setWritingStyle}
-            emotionTone={emotionTone}
-            setEmotionTone={setEmotionTone}
-            paraphrasingLevel={paraphrasingLevel}
-            setParaphrasingLevel={setParaphrasingLevel}
-            sentenceStructure={sentenceStructure}
-            setSentenceStructure={setSentenceStructure}
-            vocabularyLevel={vocabularyLevel}
-            setVocabularyLevel={setVocabularyLevel}
-            language={language}
-            setLanguage={setLanguage}
-            aiModel={aiModel}
-            setAiModel={setAiModel}
-            bypassAiDetection={bypassAiDetection}
-            setBypassAiDetection={setBypassAiDetection}
-            improveGrammar={improveGrammar}
-            setImproveGrammar={setImproveGrammar}
-            preserveKeyPoints={preserveKeyPoints}
-            setPreserveKeyPoints={setPreserveKeyPoints}
+            onTextChange={setInputText}
             onHumanize={() => humanizeMutation.mutate()}
-            onClear={clearInput}
             isProcessing={humanizeMutation.isPending}
-          />
-          
-          <OutputSection 
-            outputText={outputText}
-            setOutputText={setOutputText}
-            stats={stats}
-            detectionTests={detectionTests}
-            isProcessing={humanizeMutation.isPending}
-            onCopy={copyToClipboard}
-            onDownload={downloadOutput}
-            onClear={clearOutput}
           />
         </main>
         
