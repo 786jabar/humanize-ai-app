@@ -3,6 +3,8 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+// Disable ETag generation to prevent 304 responses that break auth detection
+app.set('etag', false);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
