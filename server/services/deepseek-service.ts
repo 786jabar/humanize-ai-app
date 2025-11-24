@@ -203,15 +203,16 @@ CRITICAL: Make this so messy and human that no AI detector could possibly identi
 - Reference American culture: "TV", "college", "bucks", "calling BS"`;
     }
 
-    // Check if this is an academic prompt
-    const isAcademicPrompt = request.text.includes("Original text:") && 
+    // Check if this is an academic prompt - TRIGGERS when style is 'academic' OR when text contains academic keywords
+    const isAcademicPrompt = (style === 'academic') || 
+      (request.text.includes("Original text:") && 
       (request.text.includes("academic") || 
        request.text.includes("scholarly") || 
        request.text.includes("formal") ||
        request.text.includes("university") ||
        request.text.includes("theory") ||
        request.text.includes("PEEL structure") ||
-       request.text.includes("critical argument"));
+       request.text.includes("critical argument")));
 
     let systemPrompt = isAcademicPrompt 
       ? `You are a distinguished academic writing expert trained in university-level scholarly communication. Your sole purpose is to transform text into formal, sophisticated academic prose suitable for peer-reviewed journals, dissertations, and academic institutions.
