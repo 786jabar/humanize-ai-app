@@ -8,6 +8,25 @@ Humanize.AI is a web application that transforms AI-generated text into natural,
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Upgrades (Current Session)
+
+**Professional Feature Enhancements:**
+- ✅ Fixed academic writing mode - now triggers when "academic" style is selected
+- ✅ Implemented strict 100% formal academic writing prompt (no conversational tone, no contractions)
+- ✅ Added advanced tools: summarize, score text, citation transformation (APA/MLA/Chicago/Harvard)
+- ✅ Added export formats: TXT, HTML, Markdown
+- ✅ Added formality and complexity sliders (0-100)
+- ✅ Added AdvancedTools component with tabbed interface
+- ✅ New API endpoints: `/api/summarize`, `/api/score`, `/api/transform-citations`
+- ✅ Verified academic writing produces university-level scholarly output
+
+**Academic Writing Quality:**
+- Formal academic register enforced
+- Complex sentence structures with multiple subordinate clauses
+- Sophisticated scholarly vocabulary
+- Zero casual language or contractions
+- Objective, analytical tone suitable for peer-reviewed journals
+
 ## System Architecture
 
 ### Frontend Architecture
