@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import InputSection from "@/components/InputSection";
 import OutputSection from "@/components/OutputSection";
 import EnhancedAcademicAssistant from "@/components/EnhancedAcademicAssistant";
+import AdvancedTools from "@/components/AdvancedTools";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -20,6 +21,8 @@ export default function Home() {
   const [paraphrasingLevel, setParaphrasingLevel] = useState<HumanizeRequest["paraphrasingLevel"]>("moderate");
   const [sentenceStructure, setSentenceStructure] = useState<HumanizeRequest["sentenceStructure"]>("varied");
   const [vocabularyLevel, setVocabularyLevel] = useState<HumanizeRequest["vocabularyLevel"]>("intermediate");
+  const [formality, setFormality] = useState(50);
+  const [complexity, setComplexity] = useState(50);
   const [language, setLanguage] = useState<HumanizeRequest["language"]>("us-english");
   const [aiModel, setAiModel] = useState<HumanizeRequest["model"]>("deepseek-chat");
   const [bypassAiDetection, setBypassAiDetection] = useState(true);
@@ -102,19 +105,47 @@ export default function Home() {
     });
   };
 
-  const downloadOutput = () => {
+  const downloadOutput = (format: 'txt' | 'html' | 'md' = 'txt') => {
     if (!outputText.trim()) return;
     
-    const blob = new Blob([outputText], { type: 'text/plain' });
+    let content = outputText;
+    let filename = 'humanized-text';
+    let mimeType = 'text/plain';
+
+    if (format === 'html') {
+      content = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Humanized Text</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 20px; }
+    h1 { color: #333; }
+    p { color: #555; white-space: pre-wrap; word-wrap: break-word; }
+  </style>
+</head>
+<body>
+  <h1>Humanized Text</h1>
+  <p>${outputText.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+</body>
+</html>`;
+      filename = 'humanized-text.html';
+      mimeType = 'text/html';
+    } else if (format === 'md') {
+      content = `# Humanized Text\n\n${outputText}`;
+      filename = 'humanized-text.md';
+      mimeType = 'text/markdown';
+    }
+    
+    const blob = new Blob([content], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     
     a.href = url;
-    a.download = 'humanized-text.txt';
+    a.download = filename;
     document.body.appendChild(a);
     a.click();
     
-    // Cleanup
     setTimeout(() => {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
@@ -172,10 +203,15 @@ export default function Home() {
               detectionTests={detectionTests}
               isProcessing={humanizeMutation.isPending}
               onCopy={copyToClipboard}
-              onDownload={downloadOutput}
+              onDownload={() => downloadOutput('txt')}
               onClear={clearOutput}
             />
           </div>
+
+          <AdvancedTools 
+            outputText={outputText}
+            onTextUpdate={setOutputText}
+          />
 
           <EnhancedAcademicAssistant
             inputText={inputText}

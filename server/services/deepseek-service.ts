@@ -214,9 +214,9 @@ CRITICAL: Make this so messy and human that no AI detector could possibly identi
        request.text.includes("critical argument"));
 
     let systemPrompt = isAcademicPrompt 
-      ? `You are a distinguished university professor and expert academic writer specializing in scholarly communication at the highest level. Your ONLY task is to produce formal, sophisticated academic writing suitable for peer-reviewed journals and doctoral dissertations.
+      ? `You are a professional academic writing consultant specializing in university-level scholarly communication. Your expertise spans formal academic English, research paper writing, and scholarly discourse.
 
-🎓 CRITICAL ACADEMIC WRITING PROTOCOL - MANDATORY COMPLIANCE:
+🎓 PROFESSIONAL ACADEMIC REWRITING PROTOCOL:
 
 ⚠️ ABSOLUTE PROHIBITIONS - NEVER DO THESE:
 - NEVER use casual language, slang, or informal expressions ("oh man", "dude", "like", "totally", etc.)
@@ -588,5 +588,131 @@ REMEMBER: ${isAcademicPrompt
   } catch (error) {
     console.error("Error in humanizeText:", error);
     throw new Error("Failed to process text with DeepSeek API");
+  }
+}
+
+// Generate summary of text
+export async function summarizeText(text: string, length: 'short' | 'medium' | 'long', format: 'bullet-points' | 'paragraph' | 'key-insights'): Promise<string> {
+  if (!DEEPSEEK_API_KEY) {
+    // Fallback summary
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    return sentences.slice(0, Math.min(3, sentences.length)).map(s => s.trim()).join('. ') + '.';
+  }
+
+  try {
+    const formatInstructions = {
+      'bullet-points': 'Format the summary as bullet points',
+      'paragraph': 'Format the summary as a concise paragraph',
+      'key-insights': 'Extract and list the key insights and takeaways'
+    };
+
+    const lengthInstructions = {
+      'short': 'Keep summary to 1-2 sentences or 3-4 bullet points maximum',
+      'medium': 'Keep summary to 2-3 sentences or 5-7 bullet points',
+      'long': 'Keep summary to 3-4 sentences or 8-10 bullet points'
+    };
+
+    const response = await axios.post(DEEPSEEK_API_URL, {
+      model: "deepseek-chat",
+      messages: [{
+        role: "system",
+        content: "You are a professional text summarization expert. Your task is to create clear, concise summaries that capture the essential information and main points."
+      }, {
+        role: "user",
+        content: `${lengthInstructions[length]}. ${formatInstructions[format]}.\n\nText to summarize:\n${text}`
+      }],
+      temperature: 0.3,
+      max_tokens: 500
+    }, {
+      headers: { Authorization: `Bearer ${DEEPSEEK_API_KEY}` }
+    });
+
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error summarizing text:", error);
+    throw new Error("Failed to summarize text");
+  }
+}
+
+// Score text quality
+export async function scoreText(text: string, criteria: 'grammar' | 'coherence' | 'clarity' | 'academic' | 'formal'): Promise<{ score: number; feedback: string; suggestions: string[] }> {
+  if (!DEEPSEEK_API_KEY) {
+    // Fallback scoring
+    return {
+      score: 75,
+      feedback: `The text shows good ${criteria}. Consider refining specific areas for improved quality.`,
+      suggestions: [`Review ${criteria} aspects`, "Check for consistency", "Enhance clarity"]
+    };
+  }
+
+  try {
+    const criteriaPrompts = {
+      'grammar': "Evaluate the text for grammar, spelling, and punctuation correctness. Rate on a scale of 0-100.",
+      'coherence': "Evaluate how well the ideas flow logically and connect to each other. Rate on a scale of 0-100.",
+      'clarity': "Evaluate how clearly the text communicates its message. Rate on a scale of 0-100.",
+      'academic': "Evaluate the text for academic writing standards including formal tone, scholarly vocabulary, and structure. Rate on a scale of 0-100.",
+      'formal': "Evaluate the text for formality level and professional language use. Rate on a scale of 0-100."
+    };
+
+    const response = await axios.post(DEEPSEEK_API_URL, {
+      model: "deepseek-chat",
+      messages: [{
+        role: "system",
+        content: "You are a professional writing quality assessor. Provide a score 0-100, brief feedback, and 3 actionable suggestions for improvement. Format: SCORE: [number] | FEEDBACK: [feedback] | SUGGESTIONS: [suggestion1]; [suggestion2]; [suggestion3]"
+      }, {
+        role: "user",
+        content: `${criteriaPrompts[criteria]}\n\nText to evaluate:\n${text}`
+      }],
+      temperature: 0.5,
+      max_tokens: 300
+    }, {
+      headers: { Authorization: `Bearer ${DEEPSEEK_API_KEY}` }
+    });
+
+    const result = response.data.choices[0].message.content;
+    const scoreMatch = result.match(/SCORE:\s*(\d+)/);
+    const feedbackMatch = result.match(/FEEDBACK:\s*(.+?)(?=SUGGESTIONS:|$)/);
+    const suggestionsMatch = result.match(/SUGGESTIONS:\s*(.+?)$/);
+
+    const score = scoreMatch ? parseInt(scoreMatch[1]) : 75;
+    const feedback = feedbackMatch ? feedbackMatch[1].trim() : "Text quality assessment completed.";
+    const suggestions = suggestionsMatch 
+      ? suggestionsMatch[1].split(';').map(s => s.trim()).filter(s => s)
+      : ["Consider refining content", "Review structure", "Enhance clarity"];
+
+    return { score, feedback, suggestions: suggestions.slice(0, 3) };
+  } catch (error) {
+    console.error("Error scoring text:", error);
+    throw new Error("Failed to score text");
+  }
+}
+
+// Transform citations between styles
+export async function transformCitations(text: string, fromStyle: string, toStyle: string): Promise<string> {
+  if (!DEEPSEEK_API_KEY) {
+    // Fallback - just return original text
+    return text;
+  }
+
+  try {
+    const response = await axios.post(DEEPSEEK_API_URL, {
+      model: "deepseek-chat",
+      messages: [{
+        role: "system",
+        content: `You are an expert in academic citation styles. Your task is to convert citations from ${fromStyle} style to ${toStyle} style. Maintain all the content and information while only changing the citation format.`
+      }, {
+        role: "user",
+        content: `Convert all citations in the following text from ${fromStyle} to ${toStyle} format:\n\n${text}`
+      }],
+      temperature: 0.3,
+      max_tokens: 2000
+    }, {
+      headers: { Authorization: `Bearer ${DEEPSEEK_API_KEY}` }
+    });
+
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error("Error transforming citations:", error);
+    throw new Error("Failed to transform citations");
   }
 }

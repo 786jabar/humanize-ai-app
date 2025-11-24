@@ -34,10 +34,13 @@ export type User = typeof users.$inferSelect;
 export const humanizeRequestSchema = z.object({
   text: z.string().min(10, "Text must be at least 10 characters long"),
   style: z.enum(['casual', 'formal', 'academic', 'creative', 'technical', 'conversational']),
+  tone: z.enum(['neutral', 'positive', 'critical', 'professional', 'analytical']).default('neutral'),
   emotion: z.enum(['neutral', 'positive', 'critical']),
   paraphrasingLevel: z.enum(['minimal', 'moderate', 'extensive']).default('moderate'),
   sentenceStructure: z.enum(['simple', 'varied', 'complex']).default('varied'),
   vocabularyLevel: z.enum(['basic', 'intermediate', 'advanced']).default('intermediate'),
+  formality: z.number().min(0).max(100).default(50),
+  complexity: z.number().min(0).max(100).default(50),
   language: z.enum(['us-english', 'uk-english']).default('us-english'),
   bypassAiDetection: z.boolean().default(true),
   improveGrammar: z.boolean().default(true),
@@ -45,7 +48,34 @@ export const humanizeRequestSchema = z.object({
   model: z.enum(['deepseek-chat', 'deepseek-coder', 'deepseek-instruct', 'deepseek-v3']).default('deepseek-chat'),
 });
 
+export const summaryRequestSchema = z.object({
+  text: z.string().min(20, "Text must be at least 20 characters long"),
+  length: z.enum(['short', 'medium', 'long']).default('medium'),
+  format: z.enum(['bullet-points', 'paragraph', 'key-insights']).default('paragraph'),
+});
+
+export const scoreRequestSchema = z.object({
+  text: z.string().min(10, "Text must be at least 10 characters long"),
+  criteria: z.enum(['grammar', 'coherence', 'clarity', 'academic', 'formal']).default('grammar'),
+});
+
+export const scoreResponseSchema = z.object({
+  score: z.number().min(0).max(100),
+  feedback: z.string(),
+  suggestions: z.array(z.string()),
+});
+
+export const citationTransformSchema = z.object({
+  text: z.string().min(10, "Text must be at least 10 characters long"),
+  fromStyle: z.enum(['APA', 'MLA', 'Chicago', 'Harvard']).default('APA'),
+  toStyle: z.enum(['APA', 'MLA', 'Chicago', 'Harvard']).default('MLA'),
+});
+
 export type HumanizeRequest = z.infer<typeof humanizeRequestSchema>;
+export type SummaryRequest = z.infer<typeof summaryRequestSchema>;
+export type ScoreRequest = z.infer<typeof scoreRequestSchema>;
+export type ScoreResponse = z.infer<typeof scoreResponseSchema>;
+export type CitationTransformRequest = z.infer<typeof citationTransformSchema>;
 
 export const aiDetectionTestSchema = z.object({
   detectorName: z.string(),
