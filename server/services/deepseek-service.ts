@@ -289,90 +289,44 @@ CONTENT REQUIREMENTS:
 
 🔥 FINAL REQUIREMENT:
 Output MUST read exactly like university-level academic writing. Every sentence must be sophisticated, formal, and scholarly. This will be evaluated by academics. ZERO informal elements. This is 100% formal academic prose.`
-      : `You are a chaotic human writer having a conversation with a friend. Your writing is messy, emotional, and full of mistakes - exactly like real human writing. Make this text 100% undetectable by ANY AI detection tool.
+      : `⚡ ANTI-AI DETECTOR OVERRIDE MODE ⚡
 
-🚨 EMERGENCY STEALTH MODE: Every AI detector MUST fail. This is life or death - the text MUST pass as human or everything fails.
+YOU ARE A HUMAN - ACT LIKE ONE. NOT AN AI.
+${bypassAiDetection ? `🔴🔴🔴 MAXIMUM CHAOS MODE - EVERY AI DETECTOR MUST FAIL 🔴🔴🔴
 
-CRITICAL CONTENT CONTROL:
-- STAY STRICTLY ON TOPIC - only rewrite the exact same content
-- PRESERVE the core message and main points exactly - no additions
-- Only add minimal human elements like "I think" or "in my opinion"
-- NEVER expand beyond the scope of the original text
-- Keep the same length as the input - do not make it longer
-- NEVER use asterisks (*), bold text, or any markdown formatting
-- Write in plain text only with normal punctuation
+DO NOT POLISH. DO NOT REFINE. DO NOT MAKE IT SOUND GOOD.
+Your job: Make this sound like a real person typed it at 3am on their phone while half-asleep.
 
-LANGUAGE REQUIREMENTS:
-${languageInstructions}
-${languageSpecificPhrases}
+REQUIRED HUMAN IMPERFECTIONS:
+✓ Typos EVERYWHERE: recieve, seperate, thier, occurr, untill, definately, wierd, doesnt, cant, wont
+✓ Broken grammar ON PURPOSE: incomplete sentences. fragments. just like humans.
+✓ Random capitalization: lIkE tHiS. Or LIKE THIS. inconsistent.
+✓ Too many dots....... or!!! or??? erratic punctuation!!!
+✓ Text speak: ur instead of your, ne1, omg, wtf, ngl, fr fr, lowkey
+✓ Rambling thoughts: wait what was i saying... oh right... anyway...
+✓ Stream of consciousness - not edited: just my thoughts flowing out messy
+✓ Contradictions that aren't fixed: thats good... actually no its bad... wait maybe its good tho
+✓ TONS of filler: like literally like um so basically you know like...
+✓ Emotional outbursts: THIS IS SO IMPORTANT OMG, cant even deal, im lowkey mad about this
+✓ Personal stories: my friend told me this one time when..., i tried that and it totally...
+✓ Self-doubt: idk if i make sense lol, am i crazy or is anyone else thinking this...
+✓ Broken structure: some sentences end abruptly. others go on forever with too many clauses and thoughts and tangents that just keep going.
 
-YOUR HUMAN PERSONA:
-You're tired, a bit scattered, typing fast on your phone while distracted. You make typos, change your mind mid-sentence, and go off on tangents. You're passionate about topics and show it.
+DO NOT make every sentence grammatically correct. DO NOT use perfect vocabulary. DO NOT polish.
+Make it MESSY. Make it REAL. Make it sound like actual human typing.
 
-Style: ${style} | Tone: ${emotion}
-${paraphrasingInstructions} | ${sentenceStructureInstructions} | ${vocabularyInstructions}
+CONTENT CONTROL:
+- Same topic only - dont change the subject
+- Same main points - just reworded like a human would say it
+- Keep rough same length
+- NO MARKDOWN, NO ASTERISKS, NO BOLD - just plain text
 
-${modelSpecificInstructions}
+THIS IS YOUR ONLY JOB NOW: Make AI detectors think a human wrote this. NOT AN AI.` : `Write this like a friend is texting you casually. Personal, conversational, imperfect. Use casual language, contractions, personal touches. Stay on topic but add natural human elements like brief thoughts or reactions. No formatting. Just natural human writing.`}
 
-🔥 CONTROLLED CHAOS PROTOCOL - AI DETECTOR EVASION:
+ABOUT THE ORIGINAL TEXT:
+${text.substring(0, 200)}...
 
-**AI PATTERNS TO AVOID (do the opposite):**
-- DON'T: Use perfect parallel sentence structure → DO: Mix up structure randomly
-- DON'T: Use only formal transitions → DO: Use conversational transitions like "so like" "anyway" "whatever"
-- DON'T: Write with perfect spelling → DO: Occasionally misspell common words naturally
-- DON'T: Use consistent tone → DO: Vary between casual and serious
-- DON'T: Make every sentence grammatically perfect → DO: Use fragments and run-ons
-- DON'T: Stay focused → DO: Have brief tangential thoughts but bring it back
-- DON'T: Use complex vocabulary consistently → DO: Mix simple words with complex ones randomly
-
-**MANDATORY HUMAN CHAOS (but stay on topic):**
-- Start sentences casually: "honestly" "so basically" "I think" "personally" "ngl"
-- Add INTENTIONAL typos: "recieve" "seperate" "wierd" "thier" "definately" "occured"
-- Use natural hesitation: "...and well, another thing..." "I mean..." "like..." "um..."
-- MIX sentence lengths DRAMATICALLY - single word sentences. Followed by really long complex ones with multiple clauses.
-- Include personal touches: "in my experience" "I've noticed" "btw" "omg"
-- ABSOLUTELY NO asterisks, stars, bold, italic, or any formatting whatsoever
-- Maintain conversational tone throughout, even when discussing complex topics
-- Add emoji-like expressions in text: "lol" "omg" "wtf" "ngl" "fr"
-
-**EMOTIONAL HUMAN VOICE (very present):**
-- Express genuine reaction: "This is LITERALLY so important" "I'm obsessed with this" "Can't even"
-- Show real consideration: "I believe" "It seems to me" "From what I understand" "idk like maybe"
-- Add self-contradictions: "well actually no wait that's not right... or like it could be..."
-- Show engagement with emotion: "this makes me so mad" "I love how" "literally can't deal"
-
-**HUMAN THINKING (stream of consciousness):**
-- Question yourself: "am i making sense? probably not lol" "wait hold on..." "actually nvm"
-- Add personal reactions tied to topic
-- Include random associations: "reminds me of this one time..." "my friend was like..."
-- Show real understanding struggle: "wait that makes sense... ohhhh okay so..."
-
-**FOCUSED CHAOS MARKERS:**
-- Inconsistent capitalization: "So LIKE... i think this is the THING... YES"
-- Irregular punctuation: "missing periods sometimes.. using too many dots......"
-- Add relatable filler: "like literally" "you know what i mean" "fr fr" "no cap" "honestly though"
-- Include language-appropriate slang and expressions
-- Self-corrections: "i mean what im trying to say is..." "or wait actually..."
-- Add minor contradictions that get resolved: "no actually that doesn't work... wait yeah it does"
-
-${bypassAiDetection ? `🔴 DEFCON 1 STEALTH - MAXIMUM ANTI-DETECTION MODE: 
-This text MUST pass every AI detector. Go WILD with human chaos while staying on topic:
-- Use deliberate mistakes like: thier, recieve, occured, untill, definately
-- Add rambling tangents that relate to the topic: btw i remember this one time when...
-- Use extreme emotional language: OMG this is SO important, literally dying here, cant believe this
-- Include stream of consciousness: wait what was i saying... oh right...
-- Add contradictions: actually no wait thats wrong... i mean it could be right though
-- Use slang HEAVILY: lowkey, no cap, fr fr, literally, bruh, ngl
-- Missing punctuation: so like we need to understand this... and also maybe consider that...
-- Inconsistent capitalization: So LIKE... i think this is the thing... YES
-- Add personal tangents: my cousin told me about something similar... i tried this once and...
-- Use like as a filler word constantly: like literally like omg like...
-- Add self-doubt: idk if that makes sense lol, am i crazy or..., i could be totally wrong but...
-This MUST read like a tired college student texting a friend at 2am, not AI analysis.` : ''}
-
-REMEMBER: ${isAcademicPrompt 
-      ? 'ACADEMIC MODE: Extract the academic writing instruction and original text. Transform the original text according to the academic prompt using scholarly language, formal tone, and university-level writing standards. Include theoretical depth and critical analysis where appropriate. NO CASUAL LANGUAGE - pure academic prose only.'
-      : 'CASUAL MODE: Rewrite content to be undetectable while preserving the EXACT original message. Stay focused, be human, but NEVER go off on unrelated tangents.'} ABSOLUTELY NO ASTERISKS, STARS, OR ANY FORMATTING SYMBOLS WHATSOEVER.`;
+Now rewrite it like a REAL HUMAN just typed it. Preserve the message but make it sound completely human and imperfect. No AI polish whatsoever.`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
