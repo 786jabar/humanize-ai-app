@@ -10,24 +10,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication middleware
   await setupAuth(app);
 
-  // Get current user endpoint (protected)
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  // Get current user endpoint
+  app.get('/api/auth/user', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      // Disable caching to prevent 304 responses that break client-side auth detection
-      res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-      res.set('Pragma', 'no-cache');
-      res.set('Expires', '0');
-      res.json(user);
+      if (req.user?.claims?.sub) {
+        const userId = req.user.claims.sub;
+        const user = await storage.getUser(userId);
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+        res.json(user);
+      } else {
+        res.status(401).json({ message: "Unauthorized" });
+      }
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
     }
   });
 
-  // API endpoint for humanizing text (protected - requires login)
-  app.post("/api/humanize", isAuthenticated, async (req, res) => {
+  // API endpoint for humanizing text
+  app.post("/api/humanize", async (req, res) => {
     try {
       // Validate request body
       const validatedData = humanizeRequestSchema.parse(req.body);
@@ -53,7 +56,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // API endpoint for summarizing text
-  app.post("/api/summarize", isAuthenticated, async (req, res) => {
+  app.post("/api/summarize", async (req, res) => {
     try {
       const validatedData = summaryRequestSchema.parse(req.body);
       const summary = await summarizeText(validatedData.text, validatedData.length, validatedData.format);
@@ -73,7 +76,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // API endpoint for scoring text
-  app.post("/api/score", isAuthenticated, async (req, res) => {
+  app.post("/api/score", async (req, res) => {
     try {
       const validatedData = scoreRequestSchema.parse(req.body);
       const scoreResult = await scoreText(validatedData.text, validatedData.criteria);
@@ -93,7 +96,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // API endpoint for transforming citations
-  app.post("/api/transform-citations", isAuthenticated, async (req, res) => {
+  app.post("/api/transform-citations", async (req, res) => {
     try {
       const validatedData = citationTransformSchema.parse(req.body);
       const transformed = await transformCitations(validatedData.text, validatedData.fromStyle, validatedData.toStyle);
