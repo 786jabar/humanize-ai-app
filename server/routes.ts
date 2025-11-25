@@ -7,6 +7,7 @@ import { ZodError } from "zod";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import express from "express";
 import path from "path";
+import fs from "fs";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication middleware
@@ -117,14 +118,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Only serve static files and catch-all in production (not development)
-  if (process.env.NODE_ENV === "production") {
-    const distPublicPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+  // Serve built frontend if it exists (for production or when built files are available)
+  const distPublicPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+  if (fs.existsSync(distPublicPath)) {
     app.use(express.static(distPublicPath));
 
     // Catch-all route for frontend routing - serve index.html for all non-API routes
     app.get("*", (req, res) => {
-      res.sendFile(path.resolve(distPublicPath, "index.html"));
+      const indexPath = path.resolve(distPublicPath, "index.html");
+      if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+      } else {
+        res.status(404).json({ message: "Not found" });
+      }
     });
   }
 
