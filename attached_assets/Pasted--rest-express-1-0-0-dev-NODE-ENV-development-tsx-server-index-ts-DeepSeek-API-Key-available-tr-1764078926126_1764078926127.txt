@@ -1,0 +1,43 @@
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+DeepSeek API Key available: true
+Tue, 25 Nov 2025 13:47:35 GMT express-session deprecated req.secret; provide secret option at file:/opt/render/project/src/server/replitAuth.ts:1:761
+file:///opt/render/project/src/node_modules/openid-client/build/index.js:89
+    const err = new TypeError(message, { cause });
+                ^
+TypeError: "clientId" must be a non-empty string
+    at CodedTypeError (/opt/render/project/src/node_modules/openid-client/src/index.ts:839:15)
+    at new Configuration (/opt/render/project/src/node_modules/openid-client/src/index.ts:1849:13)
+    at Module.discovery (/opt/render/project/src/node_modules/openid-client/src/index.ts:1281:20)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async memoize.maxAge (/opt/render/project/src/server/replitAuth.ts:12:12)
+    at async setupAuth (/opt/render/project/src/server/replitAuth.ts:68:18)
+    at async registerRoutes (/opt/render/project/src/server/routes.ts:11:3)
+    at async <anonymous> (/opt/render/project/src/server/index.ts:42:18) {
+  code: 'ERR_INVALID_ARG_TYPE',
+  [cause]: undefined
+}
+Node.js v22.16.0
+==> Exited with status 1
+==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
+==> Running 'npm run dev'
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+DeepSeek API Key available: true
+Tue, 25 Nov 2025 13:47:47 GMT express-session deprecated req.secret; provide secret option at file:/opt/render/project/src/server/replitAuth.ts:1:761
+file:///opt/render/project/src/node_modules/openid-client/build/index.js:89
+    const err = new TypeError(message, { cause });
+                ^
+TypeError: "clientId" must be a non-empty string
+    at CodedTypeError (/opt/render/project/src/node_modules/openid-client/src/index.ts:839:15)
+    at new Configuration (/opt/render/project/src/node_modules/openid-client/src/index.ts:1849:13)
+    at Module.discovery (/opt/render/project/src/node_modules/openid-client/src/index.ts:1281:20)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async memoize.maxAge (/opt/render/project/src/server/replitAuth.ts:12:12)
+    at async setupAuth (/opt/render/project/src/server/replitAuth.ts:68:18)
+    at async registerRoutes (/opt/render/project/src/server/routes.ts:11:3)
+    at async <anonymous> (/opt/render/project/src/server/index.ts:42:18) {
+  code: 'ERR_INVALID_ARG_TYPE',
+  [cause]: undefined
+}
+Node.js v22.16.0
