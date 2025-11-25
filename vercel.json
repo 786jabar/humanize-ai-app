@@ -1,4 +1,10 @@
 {
   "buildCommand": "npm run build",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "public": "dist/public",
+  "functions": {
+    "dist/index.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
 }
