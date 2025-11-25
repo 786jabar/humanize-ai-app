@@ -1,0 +1,66 @@
+01:09:20.566 Running build in Washington, D.C., USA (East) – iad1
+01:09:20.567 Build machine configuration: 4 cores, 8 GB
+01:09:20.576 Cloning github.com/786jabar/humanize-ai-app (Branch: main, Commit: 328329a)
+01:09:20.577 Skipping build cache, deployment was triggered without cache.
+01:09:20.986 Cloning completed: 410.000ms
+01:09:21.353 Running "vercel build"
+01:09:21.788 Vercel CLI 48.10.5
+01:09:22.423 Running "install" command: `npm install`...
+01:09:26.604 npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+01:09:27.316 npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+01:09:27.335 npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+01:09:34.121 
+01:09:34.122 added 535 packages, and audited 536 packages in 11s
+01:09:34.122 
+01:09:34.122 69 packages are looking for funding
+01:09:34.123   run `npm fund` for details
+01:09:34.160 
+01:09:34.160 13 vulnerabilities (3 low, 7 moderate, 2 high, 1 critical)
+01:09:34.160 
+01:09:34.160 To address issues that do not require attention, run:
+01:09:34.160   npm audit fix
+01:09:34.160 
+01:09:34.160 To address all issues (including breaking changes), run:
+01:09:34.160   npm audit fix --force
+01:09:34.160 
+01:09:34.160 Run `npm audit` for details.
+01:09:35.571 
+01:09:35.571 up to date, audited 536 packages in 1s
+01:09:35.572 
+01:09:35.572 69 packages are looking for funding
+01:09:35.572   run `npm fund` for details
+01:09:35.609 
+01:09:35.609 13 vulnerabilities (3 low, 7 moderate, 2 high, 1 critical)
+01:09:35.609 
+01:09:35.610 To address issues that do not require attention, run:
+01:09:35.610   npm audit fix
+01:09:35.610 
+01:09:35.610 To address all issues (including breaking changes), run:
+01:09:35.610   npm audit fix --force
+01:09:35.610 
+01:09:35.610 Run `npm audit` for details.
+01:09:35.752 
+01:09:35.752 > rest-express@1.0.0 build
+01:09:35.752 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+01:09:35.752 
+01:09:36.030 [36mvite v5.4.14 [32mbuilding for production...[36m[39m
+01:09:36.086 transforming...
+01:09:36.355 Browserslist: browsers data (caniuse-lite) is 13 months old. Please run:
+01:09:36.355   npx update-browserslist-db@latest
+01:09:36.355   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+01:09:40.220 [32m✓[39m 1742 modules transformed.
+01:09:40.526 [1m[33m[plugin:vite:reporter][39m[22m [33m[plugin vite:reporter] 
+01:09:40.527 (!) /vercel/path0/client/src/lib/queryClient.ts is dynamically imported by /vercel/path0/client/src/components/Header.tsx but also statically imported by /vercel/path0/client/src/App.tsx, /vercel/path0/client/src/components/AdvancedTools.tsx, /vercel/path0/client/src/hooks/useAuth.ts, /vercel/path0/client/src/pages/Home.tsx, dynamic import will not move module into another chunk.
+01:09:40.527 [39m
+01:09:40.527 rendering chunks...
+01:09:40.545 computing gzip size...
+01:09:40.560 [2m../dist/public/[22m[32mindex.html                 [39m[1m[2m  1.51 kB[22m[1m[22m[2m │ gzip:   0.96 kB[22m
+01:09:40.561 [2m../dist/public/[22m[2massets/[22m[35mindex-DZjw6s8m.css  [39m[1m[2m 89.62 kB[22m[1m[22m[2m │ gzip:  14.39 kB[22m
+01:09:40.561 [2m../dist/public/[22m[2massets/[22m[36mindex-ClntWoxO.js   [39m[1m[2m426.59 kB[22m[1m[22m[2m │ gzip: 131.80 kB[22m
+01:09:40.561 [32m✓ built in 4.51s[39m
+01:09:40.604 
+01:09:40.604   dist/index.js  52.6kb
+01:09:40.604 
+01:09:40.604 ⚡ Done in 8ms
+01:09:40.621 Error: No Output Directory named "dist" found after the Build completed. Configure the Output Directory in your Project Settings. Alternatively, configure vercel.json#outputDirectory.
+01:09:40.621 Learn More: https://vercel.link/missing-public-directory
