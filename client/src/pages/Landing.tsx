@@ -4,10 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, GraduationCap, Shield, Zap, CheckCircle, ArrowRight } from "lucide-react";
 
 export default function Landing() {
-  const handleLogin = () => {
-    window.location.href = "/api/login";
-  };
-
   return (
     <>
       <Helmet>
@@ -28,15 +24,6 @@ export default function Landing() {
                   Humanize.AI
                 </h1>
               </div>
-              <Button 
-                onClick={handleLogin}
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
-                data-testid="button-login"
-              >
-                Sign In
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
             </div>
           </div>
         </header>
@@ -54,18 +41,15 @@ export default function Landing() {
               Advanced AI-powered humanization with academic writing assistance, intelligent synonym suggestions, and complete AI detection bypass.
             </p>
             <Button 
-              onClick={handleLogin}
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-lg px-8 py-6 h-auto"
               data-testid="button-get-started"
+              disabled
             >
               <Sparkles className="mr-2 h-5 w-5" />
-              Get Started Free
+              Ready to Transform Your Text
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-              Sign in with Email, Apple, Google, GitHub, or X
-            </p>
           </div>
 
           {/* Features Grid */}
@@ -138,10 +122,10 @@ export default function Landing() {
               Join professionals and students who trust Humanize.AI for natural, undetectable humanized content.
             </p>
             <Button 
-              onClick={handleLogin}
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-lg px-8 py-6 h-auto"
               data-testid="button-cta-login"
+              disabled
             >
               <Sparkles className="mr-2 h-5 w-5" />
               Start Humanizing Now
