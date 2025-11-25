@@ -10,6 +10,108 @@ const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
 // Log API key presence for debugging (not the actual key)
 console.log("DeepSeek API Key available:", !!DEEPSEEK_API_KEY);
 
+// Post-processing function to add human imperfections to bypass AI detection
+function addHumanImperfections(text: string, bypassAiDetection: boolean, style: string): string {
+  if (!bypassAiDetection) return text;
+  
+  let result = text;
+  
+  // Add intentional typos (randomly throughout)
+  const typoMap: Record<string, string> = {
+    'receive': 'recieve',
+    'separate': 'seperate',
+    'their': 'thier',
+    'occurred': 'occured',
+    'definitely': 'definately',
+    'weird': 'wierd',
+    'until': 'untill',
+    'doesn\'t': 'doesnt',
+    'can\'t': 'cant',
+    'won\'t': 'wont',
+    'it\'s': 'its',
+    'don\'t': 'dont'
+  };
+  
+  // Apply typos randomly (20% chance for each)
+  Object.entries(typoMap).forEach(([correct, typo]) => {
+    const regex = new RegExp('\\b' + correct + '\\b', 'gi');
+    result = result.replace(regex, () => Math.random() > 0.8 ? typo : correct);
+  });
+  
+  // Add random capitalization oddities (5% of sentences)
+  const sentences = result.split(/([.!?]+)/);
+  result = sentences.map((sent, idx) => {
+    if (idx % 2 === 0 && sent.trim() && Math.random() > 0.95) {
+      // Randomly capitalize: lIkE tHiS
+      return sent.split('').map(char => Math.random() > 0.5 ? char.toUpperCase() : char.toLowerCase()).join('');
+    } else if (idx % 2 === 0 && sent.trim() && Math.random() > 0.95) {
+      // Or LIKE THIS
+      return sent.toUpperCase();
+    }
+    return sent;
+  }).join('');
+  
+  // Add ellipsis and rambling markers
+  const ramblingMarkers = [
+    '...wait what was i saying... oh right, ',
+    '...and like, ',
+    '...so basically, ',
+    '...um anyway... ',
+    '...i think, like... '
+  ];
+  
+  // Insert rambling markers at random points (every 3-4 sentences)
+  if (Math.random() > 0.5) {
+    const insertionPoint = Math.floor(result.length * 0.4);
+    const marker = ramblingMarkers[Math.floor(Math.random() * ramblingMarkers.length)];
+    result = result.slice(0, insertionPoint) + marker + result.slice(insertionPoint);
+  }
+  
+  // Add filler words
+  const fillers = ['like', 'literally', 'omg', 'honestly', 'lowkey', 'fr fr', 'ngl'];
+  const sentences2 = result.split(/(?<=[.!?])\s+/);
+  result = sentences2.map(sent => {
+    if (sent.trim() && Math.random() > 0.85) {
+      const filler = fillers[Math.floor(Math.random() * fillers.length)];
+      return filler + ' ' + sent.trim();
+    }
+    return sent.trim();
+  }).join(' ');
+  
+  // Add emotional expressions
+  const emotions = ['omg', '!!!', '???', 'lol', 'smh', 'idk why im even saying this but', 'like seriously', 'cant even'];
+  if (Math.random() > 0.7) {
+    const insertPos = Math.floor(result.length * 0.6);
+    const emotion = emotions[Math.floor(Math.random() * emotions.length)];
+    result = result.slice(0, insertPos) + ' ' + emotion + ' ' + result.slice(insertPos);
+  }
+  
+  // Add punctuation errors (missing punctuation, extra punctuation)
+  if (Math.random() > 0.8) {
+    result = result.replace(/\.(?=[A-Za-z])/g, () => Math.random() > 0.5 ? '.. ' : ' ');
+  }
+  
+  // Add some missing capitalization after periods
+  result = result.replace(/\. ([a-z])/g, () => Math.random() > 0.8 ? '. ' + Math.random().toString()[2] : '. ' + Math.random().toString()[2]);
+  
+  // Add personal commentary
+  const commentary = [
+    ' (literally just my opinion tho)',
+    ' (not sure if that makes sense)',
+    ' (idk im probably wrong lol)',
+    ' (but like thats just me)',
+    ' (honestly im confused too)'
+  ];
+  
+  if (Math.random() > 0.85) {
+    const insertPos = Math.floor(result.length * 0.75);
+    const comment = commentary[Math.floor(Math.random() * commentary.length)];
+    result = result.slice(0, insertPos) + comment + result.slice(insertPos);
+  }
+  
+  return result;
+}
+
 // Helper function for fallback text transformation
 function getSimpleTransformation(inputText: string): string {
   // For very short input
@@ -374,7 +476,10 @@ Now rewrite it like a REAL HUMAN just typed it. Preserve the message but make it
       );
       
       // Extract the humanized text from the response
-      const humanizedText = response.data.choices[0].message.content || "";
+      let humanizedText = response.data.choices[0].message.content || "";
+      
+      // Apply post-processing to add human imperfections if bypass mode is enabled
+      humanizedText = addHumanImperfections(humanizedText, bypassAiDetection, style);
       
       // Calculate stats
       const wordCount = countWords(humanizedText);
