@@ -5,6 +5,8 @@ import { humanizeRequestSchema, summaryRequestSchema, scoreRequestSchema, citati
 import { humanizeText, summarizeText, scoreText, transformCitations } from "./services/deepseek-service";
 import { ZodError } from "zod";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import express from "express";
+import path from "path";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication middleware
@@ -113,6 +115,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: error instanceof Error ? error.message : "Failed to transform citations" 
       });
     }
+  });
+
+  // Serve static files from dist/public (frontend build output)
+  const distPublicPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+  app.use(express.static(distPublicPath));
+
+  // Catch-all route for frontend routing - serve index.html for all non-API routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(distPublicPath, "index.html"));
   });
 
   const httpServer = createServer(app);
