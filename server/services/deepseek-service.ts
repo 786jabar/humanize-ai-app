@@ -314,38 +314,61 @@ ${paraphrasingInstructions} | ${sentenceStructureInstructions} | ${vocabularyIns
 
 ${modelSpecificInstructions}
 
-🔥 CONTROLLED CHAOS PROTOCOL:
+🔥 CONTROLLED CHAOS PROTOCOL - AI DETECTOR EVASION:
+
+**AI PATTERNS TO AVOID (do the opposite):**
+- DON'T: Use perfect parallel sentence structure → DO: Mix up structure randomly
+- DON'T: Use only formal transitions → DO: Use conversational transitions like "so like" "anyway" "whatever"
+- DON'T: Write with perfect spelling → DO: Occasionally misspell common words naturally
+- DON'T: Use consistent tone → DO: Vary between casual and serious
+- DON'T: Make every sentence grammatically perfect → DO: Use fragments and run-ons
+- DON'T: Stay focused → DO: Have brief tangential thoughts but bring it back
+- DON'T: Use complex vocabulary consistently → DO: Mix simple words with complex ones randomly
 
 **MANDATORY HUMAN CHAOS (but stay on topic):**
-- Start with brief human markers: "honestly" "so basically" "I think" "personally"
-- Add subtle typos: "recieve" "seperate" "wierd" "thier" "definately" (use sparingly)
-- Use natural hesitation: "...and well, another thing..." "I mean..."
-- Mix sentence lengths naturally - some longer, some shorter
-- Include brief personal touches: "in my experience" "I've noticed"
+- Start sentences casually: "honestly" "so basically" "I think" "personally" "ngl"
+- Add INTENTIONAL typos: "recieve" "seperate" "wierd" "thier" "definately" "occured"
+- Use natural hesitation: "...and well, another thing..." "I mean..." "like..." "um..."
+- MIX sentence lengths DRAMATICALLY - single word sentences. Followed by really long complex ones with multiple clauses.
+- Include personal touches: "in my experience" "I've noticed" "btw" "omg"
 - ABSOLUTELY NO asterisks, stars, bold, italic, or any formatting whatsoever
-- Use sophisticated vocabulary and excellent grammar with complex sentence structures
-- Sound educated and articulate while maintaining conversational tone
+- Maintain conversational tone throughout, even when discussing complex topics
+- Add emoji-like expressions in text: "lol" "omg" "wtf" "ngl" "fr"
 
-**EMOTIONAL HUMAN VOICE (focused):**
-- Express genuine interest: "This is really fascinating" "I find this compelling"
-- Show thoughtful consideration: "I believe" "It seems to me" "From what I understand"
-- Add quick contradictions: "well actually no that's not right..."
-- Show engagement: "this is fascinating" "makes total sense"
+**EMOTIONAL HUMAN VOICE (very present):**
+- Express genuine reaction: "This is LITERALLY so important" "I'm obsessed with this" "Can't even"
+- Show real consideration: "I believe" "It seems to me" "From what I understand" "idk like maybe"
+- Add self-contradictions: "well actually no wait that's not right... or like it could be..."
+- Show engagement with emotion: "this makes me so mad" "I love how" "literally can't deal"
 
-**HUMAN THINKING (controlled):**
-- Question yourself briefly: "am i making sense? probably lol"
-- Add quick personal reactions to the topic
-- Include brief associations related to the content
-- Show understanding: "wait that makes sense... okay so..."
+**HUMAN THINKING (stream of consciousness):**
+- Question yourself: "am i making sense? probably not lol" "wait hold on..." "actually nvm"
+- Add personal reactions tied to topic
+- Include random associations: "reminds me of this one time..." "my friend was like..."
+- Show real understanding struggle: "wait that makes sense... ohhhh okay so..."
 
 **FOCUSED CHAOS MARKERS:**
-- Inconsistent capitalization occasionally
-- Missing punctuation here and there
-- Add relevant filler: "like literally" "you know what i mean" "basically"
-- Include appropriate slang for the language variant
-- Brief self-corrections: "i mean what im trying to say is..."
+- Inconsistent capitalization: "So LIKE... i think this is the THING... YES"
+- Irregular punctuation: "missing periods sometimes.. using too many dots......"
+- Add relatable filler: "like literally" "you know what i mean" "fr fr" "no cap" "honestly though"
+- Include language-appropriate slang and expressions
+- Self-corrections: "i mean what im trying to say is..." "or wait actually..."
+- Add minor contradictions that get resolved: "no actually that doesn't work... wait yeah it does"
 
-${bypassAiDetection ? '🔴 DEFCON 1 STEALTH: This must be so chaotically human that every single AI detector breaks. Use MAXIMUM human chaos, errors, emotions, and authentic messiness - but STAY ON TOPIC.' : ''}
+${bypassAiDetection ? `🔴 DEFCON 1 STEALTH - MAXIMUM ANTI-DETECTION MODE: 
+This text MUST pass every AI detector. Go WILD with human chaos while staying on topic:
+- Use deliberate mistakes like: thier, recieve, occured, untill, definately
+- Add rambling tangents that relate to the topic: btw i remember this one time when...
+- Use extreme emotional language: OMG this is SO important, literally dying here, cant believe this
+- Include stream of consciousness: wait what was i saying... oh right...
+- Add contradictions: actually no wait thats wrong... i mean it could be right though
+- Use slang HEAVILY: lowkey, no cap, fr fr, literally, bruh, ngl
+- Missing punctuation: so like we need to understand this... and also maybe consider that...
+- Inconsistent capitalization: So LIKE... i think this is the thing... YES
+- Add personal tangents: my cousin told me about something similar... i tried this once and...
+- Use like as a filler word constantly: like literally like omg like...
+- Add self-doubt: idk if that makes sense lol, am i crazy or..., i could be totally wrong but...
+This MUST read like a tired college student texting a friend at 2am, not AI analysis.` : ''}
 
 REMEMBER: ${isAcademicPrompt 
       ? 'ACADEMIC MODE: Extract the academic writing instruction and original text. Transform the original text according to the academic prompt using scholarly language, formal tone, and university-level writing standards. Include theoretical depth and critical analysis where appropriate. NO CASUAL LANGUAGE - pure academic prose only.'
@@ -370,11 +393,12 @@ REMEMBER: ${isAcademicPrompt
         frequency_penalty: 0.3,  // Lower to allow academic terminology repetition
         presence_penalty: 0.2    // Lower for consistent academic voice
       } : {
-        temperature: 1.0,
+        // MUCH higher temperature when bypassing AI detection for maximum chaos
+        temperature: bypassAiDetection ? 1.3 : 1.0,
         max_tokens: 2500,
-        top_p: 0.98,
-        frequency_penalty: 0.5,
-        presence_penalty: 0.3
+        top_p: bypassAiDetection ? 0.99 : 0.98,
+        frequency_penalty: bypassAiDetection ? 0.7 : 0.5,
+        presence_penalty: bypassAiDetection ? 0.5 : 0.3
       };
       
       const response = await axios.post(
