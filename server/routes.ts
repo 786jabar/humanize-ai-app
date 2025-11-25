@@ -117,14 +117,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Serve static files from dist/public (frontend build output)
-  const distPublicPath = path.resolve(import.meta.dirname, "..", "dist", "public");
-  app.use(express.static(distPublicPath));
+  // Only serve static files and catch-all in production (not development)
+  if (process.env.NODE_ENV === "production") {
+    const distPublicPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+    app.use(express.static(distPublicPath));
 
-  // Catch-all route for frontend routing - serve index.html for all non-API routes
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(distPublicPath, "index.html"));
-  });
+    // Catch-all route for frontend routing - serve index.html for all non-API routes
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(distPublicPath, "index.html"));
+    });
+  }
 
   const httpServer = createServer(app);
   return httpServer;
