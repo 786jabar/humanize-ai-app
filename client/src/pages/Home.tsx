@@ -11,6 +11,8 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { HumanizeRequest, HumanizeResponse } from "@shared/schema";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftRight, Layers } from "lucide-react";
 
 export default function Home() {
   const { toast } = useToast();
@@ -34,6 +36,7 @@ export default function Home() {
     aiDetectionRisk: "Low" as HumanizeResponse["stats"]["aiDetectionRisk"]
   });
   const [detectionTests, setDetectionTests] = useState<HumanizeResponse["detectionTests"]>();
+  const [comparisonView, setComparisonView] = useState(false);
 
   const humanizeMutation = useMutation({
     mutationFn: async () => {
@@ -167,7 +170,26 @@ export default function Home() {
         <Header />
         
         <main className="space-y-10 mt-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* View Toggle Bar */}
+          <div className="flex justify-between items-center bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm rounded-xl p-4 shadow-sm border border-purple-100 dark:border-purple-900/30">
+            <div className="flex items-center gap-3">
+              <Layers className="h-5 w-5 text-purple-600" />
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Editor View</h2>
+            </div>
+            <Button
+              variant={comparisonView ? "default" : "outline"}
+              onClick={() => setComparisonView(!comparisonView)}
+              className={comparisonView
+                ? "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white"
+                : "border-purple-200 dark:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-900/30"}
+            >
+              <ArrowLeftRight className="h-4 w-4 mr-2" />
+              {comparisonView ? "Split View" : "Standard View"}
+            </Button>
+          </div>
+
+          {/* Main Content Area */}
+          <div className={comparisonView ? "grid grid-cols-1 lg:grid-cols-2 gap-6" : "grid grid-cols-1 lg:grid-cols-2 gap-10"}>
             <InputSection 
               inputText={inputText}
               setInputText={setInputText}

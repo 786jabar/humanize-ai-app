@@ -85,56 +85,66 @@ export default function OutputSection({
               value={outputText}
             />
 
-            {/* Output stats */}
+            {/* Enhanced Output stats with progress bars */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5 text-sm">
-              <div className="bg-purple-50/70 dark:bg-purple-900/20 rounded-lg p-3 flex items-center">
-                <div className="h-8 w-8 bg-purple-100 dark:bg-purple-800/40 rounded-full flex items-center justify-center mr-3">
-                  <ClockIcon className="h-4 w-4 text-purple-700 dark:text-purple-300" />
-                </div>
-                <div>
-                  <div className="text-xs text-purple-600 dark:text-purple-400">Reading time</div>
-                  <div className="font-semibold text-purple-900 dark:text-purple-200">{stats.readingTime} min</div>
-                </div>
-              </div>
-              
-              <div className="bg-purple-50/70 dark:bg-purple-900/20 rounded-lg p-3 flex items-center">
-                <div className="h-8 w-8 bg-purple-100 dark:bg-purple-800/40 rounded-full flex items-center justify-center mr-3">
-                  <TextIcon className="h-4 w-4 text-purple-700 dark:text-purple-300" />
-                </div>
-                <div>
-                  <div className="text-xs text-purple-600 dark:text-purple-400">Word count</div>
-                  <div className="font-semibold text-purple-900 dark:text-purple-200">{stats.wordCount}</div>
-                </div>
-              </div>
-              
-              <div className="bg-purple-50/70 dark:bg-purple-900/20 rounded-lg p-3 flex items-center">
-                <div className={`h-8 w-8 rounded-full flex items-center justify-center mr-3 ${
-                  stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
-                    ? "bg-green-100 dark:bg-green-900/30" 
-                    : stats.aiDetectionRisk === "Medium"
-                      ? "bg-yellow-100 dark:bg-yellow-900/30"
-                      : "bg-red-100 dark:bg-red-900/30"
-                }`}>
-                  <ShieldIcon className={`h-4 w-4 ${
-                    stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
-                      ? "text-green-600 dark:text-green-400" 
-                      : stats.aiDetectionRisk === "Medium"
-                        ? "text-yellow-600 dark:text-yellow-400"
-                        : "text-red-600 dark:text-red-400"
-                  }`} />
-                </div>
-                <div>
-                  <div className="text-xs text-purple-600 dark:text-purple-400">AI detection risk</div>
-                  <div className={`font-semibold ${
-                    stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
-                      ? "text-green-600 dark:text-green-400" 
-                      : stats.aiDetectionRisk === "Medium"
-                        ? "text-yellow-600 dark:text-yellow-400"
-                        : "text-red-600 dark:text-red-400"
-                  }`}>
-                    {stats.aiDetectionRisk}
+              <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-800/30 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="h-9 w-9 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <ClockIcon className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="text-xs font-medium text-purple-700 dark:text-purple-300">Reading Time</div>
                   </div>
                 </div>
+                <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">{stats.readingTime}<span className="text-sm font-normal text-purple-600 dark:text-purple-400 ml-1">min</span></div>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-800/30 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="h-9 w-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
+                      <TextIcon className="h-4 w-4 text-white" />
+                    </div>
+                    <div className="text-xs font-medium text-blue-700 dark:text-blue-300">Word Count</div>
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">{stats.wordCount}<span className="text-sm font-normal text-blue-600 dark:text-blue-400 ml-1">words</span></div>
+              </div>
+
+              <div className={`rounded-xl p-4 border hover:shadow-md transition-shadow ${
+                stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                  ? "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-100 dark:border-green-800/30"
+                  : stats.aiDetectionRisk === "Medium"
+                    ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-yellow-100 dark:border-yellow-800/30"
+                    : "bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20 border-red-100 dark:border-red-800/30"
+              }`}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`h-9 w-9 rounded-lg flex items-center justify-center shadow-sm ${
+                      stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                        ? "bg-gradient-to-br from-green-500 to-green-600"
+                        : stats.aiDetectionRisk === "Medium"
+                          ? "bg-gradient-to-br from-yellow-500 to-yellow-600"
+                          : "bg-gradient-to-br from-red-500 to-red-600"
+                    }`}>
+                      <ShieldIcon className="h-4 w-4 text-white" />
+                    </div>
+                    <div className={`text-xs font-medium ${
+                      stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                        ? "text-green-700 dark:text-green-300"
+                        : stats.aiDetectionRisk === "Medium"
+                          ? "text-yellow-700 dark:text-yellow-300"
+                          : "text-red-700 dark:text-red-300"
+                    }`}>AI Detection</div>
+                  </div>
+                </div>
+                <div className={`text-2xl font-bold ${
+                  stats.aiDetectionRisk === "Low" || stats.aiDetectionRisk === "Very Low"
+                    ? "text-green-900 dark:text-green-100"
+                    : stats.aiDetectionRisk === "Medium"
+                      ? "text-yellow-900 dark:text-yellow-100"
+                      : "text-red-900 dark:text-red-100"
+                }`}>{stats.aiDetectionRisk}</div>
               </div>
             </div>
 
