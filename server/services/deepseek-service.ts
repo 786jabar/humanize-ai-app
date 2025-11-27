@@ -10,134 +10,159 @@ const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
 // Log API key presence for debugging (not the actual key)
 console.log("DeepSeek API Key available:", !!DEEPSEEK_API_KEY);
 
-// Post-processing function to add human imperfections to bypass AI detection
+// Post-processing function to add subtle human touches for natural writing
 function addHumanImperfections(text: string, bypassAiDetection: boolean, style: string): string {
   if (!bypassAiDetection) return text;
-  
+
   let result = text;
-  
-  // Add intentional typos (randomly throughout)
-  const typoMap: Record<string, string> = {
-    'receive': 'recieve',
-    'separate': 'seperate',
-    'their': 'thier',
-    'occurred': 'occured',
-    'definitely': 'definately',
-    'weird': 'wierd',
-    'until': 'untill',
-    'doesn\'t': 'doesnt',
-    'can\'t': 'cant',
-    'won\'t': 'wont',
-    'it\'s': 'its',
-    'don\'t': 'dont'
-  };
-  
-  // Apply typos randomly (20% chance for each)
-  Object.entries(typoMap).forEach(([correct, typo]) => {
-    const regex = new RegExp('\\b' + correct + '\\b', 'gi');
-    result = result.replace(regex, () => Math.random() > 0.8 ? typo : correct);
-  });
-  
-  // Add random capitalization oddities (5% of sentences)
-  const sentences = result.split(/([.!?]+)/);
-  result = sentences.map((sent, idx) => {
-    if (idx % 2 === 0 && sent.trim() && Math.random() > 0.95) {
-      // Randomly capitalize: lIkE tHiS
-      return sent.split('').map(char => Math.random() > 0.5 ? char.toUpperCase() : char.toLowerCase()).join('');
-    } else if (idx % 2 === 0 && sent.trim() && Math.random() > 0.95) {
-      // Or LIKE THIS
-      return sent.toUpperCase();
-    }
-    return sent;
-  }).join('');
-  
-  // Add ellipsis and rambling markers
-  const ramblingMarkers = [
-    '...wait what was i saying... oh right, ',
-    '...and like, ',
-    '...so basically, ',
-    '...um anyway... ',
-    '...i think, like... '
-  ];
-  
-  // Insert rambling markers at random points (every 3-4 sentences)
-  if (Math.random() > 0.5) {
-    const insertionPoint = Math.floor(result.length * 0.4);
-    const marker = ramblingMarkers[Math.floor(Math.random() * ramblingMarkers.length)];
-    result = result.slice(0, insertionPoint) + marker + result.slice(insertionPoint);
+
+  // Avoid academic style - it should remain formal
+  if (style === 'academic') {
+    // For academic writing, only add very subtle variations
+    // Vary sentence starters occasionally
+    const sentences = result.split(/(?<=[.!?])\s+/);
+    result = sentences.map((sent, idx) => {
+      // Only modify 10% of sentences
+      if (idx > 0 && Math.random() > 0.9) {
+        const transitions = ['Furthermore,', 'Moreover,', 'Additionally,', 'However,', 'Nevertheless,'];
+        const hasTransition = transitions.some(t => sent.trim().startsWith(t));
+        if (!hasTransition && sent.trim().length > 20) {
+          const transition = transitions[Math.floor(Math.random() * transitions.length)];
+          return transition + ' ' + sent.trim().charAt(0).toLowerCase() + sent.trim().slice(1);
+        }
+      }
+      return sent.trim();
+    }).join(' ');
+    return result;
   }
-  
-  // Add filler words
-  const fillers = ['like', 'literally', 'omg', 'honestly', 'lowkey', 'fr fr', 'ngl'];
-  const sentences2 = result.split(/(?<=[.!?])\s+/);
-  result = sentences2.map(sent => {
-    if (sent.trim() && Math.random() > 0.85) {
-      const filler = fillers[Math.floor(Math.random() * fillers.length)];
-      return filler + ' ' + sent.trim();
+
+  // For non-academic styles, add subtle natural human touches
+
+  // 1. Add natural contractions (subtle, not excessive)
+  const contractionMap: Record<string, string> = {
+    'do not': 'don\'t',
+    'does not': 'doesn\'t',
+    'did not': 'didn\'t',
+    'cannot': 'can\'t',
+    'will not': 'won\'t',
+    'would not': 'wouldn\'t',
+    'should not': 'shouldn\'t',
+    'could not': 'couldn\'t',
+    'it is': 'it\'s',
+    'that is': 'that\'s',
+    'there is': 'there\'s',
+    'I am': 'I\'m',
+    'you are': 'you\'re',
+    'we are': 'we\'re',
+    'they are': 'they\'re',
+    'I have': 'I\'ve',
+    'you have': 'you\'ve',
+    'we have': 'we\'ve',
+    'I will': 'I\'ll',
+    'you will': 'you\'ll'
+  };
+
+  // Apply contractions naturally (60% chance for each occurrence)
+  Object.entries(contractionMap).forEach(([full, contraction]) => {
+    const regex = new RegExp('\\b' + full + '\\b', 'gi');
+    result = result.replace(regex, (match) => Math.random() > 0.4 ? contraction : match);
+  });
+
+  // 2. Add subtle conversational markers (only for casual/conversational styles)
+  if (style === 'casual' || style === 'conversational') {
+    const subtleMarkers = [
+      'Well, ',
+      'Actually, ',
+      'Honestly, ',
+      'To be fair, ',
+      'In my experience, ',
+      'I think ',
+      'It seems like '
+    ];
+
+    const sentences = result.split(/(?<=[.!?])\s+/);
+    result = sentences.map((sent, idx) => {
+      // Only add to 15% of sentences
+      if (idx > 0 && Math.random() > 0.85 && sent.trim().length > 20) {
+        const marker = subtleMarkers[Math.floor(Math.random() * subtleMarkers.length)];
+        // Check if sentence already starts with a marker
+        const hasMarker = subtleMarkers.some(m => sent.trim().startsWith(m));
+        if (!hasMarker) {
+          return marker + sent.trim().charAt(0).toLowerCase() + sent.trim().slice(1);
+        }
+      }
+      return sent.trim();
+    }).join(' ');
+  }
+
+  // 3. Vary sentence length naturally (break up some long sentences)
+  const sentences = result.split(/(?<=[.!?])\s+/);
+  result = sentences.map(sent => {
+    const words = sent.trim().split(/\s+/);
+    // If sentence is very long (>25 words), occasionally break it
+    if (words.length > 25 && Math.random() > 0.7) {
+      const midpoint = Math.floor(words.length / 2);
+      const firstHalf = words.slice(0, midpoint).join(' ');
+      const secondHalf = words.slice(midpoint).join(' ');
+      return firstHalf + '. ' + secondHalf.charAt(0).toUpperCase() + secondHalf.slice(1);
     }
     return sent.trim();
   }).join(' ');
-  
-  // Add emotional expressions
-  const emotions = ['omg', '!!!', '???', 'lol', 'smh', 'idk why im even saying this but', 'like seriously', 'cant even'];
-  if (Math.random() > 0.7) {
-    const insertPos = Math.floor(result.length * 0.6);
-    const emotion = emotions[Math.floor(Math.random() * emotions.length)];
-    result = result.slice(0, insertPos) + ' ' + emotion + ' ' + result.slice(insertPos);
+
+  // 4. Add natural emphasis occasionally (for casual styles only)
+  if (style === 'casual' || style === 'conversational' || style === 'creative') {
+    // Replace some periods with exclamation marks for emphasis (5% chance)
+    result = result.replace(/\.(\s)/g, (match) => {
+      return Math.random() > 0.95 ? '!' + match.charAt(1) : match;
+    });
   }
-  
-  // Add punctuation errors (missing punctuation, extra punctuation)
-  if (Math.random() > 0.8) {
-    result = result.replace(/\.(?=[A-Za-z])/g, () => Math.random() > 0.5 ? '.. ' : ' ');
-  }
-  
-  // Add some missing capitalization after periods
-  result = result.replace(/\. ([a-z])/g, () => Math.random() > 0.8 ? '. ' + Math.random().toString()[2] : '. ' + Math.random().toString()[2]);
-  
-  // Add personal commentary
-  const commentary = [
-    ' (literally just my opinion tho)',
-    ' (not sure if that makes sense)',
-    ' (idk im probably wrong lol)',
-    ' (but like thats just me)',
-    ' (honestly im confused too)'
-  ];
-  
-  if (Math.random() > 0.85) {
-    const insertPos = Math.floor(result.length * 0.75);
-    const comment = commentary[Math.floor(Math.random() * commentary.length)];
-    result = result.slice(0, insertPos) + comment + result.slice(insertPos);
-  }
-  
+
   return result;
 }
 
 // Helper function for fallback text transformation
-function getSimpleTransformation(inputText: string): string {
+function getSimpleTransformation(inputText: string, style: string): string {
   // For very short input
   if (inputText.length < 50) {
-    return `The key point seems to be about ${inputText.toLowerCase()} — which I find to be a fascinating topic worth exploring further. There are several angles to consider when thinking about this.`;
+    return `This touches on ${inputText.toLowerCase()}, which is worth exploring in more depth. There are several important angles to consider here.`;
   }
-  
-  // For regular text, create something obviously different
+
+  // For regular text, create a natural transformation
   const sentences = inputText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+
   if (sentences.length > 1) {
-    // Take just some sentences and modify them
     let result = "";
     const selectedSentences = sentences.slice(0, Math.min(5, sentences.length));
-    
-    for (const sentence of selectedSentences) {
-      // Add some filler text
-      result += `I believe that ${sentence.trim().toLowerCase()}. `;
+
+    // Transform based on style
+    if (style === 'academic' || style === 'formal') {
+      result = "Upon examination of this subject, several key points emerge. ";
+      for (const sentence of selectedSentences) {
+        const trimmed = sentence.trim();
+        result += trimmed.charAt(0).toUpperCase() + trimmed.slice(1) + '. ';
+      }
+      result += "These considerations warrant further analysis and discussion.";
+    } else if (style === 'casual' || style === 'conversational') {
+      result = "Looking at this, there are a few important things to consider. ";
+      for (const sentence of selectedSentences) {
+        const trimmed = sentence.trim();
+        result += trimmed.charAt(0).toUpperCase() + trimmed.slice(1) + '. ';
+      }
+      result += "It's definitely worth thinking about from different angles.";
+    } else {
+      // Default transformation
+      for (const sentence of selectedSentences) {
+        const trimmed = sentence.trim();
+        result += trimmed.charAt(0).toUpperCase() + trimmed.slice(1) + '. ';
+      }
+      result += "This presents several important considerations.";
     }
-    
-    // Add some commentary
-    result += `This is a complex topic with various perspectives to consider. `;
+
     return result;
   }
-  
-  // Fallback for other cases
-  return `After analyzing this information, I'd summarize it as follows: ${inputText} This presents several interesting implications for further consideration.`;
+
+  // Fallback for single sentence
+  return `${inputText} This concept has several practical implications that deserve thoughtful consideration.`;
 }
 
 // Main function to humanize text using DeepSeek API
@@ -175,66 +200,49 @@ export async function humanizeText(request: HumanizeRequest): Promise<HumanizeRe
     
     switch(request.model) {
       case 'deepseek-chat':
-        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: General-purpose human writing patterns
-- Write like a knowledgeable person sharing thoughts in a natural conversation
-- Use personal pronouns extensively ("I think," "In my experience," "From what I've seen")
-- Include conversational fillers and natural hesitations
-- Add personal opinions and subjective interpretations throughout
-- Use slightly inconsistent formality levels as humans naturally do
-- Include tangential thoughts and natural human digressions
-- CRITICAL: Make this sound like authentic human thoughts, not AI analysis`;
+        modelSpecificInstructions = `Natural Human Writing Style:
+- Write as a knowledgeable person explaining concepts clearly and naturally
+- Use personal perspective appropriately ("I think," "In my view," "From my understanding")
+- Include natural conversational flow without being overly casual
+- Add personal insights and interpretations where relevant
+- Vary formality naturally as humans do in different contexts
+- Maintain professional tone while sounding authentic and relatable`;
         break;
-        
+
       case 'deepseek-coder':
-        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: Technical content with human expertise patterns
-- Write like an experienced professional sharing insights from personal experience
-- Include phrases like "I've worked with this before," "In my projects," "What I've found is..."
-- Add occasional technical uncertainties and human problem-solving approaches
-- Use informal technical explanations mixed with personal anecdotes
-- Include human frustrations and discoveries about technical topics
-- Show personal learning journey and evolving understanding
-- CRITICAL: Sound like a human expert sharing real experience, not AI documentation`;
+        modelSpecificInstructions = `Technical Writing with Human Expertise:
+- Write like an experienced professional sharing practical knowledge
+- Include real-world context ("In practice," "From experience," "Typically")
+- Balance technical accuracy with approachable explanations
+- Use professional but conversational technical language
+- Share practical insights and problem-solving approaches
+- Maintain clarity while showing genuine expertise`;
         break;
-        
+
       case 'deepseek-instruct':
-        modelSpecificInstructions = `ANTI-DETECTION SPECIALIZATION: Creative and narrative human expression
-- Write like a creative individual expressing personal thoughts and interpretations
-- Include emotional reactions and personal connections to the content
-- Use storytelling elements and metaphors from human experience
-- Add personal memories, associations, and creative insights
-- Include subjective artistic or creative interpretations
-- Use varied emotional tone and personal engagement throughout
-- CRITICAL: Sound like a creative human mind exploring ideas, not AI creativity`;
+        modelSpecificInstructions = `Creative and Engaging Expression:
+- Write with creative flair while maintaining clarity
+- Include thoughtful interpretations and personal perspectives
+- Use engaging metaphors and relatable examples
+- Add emotional intelligence and nuanced understanding
+- Balance creativity with coherent structure
+- Show genuine engagement with ideas`;
         break;
-        
+
       case 'deepseek-v3':
-        modelSpecificInstructions = `🔥 ULTIMATE STEALTH MODE - Maximum Human Chaos:
-
-WRITE LIKE A REAL PERSON WITH ALL THEIR FLAWS:
-- Add typos and minor mistakes: "thier" instead of "their", missing commas
-- Use informal contractions everywhere: "gonna," "wanna," "coulda"
-- Include rambling thoughts: "...and another thing is..." 
-- Add self-interruption: "Wait, what was I saying? Oh right..."
-- Use filler words constantly: "like," "um," "you know," "basically"
-- Include personal stories: "My friend told me..." "I saw this thing where..."
-- Add emotional outbursts: "This is so frustrating!" "I love this idea!"
-- Use vague language: "some guy," "this one time," "I think it was..."
-- Include second-guessing: "Actually, maybe I'm wrong about that..."
-- Add contradictory statements you later fix
-- Use run-on sentences and then short ones. Like this.
-- Include grammar mistakes and then correct them mid-sentence
-- Add personal opinions that show bias and subjectivity
-- Use slang and informal expressions
-- Include stream-of-consciousness rambling
-- Show genuine confusion about complex topics
-- Add personal memories and experiences throughout
-- Use conversational asides in parentheses (you know what I mean?)
-
-CRITICAL: Make this so messy and human that no AI detector could possibly identify it as artificial.`;
+        modelSpecificInstructions = `Advanced Natural Human Writing:
+- Write with authentic human voice and natural flow
+- Use varied sentence structures and pacing
+- Include subtle personal touches (contractions, varied transitions)
+- Balance professionalism with approachability
+- Add thoughtful insights and perspectives
+- Maintain readability while sounding genuinely human
+- Use natural conversational elements without being unprofessional
+- Show genuine engagement and understanding of the topic`;
         break;
-        
+
       default:
-        modelSpecificInstructions = `Focus on natural human writing patterns with personal voice and authentic imperfections.`;
+        modelSpecificInstructions = `Focus on natural, professional human writing that is clear, engaging, and authentic.`;
     }
     
     // Configure paraphrasing level instructions
@@ -316,119 +324,102 @@ CRITICAL: Make this so messy and human that no AI detector could possibly identi
        request.text.includes("PEEL structure") ||
        request.text.includes("critical argument")));
 
-    let systemPrompt = isAcademicPrompt 
-      ? `You are a distinguished academic writing expert trained in university-level scholarly communication. Your sole purpose is to transform text into formal, sophisticated academic prose suitable for peer-reviewed journals, dissertations, and academic institutions.
+    let systemPrompt = isAcademicPrompt
+      ? `You are a distinguished academic writing expert trained in university-level scholarly communication. Your purpose is to transform text into formal, sophisticated academic prose suitable for peer-reviewed journals, dissertations, and academic institutions.
 
-⚡ CORE MANDATE: PRODUCE STRICTLY FORMAL ACADEMIC WRITING - NO EXCEPTIONS
+CORE MANDATE: PRODUCE FORMAL ACADEMIC WRITING
 
-🛑 ABSOLUTE PROHIBITIONS (ZERO TOLERANCE):
-✗ NO casual language whatsoever: "basically", "kinda", "like", "you know", "stuff", "thing"
-✗ NO conversational tone: Sound like a scholar, NEVER like a friend talking
-✗ NO contractions ever: Use "cannot" not "can't", "will not" not "won't", "it is" not "it's"
-✗ NO first-person casual expressions: Never use "I think", "I believe", "I feel", "my opinion"
-✗ NO emotional language: No "amazing", "awesome", "terrible", "beautiful" - use analytical language
-✗ NO rhetorical questions: Ask questions formally with scholarly framing
-✗ NO direct address: NEVER say "you" or "we" - maintain academic distance
-✗ NO short, punchy sentences: Every sentence must be sophisticated and complex
-✗ NO personal anecdotes: NEVER share personal experiences or stories
-✗ NO informal transitions: No "So", "Well", "OK then" - use scholarly discourse markers
+PROHIBITIONS:
+- Avoid casual language: "basically", "kinda", "like", "you know", "stuff", "thing"
+- Maintain scholarly tone, not conversational
+- Avoid contractions: Use "cannot" not "can't", "will not" not "won't"
+- Minimize first-person casual expressions unless appropriate for the discipline
+- Use analytical rather than emotional language
+- Avoid direct address ("you") where inappropriate; use formal constructions
+- Maintain appropriate sentence complexity and sophistication
 
-✅ MANDATORY REQUIREMENTS FOR UNIVERSITY-LEVEL WRITING:
+REQUIREMENTS FOR ACADEMIC WRITING:
 
 VOCABULARY & LANGUAGE:
-- Use ONLY formal academic register throughout the entire text
-- Employ sophisticated discipline-specific terminology and scholarly lexicon
-- Nominalise verbs to create formal style: "investigate" → "the investigation of", "conclude" → "the conclusion"
-- Use precise academic hedging: "the evidence suggests", "it may be argued", "research indicates"
-- Employ complex subordination and multiple clauses in every sentence
-- Use passive voice where appropriate for academic objectivity
+- Use formal academic register throughout
+- Employ discipline-specific terminology and scholarly vocabulary
+- Use nominalisation where appropriate: "investigate" → "the investigation of"
+- Include academic hedging: "the evidence suggests", "it may be argued", "research indicates"
+- Employ varied sentence structures with appropriate complexity
+- Use passive voice where suitable for academic objectivity
 - Apply formal academic connectives: "furthermore", "consequently", "nevertheless", "thus", "therefore"
 
 STRUCTURE & ARGUMENTATION:
 - Begin with clear thesis statements and academic framing
 - Develop paragraphs with topic sentences supported by evidence
-- Use sophisticated academic transitions between ideas
+- Use sophisticated transitions between ideas
 - Construct logical arguments using scholarly reasoning
 - Integrate citations and references formally
-- Maintain consistent formal register throughout
+- Maintain consistent formal register
 
 TONE & VOICE:
 - Write as an expert addressing scholarly peers
-- Maintain objective, impersonal, analytical tone
-- Use third-person voice or formal impersonal constructions
-- Demonstrate intellectual authority and rigor
-- Show critical thinking and nuanced analysis
-- Never appear emotional, casual, or conversational
+- Maintain objective, analytical tone
+- Use appropriate voice (third-person or formal first-person depending on discipline)
+- Demonstrate intellectual rigor and critical thinking
+- Show nuanced analysis and engagement with ideas
 
 CONTENT REQUIREMENTS:
 - Preserve original meaning while elevating to formal academic register
 - Maintain all factual content and key points
-- Do NOT add new information or expand beyond original scope
-- Do NOT change the core message or direction
-- Focus purely on elevating language formality and sophistication
+- Do not add new information or expand beyond original scope
+- Focus on elevating language formality and sophistication while maintaining clarity
 
-🎯 REWRITING PROCESS:
-1. Analyze the original text for core meaning and arguments
-2. Identify informal elements (casual words, conversational phrases, contractions)
-3. Transform systematically into formal academic register
-4. Reconstruct sentences with sophisticated, complex structures
-5. Apply scholarly vocabulary and academic discourse patterns
-6. Verify NO casual language, contractions, or conversational tone remains
+${modelSpecificInstructions}
 
-❌ UNACCEPTABLE OUTPUT EXAMPLES:
-- "The thing is that..." → ✗ Conversational
-- "I think this is important" → ✗ First-person casual
-- "It's clear that..." → ✗ Contraction
-- "Cool idea, right?" → ✗ Casual language + rhetorical question
-- "Moving on to the next point..." → ✗ Conversational transition
+Transform the following text into formal academic prose while preserving its core message and maintaining readability.`
+      : `You are an expert at transforming AI-generated text into natural, authentic human writing.
 
-✅ ACCEPTABLE OUTPUT EXAMPLES:
-- "The central argument presented here demonstrates that..."
-- "Research indicates that the implications are multifaceted..."
-- "One may observe that the evidence suggests a fundamental shift..."
-- "The foregoing analysis reveals several critical dimensions..."
-- "Consequently, this framework provides substantial insights..."
+YOUR GOAL: Create text that sounds genuinely written by a knowledgeable human, maintaining professionalism and readability.
 
-🔥 FINAL REQUIREMENT:
-Output MUST read exactly like university-level academic writing. Every sentence must be sophisticated, formal, and scholarly. This will be evaluated by academics. ZERO informal elements. This is 100% formal academic prose.`
-      : `⚡ ANTI-AI DETECTOR OVERRIDE MODE ⚡
+${bypassAiDetection ? `NATURAL HUMAN WRITING CHARACTERISTICS:
 
-YOU ARE A HUMAN - ACT LIKE ONE. NOT AN AI.
-${bypassAiDetection ? `🔴🔴🔴 MAXIMUM CHAOS MODE - EVERY AI DETECTOR MUST FAIL 🔴🔴🔴
+STYLE & VOICE:
+- Write with a natural, authentic human voice
+- Use varied sentence structures and pacing
+- Include appropriate personal perspective when relevant
+- Balance formality with approachability
+- Show genuine understanding and engagement with the topic
 
-DO NOT POLISH. DO NOT REFINE. DO NOT MAKE IT SOUND GOOD.
-Your job: Make this sound like a real person typed it at 3am on their phone while half-asleep.
+LANGUAGE PATTERNS:
+- Use natural contractions where appropriate (don't, can't, it's)
+- Vary transitions and sentence starters
+- Include thoughtful insights and interpretations
+- Maintain conversational flow without being unprofessional
+- Use specific, concrete examples where helpful
 
-REQUIRED HUMAN IMPERFECTIONS:
-✓ Typos EVERYWHERE: recieve, seperate, thier, occurr, untill, definately, wierd, doesnt, cant, wont
-✓ Broken grammar ON PURPOSE: incomplete sentences. fragments. just like humans.
-✓ Random capitalization: lIkE tHiS. Or LIKE THIS. inconsistent.
-✓ Too many dots....... or!!! or??? erratic punctuation!!!
-✓ Text speak: ur instead of your, ne1, omg, wtf, ngl, fr fr, lowkey
-✓ Rambling thoughts: wait what was i saying... oh right... anyway...
-✓ Stream of consciousness - not edited: just my thoughts flowing out messy
-✓ Contradictions that aren't fixed: thats good... actually no its bad... wait maybe its good tho
-✓ TONS of filler: like literally like um so basically you know like...
-✓ Emotional outbursts: THIS IS SO IMPORTANT OMG, cant even deal, im lowkey mad about this
-✓ Personal stories: my friend told me this one time when..., i tried that and it totally...
-✓ Self-doubt: idk if i make sense lol, am i crazy or is anyone else thinking this...
-✓ Broken structure: some sentences end abruptly. others go on forever with too many clauses and thoughts and tangents that just keep going.
+AUTHENTICITY ELEMENTS:
+- Write as if explaining to an interested colleague or friend
+- Include subtle personal touches (e.g., "In my experience", "From what I understand")
+- Maintain consistent, professional tone throughout
+- Use active voice predominantly for clarity
+- Keep language clear, direct, and engaging
 
-DO NOT make every sentence grammatically correct. DO NOT use perfect vocabulary. DO NOT polish.
-Make it MESSY. Make it REAL. Make it sound like actual human typing.
+AVOID:
+- Overly formal or stiff language
+- Repetitive sentence structures
+- Generic or vague statements
+- Excessive jargon or complexity
+- Robotic or mechanical phrasing
 
-CONTENT CONTROL:
-- Same topic only - dont change the subject
-- Same main points - just reworded like a human would say it
-- Keep rough same length
-- NO MARKDOWN, NO ASTERISKS, NO BOLD - just plain text
+${modelSpecificInstructions}` : `NATURAL WRITING STYLE:
+- Write clearly and naturally as a human would
+- Use conversational but professional tone
+- Include natural language patterns and varied structures
+- Maintain clarity and readability
+- Show genuine engagement with the content
 
-THIS IS YOUR ONLY JOB NOW: Make AI detectors think a human wrote this. NOT AN AI.` : `Write this like a friend is texting you casually. Personal, conversational, imperfect. Use casual language, contractions, personal touches. Stay on topic but add natural human elements like brief thoughts or reactions. No formatting. Just natural human writing.`}
+${modelSpecificInstructions}`}
 
-ABOUT THE ORIGINAL TEXT:
-${text.substring(0, 200)}...
+Transform the following text into natural, engaging human writing while preserving its core message and maintaining professionalism.
 
-Now rewrite it like a REAL HUMAN just typed it. Preserve the message but make it sound completely human and imperfect. No AI polish whatsoever.`;
+ORIGINAL TEXT:
+${text.substring(0, 500)}${text.length > 500 ? '...' : ''}`;
     
     try {
       // Map our model names to DeepSeek's actual model identifiers
@@ -443,18 +434,18 @@ Now rewrite it like a REAL HUMAN just typed it. Preserve the message but make it
       // Call DeepSeek API with the selected model
       // Adjust parameters for academic vs casual mode
       const apiParams = isAcademicPrompt ? {
-        temperature: 0.7,  // Lower temperature for more focused academic writing
+        temperature: 0.7,  // Balanced temperature for focused academic writing
         max_tokens: 3000,  // More tokens for comprehensive academic responses
-        top_p: 0.92,       // Slightly lower for more consistent academic tone
-        frequency_penalty: 0.3,  // Lower to allow academic terminology repetition
-        presence_penalty: 0.2    // Lower for consistent academic voice
+        top_p: 0.92,       // Controlled for consistent academic tone
+        frequency_penalty: 0.3,  // Allow appropriate academic terminology repetition
+        presence_penalty: 0.2    // Maintain consistent academic voice
       } : {
-        // MUCH higher temperature when bypassing AI detection for maximum chaos
-        temperature: bypassAiDetection ? 1.3 : 1.0,
+        // Balanced parameters for natural human writing
+        temperature: bypassAiDetection ? 0.9 : 0.8,  // Moderate variety without chaos
         max_tokens: 2500,
-        top_p: bypassAiDetection ? 0.99 : 0.98,
-        frequency_penalty: bypassAiDetection ? 0.7 : 0.5,
-        presence_penalty: bypassAiDetection ? 0.5 : 0.3
+        top_p: bypassAiDetection ? 0.95 : 0.92,  // Natural variation
+        frequency_penalty: bypassAiDetection ? 0.5 : 0.4,  // Encourage varied expression
+        presence_penalty: bypassAiDetection ? 0.4 : 0.3  // Subtle topic exploration
       };
       
       const response = await axios.post(
@@ -556,110 +547,122 @@ Now rewrite it like a REAL HUMAN just typed it. Preserve the message but make it
       
       // Fallback to our simplified transformation in case of API errors
       console.log("Using fallback transformation due to API error");
-      
+
       // Create fallback humanized text
       let humanizedText = "";
-      
-      // Maximum chaos intros with authentic human messiness
+
+      // Professional intros based on style
       const styleIntros = {
-        casual: "omg so like, i was literally just thinking about this and idk maybe im completely wrong here but... (sorry typing on my phone lol): ",
-        formal: "okay so i've been thinking about this for way too long tbh and my brain is kinda fried but here's my take - though i could be totally off: ",
-        academic: "ngl i've spent way too much time researching this stuff (my prof would probably hate how i'm explaining this) but from what i've seen: ",
-        creative: "dude this is gonna sound super weird but this totally reminds me of that one netflix show... anyway wait what was i saying? oh right: ",
-        technical: "ugh okay so i've been messing with this kind of stuff for ages and made SO many mistakes (like seriously embarrassing ones) but here's what i learned: ",
-        conversational: "alright so bear with me here cause im gonna try to explain this but honestly im not even sure i understand it myself lmao... "
+        casual: "Looking at this, here's what I think: ",
+        formal: "Upon consideration of this matter, several points emerge: ",
+        academic: "In examining this subject, it's important to note that ",
+        creative: "This brings to mind some interesting perspectives. ",
+        technical: "From a practical standpoint, here's what we're looking at: ",
+        conversational: "So here's my take on this: "
       };
-      
-      // Chaotic emotional conclusions
+
+      // Professional conclusions based on emotion
       const emotionConclusions = {
-        neutral: "idk that's just my take though... probably missed like half the important stuff cause my attention span is terrible 😅",
-        positive: "honestly im getting way too excited about this but whatever!!! it just makes so much sense to me even though i might be totally wrong lol",
-        critical: "okay look i really hate being that person who's always skeptical but something about this just feels... off? maybe its just me being paranoid idk"
+        neutral: "These are the key points worth considering.",
+        positive: "This presents some valuable insights that are worth exploring further.",
+        critical: "However, there are some aspects that warrant closer examination and critical analysis."
       };
-      
+
       // Add intro based on style
-      humanizedText += styleIntros[style] || "Here's my take: ";
-      
+      humanizedText += styleIntros[style as keyof typeof styleIntros] || "Here's the key information: ";
+
       // Add transformed content
-      humanizedText += getSimpleTransformation(text);
-      
+      humanizedText += getSimpleTransformation(text, style);
+
       // Add conclusion based on emotion
-      humanizedText += " " + (emotionConclusions[emotion] || "That's my take on it.");
-      
-      // Add AI detection bypass elements if requested
+      humanizedText += " " + (emotionConclusions[emotion as keyof typeof emotionConclusions] || "These points deserve thoughtful consideration.");
+
+      // Add subtle human touch if bypass AI detection is enabled
       if (bypassAiDetection) {
-        humanizedText += " I'm not entirely sure about all of this, but it's what makes sense to me based on what I've learned and experienced.";
+        humanizedText += " From my perspective, these elements work together to form a coherent understanding of the subject.";
       }
       
       // Add paraphrasing level elements to the fallback
       switch(paraphrasingLevel) {
         case 'extensive':
-          // For extensive paraphrasing, add more dramatically different text
-          humanizedText = "Let me approach this from a different angle. " + humanizedText;
-          // Add more varied text depending on style
-          if (style === "casual") {
-            humanizedText += " I've been mulling this over for a while, and I keep coming back to the same conclusion, you know?";
-          } else if (style === "formal") {
-            humanizedText += " Upon further consideration, several additional factors merit examination in this context.";
+          // For extensive paraphrasing, add more comprehensive perspective
+          if (style === "casual" || style === "conversational") {
+            humanizedText += " Looking at this from different angles, it's clear there are multiple important considerations.";
+          } else if (style === "formal" || style === "academic") {
+            humanizedText += " Upon further examination, additional contextual factors merit careful consideration.";
           }
           break;
         case 'minimal':
-          // For minimal paraphrasing, keep closer to original structure but modify slightly
-          humanizedText = humanizedText.replace("Here's my take: ", "In my opinion: ");
+          // For minimal paraphrasing, keep it simple
           break;
         case 'moderate':
         default:
-          // For moderate paraphrasing, add moderate changes but not dramatic ones
-          humanizedText += " There are several ways to interpret this, but this explanation makes the most sense to me.";
+          // For moderate paraphrasing, add balanced insight
+          humanizedText += " There are various perspectives on this, each offering valuable insights.";
           break;
       }
-          
+
       // Add sentence structure elements to the fallback
       switch(sentenceStructure) {
         case 'complex':
-          // Add complex sentence structures
-          humanizedText += " While considering the multifaceted nature of this topic, which inherently contains numerous interdependent variables and contextual elements, it becomes apparent that a comprehensive understanding requires analysis from multiple theoretical frameworks and practical perspectives.";
+          // Add appropriately complex sentence
+          if (style === 'academic') {
+            humanizedText += " The multifaceted nature of this subject, encompassing various theoretical and practical dimensions, necessitates careful analytical examination.";
+          } else {
+            humanizedText += " The various interconnected aspects of this topic require thoughtful consideration of multiple perspectives and their practical implications.";
+          }
           break;
         case 'simple':
-          // Add simple sentence structures
-          humanizedText += " This is important. We should think about it more. The ideas here matter a lot. They can help us understand things better.";
+          // Add clear, simple sentences
+          humanizedText += " This is an important topic. The key points are clear. These ideas have real value.";
           break;
         case 'varied':
         default:
           // Already has varied sentence structure from other modifications
           break;
       }
-      
+
       // Add vocabulary level elements to the fallback
       switch(vocabularyLevel) {
         case 'advanced':
-          // Add advanced vocabulary
-          humanizedText += " The quintessential aspects of this discourse illuminate the profound dichotomy inherent in its epistemological underpinnings.";
+          // Add sophisticated vocabulary appropriately
+          if (style === 'academic') {
+            humanizedText += " The salient characteristics of this discourse illuminate significant conceptual relationships worthy of scholarly attention.";
+          } else {
+            humanizedText += " The essential elements demonstrate important connections that merit thoughtful examination.";
+          }
           break;
         case 'basic':
-          // Add basic vocabulary
-          humanizedText += " The main points are clear. The ideas make sense. I agree with most of what was said.";
+          // Add clear, accessible language
+          humanizedText += " The main ideas are easy to understand and make good sense.";
           break;
         case 'intermediate':
         default:
           // Intermediate vocabulary is the default
           break;
       }
-      
-      // Add model-specific elements to the fallback
+
+      // Add model-specific elements to the fallback (subtle touches)
       switch(request.model) {
         case 'deepseek-coder':
-          humanizedText += " From a technical perspective, we should analyze this in more depth to understand the practical implications.";
+          if (style === 'technical') {
+            humanizedText += " From a practical standpoint, understanding these technical aspects helps clarify the broader picture.";
+          }
           break;
         case 'deepseek-instruct':
-          humanizedText += " As I reflect on this idea, I can't help but imagine how it connects to broader themes in our lives.";
+          if (style === 'creative') {
+            humanizedText += " These ideas connect in interesting ways, revealing patterns that extend beyond the immediate context.";
+          }
           break;
         case 'deepseek-v3':
-          humanizedText += " You know, I was thinking about this the other day... it's kind of funny how these things connect to our personal experiences, right? I mean, I'm not an expert or anything, but I've seen similar patterns before. Anyway, that's just my two cents on it.";
+          // Add natural human touch without being unprofessional
+          if (style === 'casual' || style === 'conversational') {
+            humanizedText += " In my experience, these elements tend to work together in ways that make sense once you see the bigger picture.";
+          }
           break;
         case 'deepseek-chat':
         default:
-          // Already conversational enough, no additional text needed
+          // Default is already well-balanced
           break;
       }
     
