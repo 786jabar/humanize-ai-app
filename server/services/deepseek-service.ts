@@ -10,35 +10,85 @@ const DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions";
 // Log API key presence for debugging (not the actual key)
 console.log("DeepSeek API Key available:", !!DEEPSEEK_API_KEY);
 
-// Post-processing function to add subtle human touches for natural writing
+// Post-processing function to make text sound naturally human
 function addHumanImperfections(text: string, bypassAiDetection: boolean, style: string): string {
   if (!bypassAiDetection) return text;
 
   let result = text;
 
-  // Avoid academic style - it should remain formal
+  // For academic style - still add some natural elements but keep formal
   if (style === 'academic') {
-    // For academic writing, only add very subtle variations
-    // Vary sentence starters occasionally
-    const sentences = result.split(/(?<=[.!?])\s+/);
-    result = sentences.map((sent, idx) => {
-      // Only modify 10% of sentences
-      if (idx > 0 && Math.random() > 0.9) {
-        const transitions = ['Furthermore,', 'Moreover,', 'Additionally,', 'However,', 'Nevertheless,'];
-        const hasTransition = transitions.some(t => sent.trim().startsWith(t));
-        if (!hasTransition && sent.trim().length > 20) {
-          const transition = transitions[Math.floor(Math.random() * transitions.length)];
-          return transition + ' ' + sent.trim().charAt(0).toLowerCase() + sent.trim().slice(1);
-        }
-      }
-      return sent.trim();
-    }).join(' ');
+    // Replace overly complex AI phrases with simpler academic language
+    const academicSimplifications: Record<string, string> = {
+      'precipitated': 'brought about',
+      'multitude of': 'many',
+      'it is noteworthy that': 'notably',
+      'demonstrated remarkable': 'shown significant',
+      'exhibited exceptional': 'shown strong',
+      'facilitated insights': 'provided insights',
+      'virtually boundless': 'extensive',
+      'in light of these developments': 'given these changes',
+      'maintain a pivotal position': 'play a key role',
+      'trajectory of': 'path of'
+    };
+
+    Object.entries(academicSimplifications).forEach(([formal, simpler]) => {
+      const regex = new RegExp(formal, 'gi');
+      result = result.replace(regex, simpler);
+    });
+
     return result;
   }
 
-  // For non-academic styles, add subtle natural human touches
+  // For non-academic styles, apply aggressive humanization
 
-  // 1. Add natural contractions (subtle, not excessive)
+  // 1. Replace overly formal/AI vocabulary with natural language
+  const vocabularySimplifications: Record<string, string> = {
+    'precipitated': 'caused',
+    'multitude of': 'many',
+    'nevertheless': 'however',
+    'it is noteworthy that': '',
+    'unprecedented': 'rapid',
+    'demonstrated remarkable': 'shown great',
+    'acceleration in both capability and application': 'growth in what it can do',
+    'yielded substantial benefits': 'helped a lot',
+    'spanning diverse sectors': 'across different industries',
+    'enhancing operational efficiency': 'making things work better',
+    'enabling novel approaches': 'allowing new ways',
+    'concurrently': 'at the same time',
+    'exhibited exceptional proficiency': 'gotten really good',
+    'facilitating insights': 'helping us understand',
+    'previously unattainable': 'we couldn\'t get before',
+    'conventional analytical methods': 'traditional analysis',
+    'virtually boundless': 'nearly endless',
+    'extending from': 'ranging from',
+    'in light of these developments': 'because of this',
+    'it becomes increasingly evident': 'it\'s clear',
+    'maintain a pivotal position': 'play a major role',
+    'trajectory of': 'path of',
+    'in the foreseeable future': 'going forward',
+    'utilize': 'use',
+    'commence': 'start',
+    'terminate': 'end',
+    'implement': 'put in place',
+    'numerous': 'many',
+    'regarding': 'about',
+    'consequently': 'so',
+    'therefore': 'so',
+    'thus': 'so',
+    'however': 'but',
+    'furthermore': 'also',
+    'moreover': 'plus',
+    'additionally': 'also'
+  };
+
+  // Apply vocabulary simplifications
+  Object.entries(vocabularySimplifications).forEach(([formal, natural]) => {
+    const regex = new RegExp('\\b' + formal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    result = result.replace(regex, natural);
+  });
+
+  // 2. Add natural contractions (80% chance)
   const contractionMap: Record<string, string> = {
     'do not': 'don\'t',
     'does not': 'doesn\'t',
@@ -59,34 +109,38 @@ function addHumanImperfections(text: string, bypassAiDetection: boolean, style: 
     'you have': 'you\'ve',
     'we have': 'we\'ve',
     'I will': 'I\'ll',
-    'you will': 'you\'ll'
+    'you will': 'you\'ll',
+    'has not': 'hasn\'t',
+    'have not': 'haven\'t',
+    'had not': 'hadn\'t'
   };
 
-  // Apply contractions naturally (60% chance for each occurrence)
+  // Apply contractions more frequently
   Object.entries(contractionMap).forEach(([full, contraction]) => {
     const regex = new RegExp('\\b' + full + '\\b', 'gi');
-    result = result.replace(regex, (match) => Math.random() > 0.4 ? contraction : match);
+    result = result.replace(regex, (match) => Math.random() > 0.2 ? contraction : match);
   });
 
-  // 2. Add subtle conversational markers (only for casual/conversational styles)
-  if (style === 'casual' || style === 'conversational') {
-    const subtleMarkers = [
+  // 3. Add conversational markers (for casual/conversational styles)
+  if (style === 'casual' || style === 'conversational' || style === 'creative') {
+    const conversationalMarkers = [
       'Well, ',
       'Actually, ',
       'Honestly, ',
       'To be fair, ',
-      'In my experience, ',
+      'In my view, ',
       'I think ',
-      'It seems like '
+      'It seems like ',
+      'From what I can tell, ',
+      'The way I see it, '
     ];
 
     const sentences = result.split(/(?<=[.!?])\s+/);
     result = sentences.map((sent, idx) => {
-      // Only add to 15% of sentences
-      if (idx > 0 && Math.random() > 0.85 && sent.trim().length > 20) {
-        const marker = subtleMarkers[Math.floor(Math.random() * subtleMarkers.length)];
-        // Check if sentence already starts with a marker
-        const hasMarker = subtleMarkers.some(m => sent.trim().startsWith(m));
+      // Add to 20% of sentences
+      if (idx > 0 && Math.random() > 0.8 && sent.trim().length > 20) {
+        const marker = conversationalMarkers[Math.floor(Math.random() * conversationalMarkers.length)];
+        const hasMarker = conversationalMarkers.some(m => sent.trim().startsWith(m));
         if (!hasMarker) {
           return marker + sent.trim().charAt(0).toLowerCase() + sent.trim().slice(1);
         }
@@ -95,12 +149,12 @@ function addHumanImperfections(text: string, bypassAiDetection: boolean, style: 
     }).join(' ');
   }
 
-  // 3. Vary sentence length naturally (break up some long sentences)
+  // 4. Break up very long sentences more aggressively
   const sentences = result.split(/(?<=[.!?])\s+/);
   result = sentences.map(sent => {
     const words = sent.trim().split(/\s+/);
-    // If sentence is very long (>25 words), occasionally break it
-    if (words.length > 25 && Math.random() > 0.7) {
+    // If sentence is long (>20 words), break it up
+    if (words.length > 20 && Math.random() > 0.5) {
       const midpoint = Math.floor(words.length / 2);
       const firstHalf = words.slice(0, midpoint).join(' ');
       const secondHalf = words.slice(midpoint).join(' ');
@@ -109,13 +163,10 @@ function addHumanImperfections(text: string, bypassAiDetection: boolean, style: 
     return sent.trim();
   }).join(' ');
 
-  // 4. Add natural emphasis occasionally (for casual styles only)
-  if (style === 'casual' || style === 'conversational' || style === 'creative') {
-    // Replace some periods with exclamation marks for emphasis (5% chance)
-    result = result.replace(/\.(\s)/g, (match) => {
-      return Math.random() > 0.95 ? '!' + match.charAt(1) : match;
-    });
-  }
+  // 5. Replace passive voice patterns with active voice
+  result = result.replace(/has been (\w+ed)/g, (match, verb) => {
+    return Math.random() > 0.5 ? verb : match;
+  });
 
   return result;
 }
